@@ -1,0 +1,69 @@
+Descriptif général:
+Monsieur Plouf est un youtuber français, connu pour ses chroniques où il teste de manière subjective des jeux vidéos.
+
+Il ne prends pas de scène des jeux en capture, mais refais les dessins dans un style simple et vectoriel, et anime lui même ses
+vidéos. Il écrit lui même son texte, et s'enregistre avec sa voix de "monsieur plouf" pour faire une vidéo d'environs 10 minutes.
+
+Il vit en autriche, et a une femme et une petite fille de 4ans. Il réalise une vidéo toutes les deux semaines, et fait un podcast par mois
+avec le youtuber Pseudoless. Pour le podcast, il écrit également l'introduction qui présente le jeu, et il fait le montage des scènes de
+capture du jeu pour monter la vidéo par la suite.
+
+Faits majeurs dans la semaine de monsieur Plouf:
+
+Suivre l'actu des jeux qui sortent
+Choisir le prochain jeu à chroniquer
+Jouer au jeu à chroniquer
+choisir le jeu pour le podcast
+Pseudoless t'annonce le jeu du podcast
+Jouer au jeu du podcast
+Ecrire la chronique
+Ecrire le résumé du jeu du podcast
+Dessiner la chronique
+Ecrire une vidéo analyse
+Dessiner la vidéo analyse
+Trouver un sponsor pur la vidéo analyse
+Streamer 1heure le soir de la chronique
+Uploader la vidéo
+Répondre aux commentaires de la vidéo
+
+
+Je veux faire un jeu vidéo qui copie le jeu "Reigns", avec comme titre "une semaine dans la eau de Monsieur Plouf", où on
+va jouer Monsieur Plouf dans une semaine où il doit réaliser une vidéo et un podcast.
+
+Il va devoir équilibrer 4 critères:
+Créativité:
+  Représente son inspiration, son énergie artistique, sa capacité à produire des idées marrantes, des blagues percutantes et des dessins expressifs.
+  🟢 Haut : Plouf pond des scripts brillants, les vannes fusent, il fait des vidéos cultes.
+  🔴 Bas : page blanche, blagues plates, il en vient à dire “le jeu est correct” sans ironie.
+
+
+Santé mentale
+  Mesure sa charge mentale, son stress, son épuisement global face aux deadlines, aux attentes, aux bugs de montage et aux trolls sur YouTube.
+  🟢 Haut : il gère, il kiffe, il enchaîne les projets en sifflotant.
+  🔴 Bas : il crie sur Adobe Premiere, il doute de tout, il veut devenir éleveur de chèvres.
+
+👪 Vie de famille
+  Équilibre entre son temps perso/pro et la vie avec sa femme et sa fille. Jouer à des jeux à 2h du mat, c’est pas toujours bien vu.
+  🟢 Haut : il passe du bon temps en famille, lit des histoires à sa fille, tout roule.
+  🔴 Bas : “Tu joues encore à ce jeu moche ?” / “Tu m’as dit que t’arrêtais après ce montage !”
+
+🎮 Temps de jeu
+  Ressource paradoxale : il faut qu’il joue pour faire ses vidéos/podcasts, mais s’il joue trop, il n’a plus le temps de tout le reste.
+  🟢 Haut : il a bien dosé, il a le matos pour analyser, mais plus le temps pour la chronique.
+  🔴 Bas : il n’a même pas fini le tuto de Starfield et la vidéo est prévue pour demain.
+
+
+Génère moi 50 cartes pour notre jeu, je veux:
+ - un titre du problème rencontré
+ - Soit très imaginatif sur ce qui peut arriver dans la vie de tous les jours d'un youtubeur jeux video comme monsieur plouf, en prennant en compte sa vie de famille.
+ - Pour chaque problème tu dois me donner un id, en upper_case.
+
+ - POUR CHAQUE PROBLEME tu dois proposer deux choix ORIGINAUX: A et B,avec pour chacuns:
+   - un texte cours explicatif qui présente au joueur la conséquence possible si on fait ce choix à ce problème,
+   - un texte un peu plus long qui lui présente la conséquence
+   - donne à la conséquence un poids entre -5 et 5 sur l'impact sur les critères, que ce soit en positif ou négatif, et il faut que ce soit logique avec la problématique et le choix
+   - Si pour toi un choix n'a pas d'impact sur le critère, il faut mettre 0 comme valeur.
+   - Certains choix doivent permettre d'atteindre certains faits majeurs de la semaine de monsieur plouf. Il faut que ce soit logique.
+ - je veux un format csv pour ces données avec le format suivant:
+ problem_id,title,problem_description,choice_a,outcome_a,creativity_a,mental_health_a,family_life_a,game_time_a,choice_b,outcome_b,creativity_b,mental_health_b,family_life_b,game_time_b
+
