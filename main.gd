@@ -35,112 +35,20 @@ var deck = []
 @onready var label_game_over = $LabelGameOver
 @onready var card = $Card
 
-func _ready():
-	load_deck()
-	show_card(deck[card_index])
-	
-	__load_all_data()
 
-func load_deck():
-	# Exemple de 2 cartes — à remplacer par un système dynamique plus tard
-	var c1 = CardData.new()
-	c1.question = "Tu veux parler d’un jeu que t’as jamais lancé."
-	c1.left_text = "Tu lances le jeu"
-	c1.right_text = "Tu improvises la chronique"
-	c1.left_effects = {"temps_jeu": +2, "creativite": +1}
-	c1.right_effects = {"temps_jeu": -1, "sante_mentale": -2}
-	
-	var c2 = CardData.new()
-	c2.question = "Ta fille veut jouer pendant que tu dessines."
-	c2.left_text = "Tu joues avec elle"
-	c2.right_text = "Tu termines ton dessin"
-	c2.left_effects = {"vie_famille": +2, "creativite": -1}
-	c2.right_effects = {"creativite": +1, "vie_famille": -2}
-
-	deck = [c1, c2]
-
-func show_card(card_data: CardData):
-	current_card = card_data
-	label_question.text = card_data.question
-	label_left.text = "← " + card_data.left_text
-	label_right.text = card_data.right_text + " →"
-
-func _unhandled_input______disabled(event):
-	if event is InputEventScreenDrag or event is InputEventMouseMotion:
-		card.rotation_degrees = clamp(event.relative.x * 0.05, -10, 10)
-		card.position.x += event.relative.x
-
-	if event is InputEventScreenTouch and not event.pressed:
-		process_card_swipe()
-	if event is InputEventMouseButton and not event.pressed:
-		process_card_swipe()
-
-func process_card_swipe():
-	if card.position.x > 100:
-		apply_choice("right")
-	elif card.position.x < -100:
-		apply_choice("left")
-	else:
-		card.position = Vector2.ZERO
-		card.rotation_degrees = 0
-
-func apply_choice(direction: String):
-	var effects = current_card.right_effects
-	if direction == "left" :
-		effects= current_card.left_effects
-	apply_effects(effects)
-	update_stats_ui()
-	
-	card.position = Vector2.ZERO
-	card.rotation_degrees = 0
-	
-	card_index += 1
-	if card_index >= deck.size():
-		card_index = 0  # boucle pour test
-	show_card(deck[card_index])
-
-func apply_effects(effects: Dictionary):
-	for stat in effects:
-		g_stats[stat] = clamp(g_stats[stat] + effects[stat], 0, 10)
-		if g_stats[stat] == 0 or g_stats[stat] == 10:
-			trigger_game_over(stat, g_stats[stat])
-
-func update_stats_ui():
-	for key in stat_bars:
-		stat_bars[key].value = g_stats[key]
-
-func trigger_game_over(stat_name: String, value: int):
-	var message := ""
-	match stat_name:
-		"creativite":
-			if value == 0:
-				message = "Monsieur Plouf n’a plus d’idées… il chronique des menus d’options."
-			else:
-				message = "Monsieur Plouf s’exprime désormais uniquement en aquarelle."
-		
-		"sante_mentale":
-			if value == 0:
-				message = "Il a fusionné avec sa chaise de bureau."
-			else:
-				message = "Il est trop calme. Il fait peur."
-
-		"vie_famille":
-			if value == 0:
-				message = "Sa fille le connaît comme 'l’homme du fond avec les écouteurs'."
-			else:
-				message = "Ils lancent une chaîne familiale : *Plouffamille Vlog*."
-
-		"temps_jeu":
-			if value == 0:
-				message = "Il chronique les souvenirs de ses anciens let's play."
-			else:
-				message = "Il ne fait plus que jouer. OBS est parti."
-
-	label_game_over.text = "GAME OVER\n\n" + message
-	label_game_over.visible = true
-	get_tree().paused = true
-
-
+## GAMEOVER:
+# "creativite":
+# "Monsieur Plouf n’a plus d’idées… il chronique des menus d’options."
+# "Monsieur Plouf s’exprime désormais uniquement en aquarelle."
+#"sante_mentale":
+#"Il a fusionné avec sa chaise de bureau."
+#"Il est trop calme. Il fait peur."
+#"vie_famille":
+#"Sa fille le connaît comme 'l’homme du fond avec les écouteurs'."
+#"Ils lancent une chaîne familiale : *Plouffamille Vlog*."
+#"temps_jeu":
+#"Il chronique les souvenirs de ses anciens let's play."
+#"Il ne fait plus que jouer. OBS est parti."
 
 
 
@@ -158,7 +66,7 @@ var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
 var current_phase_index = 0
 var seen_ids := {}
 
-func __load_all_data():
+func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	load_phases()
 	load_problems()
