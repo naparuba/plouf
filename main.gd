@@ -28,6 +28,14 @@ var deck = []
 @onready var button_a = $ChoiceA
 @onready var button_b = $ChoiceB
 
+@onready var label_objective = $LabelObjective
+
+# Possible Impact
+@onready var label_possible_impact_temps_jeu = $LabelTempsJeuPossibleImpact
+@onready var label_possible_impact_sante_mentale = $LabelSanteMentalePossibleImpact
+@onready var label_possible_impact_creativite = $LabelCreativitePossibleImpact
+@onready var label_possible_impact_vie_famille = $LabelVieFamillePossibleImpact
+
 
 var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
 var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
@@ -116,6 +124,11 @@ func load_next_phase():
 	current_problem_index = 0
 	seen_ids.clear()
 	load_next_problem()
+	
+	label_objective.text = "Objectif actuel: " + phase_id
+
+		
+		
 
 func load_next_problem():
 	if seen_ids.size() >= current_problem_list.size():
@@ -153,6 +166,8 @@ func on_choice(choice: String):
 		return
 	
 	load_next_problem()
+	
+	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
 
 
 func print_problem(problem):
@@ -174,16 +189,28 @@ func choose(option1, option2):
 	print("→ Choix :", choice)
 	return choice
 
-func apply_consequences(problem, choice):
+func _get_choice_stat(choice, stat):
 	var suffix = "_a" if choice == "A" else "_b"
-	for stat in stats.keys():
-		var key = {
+	var key = {
 			"Créativité": "creativity",
 			"Santé mentale": "mental_health",
 			"Vie de famille": "family_life",
 			"Temps de jeu": "game_time"
 		}[stat]
-		var impact = int(problem[key + suffix])
+	var impact = int(current_problem[key + suffix])
+	return impact
+	
+func apply_consequences(problem, choice):
+	#var suffix = "_a" if choice == "A" else "_b"
+	for stat in stats.keys():
+		#var key = {
+		#	"Créativité": "creativity",
+		#	"Santé mentale": "mental_health",
+		#	"Vie de famille": "family_life",
+		#	"Temps de jeu": "game_time"
+		#}[stat]
+		#var impact = int(problem[key + suffix])
+		var impact = _get_choice_stat(choice, stat)
 		stats[stat] += impact
 
 		match stat:
@@ -200,3 +227,49 @@ func validate_stats():
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
 			return false
 	return true
+
+
+
+func _update_possible_impacts(choice):
+	# """"
+	for stat in stats.keys():
+		var impact = _get_choice_stat(choice, stat)
+		var labels = {
+			"Créativité": label_possible_impact_creativite,
+			"Santé mentale": label_possible_impact_sante_mentale,
+			"Vie de famille": label_possible_impact_vie_famille,
+			"Temps de jeu": label_possible_impact_temps_jeu,
+		}
+		if impact == 0:
+			continue
+		var label = labels[stat]
+		if impact <= 1:
+			label.text = "🞄"
+		elif impact <= 2:
+			label.text = "●"
+		else:
+			label.text = "⬤"
+			
+
+func _reset_possible_impacts():
+	label_possible_impact_creativite.text = ""
+	label_possible_impact_sante_mentale.text = ""
+	label_possible_impact_vie_famille.text = ""
+	label_possible_impact_temps_jeu.text = ""
+
+
+
+func _on_choice_a_mouse_entered() -> void:
+	_update_possible_impacts("A")
+
+
+func _on_choice_a_mouse_exited() -> void:
+	_reset_possible_impacts()
+
+
+func _on_choice_b_mouse_entered() -> void:
+	_update_possible_impacts("B")
+
+
+func _on_choice_b_mouse_exited() -> void:
+	_reset_possible_impacts()
