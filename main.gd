@@ -1,14 +1,5 @@
 extends CanvasLayer
 
-# Cartes simulées — tu pourras charger dynamiquement plus tard
-#class_name CardData
-
-class CardData:
-	var question: String
-	var left_text: String
-	var right_text: String
-	var left_effects: Dictionary
-	var right_effects: Dictionary
 
 # Statistiques de Plouf
 var g_stats = {
@@ -18,7 +9,7 @@ var g_stats = {
 	"temps_jeu": 5
 }
 
-var current_card: CardData
+
 var card_index = 0
 var deck = []
 
@@ -34,7 +25,17 @@ var deck = []
 }
 @onready var label_game_over = $LabelGameOver
 @onready var card = $Card
+@onready var button_a = $ChoiceA
+@onready var button_b = $ChoiceB
 
+
+var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
+var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
+var seen_ids := {}
+var current_phase_index = 0
+var current_problem_index = 0
+var current_problem_list = []
+var current_problem = {}
 
 ## GAMEOVER:
 # "creativite":
@@ -60,18 +61,19 @@ var stats = {
 	"Temps de jeu": 20,
 }
 
-var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
-var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
 
-var current_phase_index = 0
-var seen_ids := {}
 
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	load_phases()
 	load_problems()
 	rotate_phases_randomly()
-	start_game()
+	current_phase_index = 0
+	current_problem_index = 0
+	seen_ids.clear()
+	button_a.pressed.connect(func(): on_choice("A"))
+	button_b.pressed.connect(func(): on_choice("B"))
+	load_next_phase()
 
 func load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -101,31 +103,57 @@ func rotate_phases_randomly():
 	var index = randi() % phases.size()
 	phases = phases.slice(index, phases.size()) + phases.slice(0, index)
 
-func start_game():
-	for phase_id in phases:
-		var problems = problems_by_phase[phase_id]
-		print("\n===== Phase :", phase_id, " (", problems.size(), "problèmes) =====")
-		seen_ids.clear()
+# --- Gameplay
+func load_next_phase():
+	if current_phase_index >= phases.size():
+		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
+		button_a.visible = false
+		button_b.visible = false
+		return
+	
+	var phase_id = phases[current_phase_index]
+	current_problem_list = problems_by_phase[phase_id]
+	current_problem_index = 0
+	seen_ids.clear()
+	load_next_problem()
 
-		while seen_ids.size() < problems.size():
-			var problem = problems[randi() % problems.size()]
-			if seen_ids.has(problem["problem_id"]):
-				continue
-			seen_ids[problem["problem_id"]] = true
+func load_next_problem():
+	if seen_ids.size() >= current_problem_list.size():
+		print("✔ Phase ", phases[current_phase_index], " terminée")
+		current_phase_index += 1
+		load_next_phase()
+		return
+	
+	# Prendre le prochain problème non vu
+	while true:
+		var p = current_problem_list[current_problem_index % current_problem_list.size()]
+		current_problem_index += 1
+		if not seen_ids.has(p["problem_id"]):
+			current_problem = p
+			seen_ids[p["problem_id"]] = true
+			display_problem(p)
+			break
 
-			print_problem(problem)
-			var choice = choose("A", "B")
-			apply_consequences(problem, choice)
+func display_problem(problem):
+	label_question.text = "🔸 %s - %s\n\n%s" % [
+		problem["problem_id"], problem["title"], problem["problem_description"]
+	]
+	label_left.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
+	label_right.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
-			if not validate_stats():
-				print("\n💥 Game Over! Stats invalides.")
-				label_game_over.text = "💥 Game Over! Stats invalides"
-				label_game_over.visible = true
-				#get_tree().quit()
+func on_choice(choice: String):
+	print("→ Choix :", choice)
+	apply_consequences(current_problem, choice)
+	
+	if not validate_stats():
+		label_game_over.text = "💥 Game Over! Stats invalides"
+		label_game_over.visible = true
+		button_a.disabled = true
+		button_b.disabled = true
+		return
+	
+	load_next_problem()
 
-		print("✔ Phase", phase_id, "terminée !")
-
-	print("\n🎉 Tous les problèmes ont été résolus ! Semaine de Monsieur Plouf terminée.")
 
 func print_problem(problem):
 	print("🔸 Problème :", problem["problem_id"], "-", problem["title"])
@@ -157,17 +185,14 @@ func apply_consequences(problem, choice):
 		}[stat]
 		var impact = int(problem[key + suffix])
 		stats[stat] += impact
-		
-		if stat == 'Créativité':
-			stat_bars["creativite"].value = stats[stat]
-		if stat == 'Santé mentale':
-			stat_bars["sante_mentale"].value = stats[stat]
-		if stat == 'Vie de famille':
-			stat_bars["vie_famille"].value = stats[stat]
-		if stat == 'Temps de jeu':
-			stat_bars["temps_jeu"].value = stats[stat]
 
-	print("📊 Stats après choix :", stats)
+		match stat:
+			"Créativité":     stat_bars["creativite"].value = stats[stat]
+			"Santé mentale":  stat_bars["sante_mentale"].value = stats[stat]
+			"Vie de famille": stat_bars["vie_famille"].value = stats[stat]
+			"Temps de jeu":   stat_bars["temps_jeu"].value = stats[stat]
+
+	print("📊 Stats :", stats)
 
 func validate_stats():
 	for stat in stats:
