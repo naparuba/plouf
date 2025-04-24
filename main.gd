@@ -10,6 +10,8 @@ var g_stats = {
 }
 
 
+var MAX_STAT = 40
+
 var card_index = 0
 var deck = []
 
@@ -36,6 +38,11 @@ var deck = []
 @onready var label_possible_impact_creativite = $LabelCreativitePossibleImpact
 @onready var label_possible_impact_vie_famille = $LabelVieFamillePossibleImpact
 
+
+@onready var progress_vie_famille = $ProgressVieFamille
+@onready var progress_creativite = $ProgressCreativite
+@onready var progress_sante_mentale = $ProgressSanteMentale
+@onready var progress_temps_jeu = $ProgressTempsJeu
 
 var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
 var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
@@ -212,18 +219,30 @@ func apply_consequences(problem, choice):
 		#var impact = int(problem[key + suffix])
 		var impact = _get_choice_stat(choice, stat)
 		stats[stat] += impact
-
+		
+		var stat_pct = int(round((stats[stat] / 40.0) * 100))
+		stat_pct = clamp(stat_pct, 1, 100)
+		
 		match stat:
-			"Créativité":     stat_bars["creativite"].value = stats[stat]
-			"Santé mentale":  stat_bars["sante_mentale"].value = stats[stat]
-			"Vie de famille": stat_bars["vie_famille"].value = stats[stat]
-			"Temps de jeu":   stat_bars["temps_jeu"].value = stats[stat]
+			"Créativité":     
+				stat_bars["creativite"].value = stat_pct
+				progress_creativite.value = stat_pct
+			"Santé mentale":  
+				stat_bars["sante_mentale"].value = stat_pct
+				progress_sante_mentale.value = stat_pct
+			"Vie de famille": 
+				stat_bars["vie_famille"].value = stat_pct
+				progress_vie_famille.value = stat_pct
+			"Temps de jeu":   
+				stat_bars["temps_jeu"].value = stat_pct
+				progress_temps_jeu.value = stat_pct
+
 
 	print("📊 Stats :", stats)
 
 func validate_stats():
 	for stat in stats:
-		if stats[stat] < 0 or stats[stat] > 40:
+		if stats[stat] < 0 or stats[stat] > MAX_STAT:
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
 			return false
 	return true
@@ -240,6 +259,7 @@ func _update_possible_impacts(choice):
 			"Vie de famille": label_possible_impact_vie_famille,
 			"Temps de jeu": label_possible_impact_temps_jeu,
 		}
+		impact =abs(impact)
 		if impact == 0:
 			continue
 		var label = labels[stat]
@@ -249,6 +269,8 @@ func _update_possible_impacts(choice):
 			label.text = "●"
 		else:
 			label.text = "⬤"
+			
+		
 			
 
 func _reset_possible_impacts():
