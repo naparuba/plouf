@@ -44,6 +44,9 @@ var deck = []
 @onready var progress_sante_mentale = $ProgressSanteMentale
 @onready var progress_temps_jeu = $ProgressTempsJeu
 
+@onready var card_viewer = $CardViewer
+
+
 var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
 var problems_by_phase = {} # Dictionnaire : phase_id => liste de problèmes
 var seen_ids := {}
@@ -89,6 +92,8 @@ func _ready():
 	button_a.pressed.connect(func(): on_choice("A"))
 	button_b.pressed.connect(func(): on_choice("B"))
 	load_next_phase()
+	
+	card_viewer.load_card_image("PLOUF.png")
 
 func load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
