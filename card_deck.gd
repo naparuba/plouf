@@ -71,19 +71,35 @@ func _emit_choice(direction):
 	emit_signal("choice_made", direction)
 
 
+func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
+	if not sprite.texture:
+		return
+	
+	var max_width = 300.0
+	var max_height = 200.0
+	var tex_size = sprite.texture.get_size()
+
+	var scale_factor = min(max_width / tex_size.x, max_height / tex_size.y)
+
+	sprite.scale = Vector2(scale_factor, scale_factor)
+
 # Méthode appelée depuis Main.gd
 func set_card_images(current_image: Texture2D, next_image: Texture2D):
-	var sprite_current := current_card.get_node("Sprite2D")
+	var sprite_current := current_card.get_node("Sprite2D")	
 	var sprite_next := next_card.get_node("Sprite2D")
-	
+
 	sprite_current.texture = current_image
 	sprite_next.texture = next_image
-	
+
+	# Redimensionner les sprites
+	_resize_sprite_to_fit(sprite_current)
+	_resize_sprite_to_fit(sprite_next)
+
 	current_card.position = Vector2.ZERO
 	current_card.rotation_degrees = 0
 	current_card.scale = Vector2.ONE
 	current_card.modulate.a = 1.0
-	
+
 	next_card.position = Vector2.ZERO
 	next_card.scale = Vector2(0.95, 0.95)
 	next_card.modulate.a = 0.6
