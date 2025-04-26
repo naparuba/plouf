@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+@onready var card_deck := $CardDeck
+
+
 
 # Statistiques de Plouf
 var g_stats = {
@@ -94,6 +97,8 @@ func _ready():
 	load_next_phase()
 	
 	card_viewer.load_card_image("PLOUF.png")
+	
+	card_deck.choice_made.connect(on_swipe_choice)
 
 func load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -300,3 +305,21 @@ func _on_choice_b_mouse_entered() -> void:
 
 func _on_choice_b_mouse_exited() -> void:
 	_reset_possible_impacts()
+
+
+func get_current_card_image() -> String:
+	return current_problem.get("image", "PLOUF.png")  # fallback
+
+func get_next_card_image() -> String:
+	var idx = current_problem_index % current_problem_list.size()
+	var next_problem = current_problem_list[idx]
+	return next_problem.get("image", "PLOUF.png")
+
+func on_swipe_choice(direction: String):
+	print("→ Swipe :", direction)
+	on_choice(direction)  # ta logique existante
+
+	# Recharge les visuels dans CardDeck
+	var current_img = load("res://images/%s" % get_current_card_image())
+	var next_img = load("res://images/%s" % get_next_card_image())
+	card_deck.set_card_images(current_img, next_img)
