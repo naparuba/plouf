@@ -96,9 +96,8 @@ func _ready():
 	button_b.pressed.connect(func(): on_choice("B"))
 	load_next_phase()
 	
-	card_viewer.load_card_image("PLOUF.png")
-	
 	card_deck.choice_made.connect(on_swipe_choice)
+	card_deck.choice_preview.connect(_on_card_preview)
 
 func load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -321,3 +320,11 @@ func on_swipe_choice(direction: String):
 	var current_img = load("res://images/%s" % get_current_card_image())
 	var next_img = load("res://images/%s" % get_next_card_image())
 	card_deck.set_card_images(current_img, next_img)
+
+func _on_card_preview(direction: String) -> void:
+	if direction == "A":
+		_update_possible_impacts("A")
+	elif direction == "B":
+		_update_possible_impacts("B")
+	else:
+		_reset_possible_impacts()

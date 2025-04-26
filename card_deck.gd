@@ -1,6 +1,7 @@
 extends Node2D
 
 signal choice_made(direction: String)
+signal choice_preview(direction: String)
 
 @export var max_drag_distance := 150.0
 @export var max_rotation_degrees := 15.0
@@ -11,7 +12,7 @@ signal choice_made(direction: String)
 
 var dragging := false
 var drag_start_pos := Vector2.ZERO
-
+var last_preview_direction := "" # do not spam preview signal
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -28,7 +29,21 @@ func _input(event):
 
 		current_card.position.x = delta_x
 		current_card.rotation_degrees = (delta_x / max_drag_distance) * max_rotation_degrees
+		
+		handle_drag_preview(delta_x)
 
+
+func handle_drag_preview(delta_x: float) -> void:
+	var new_direction = ""
+	if abs(delta_x) > reject_threshold * 0.5: # 🔥 Seuil pour commencer à preview
+		new_direction = "B" if delta_x > 0 else "A"
+
+	if new_direction != last_preview_direction:
+		last_preview_direction = new_direction
+		if new_direction != "":
+			emit_signal("choice_preview", new_direction)
+		else:
+			emit_signal("choice_preview", "none") # 🔥 aucun choix clair (optionnel)
 
 func handle_release():
 	var delta_x = current_card.position.x
