@@ -144,8 +144,6 @@ func load_next_phase():
 	
 	label_objective.text = "Objectif actuel: " + phase_id
 
-		
-		
 
 func load_next_problem():
 	if seen_ids.size() >= current_problem_list.size():
@@ -308,7 +306,7 @@ func _on_choice_b_mouse_exited() -> void:
 
 
 func get_current_card_image() -> String:
-	return current_problem.get("image", "PLOUF.png")  # fallback
+	return current_problem.get("card_img_id", "PLOUF")+'.png'  # fallback
 
 func get_next_card_image() -> String:
 	var idx = current_problem_index % current_problem_list.size()
