@@ -41,8 +41,8 @@ func _ready() -> void:
 	
 	# Label for text A/B
 	choice_label.text = ""
-	choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	choice_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	choice_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	choice_label.anchor_left = 0.0
 	choice_label.anchor_top = 0.0
 	choice_label.anchor_right = 1.0
@@ -72,9 +72,9 @@ func _input(event):
 		current_card.position.x = delta_x
 		current_card.rotation_degrees = (delta_x / max_drag_distance) * max_rotation_degrees
 		
-		update_choice_overlay(delta_x)
+		_update_choice_overlay(delta_x)
 		
-		handle_drag_preview(delta_x)
+		_handle_drag_preview(delta_x)
 
 
 func update_overlay_size():
@@ -102,7 +102,7 @@ func update_overlay_size():
 	choice_label.position = Vector2(0, 0)
 	choice_label.size = Vector2(width, height)
 
-func update_choice_overlay(delta_x: float) -> void:
+func _update_choice_overlay(delta_x: float) -> void:
 	var threshold_show = 20.0  # Début d'apparition
 
 	if abs(delta_x) > threshold_show:
@@ -110,6 +110,9 @@ func update_choice_overlay(delta_x: float) -> void:
 		choice_label.text = "B" if delta_x > 0 else "A"
 		var alpha = clamp(abs(delta_x) / max_drag_distance, 0.0, 1.0)
 		choice_overlay.modulate.a = alpha
+		
+		# Let the label be horizontal
+		choice_label.rotation_degrees = -current_card.rotation_degrees
 
 		# Déformer le bas du polygone pour rester horizontal
 		var sprite: Sprite2D = current_card.get_node("Sprite2D")
@@ -131,6 +134,12 @@ func update_choice_overlay(delta_x: float) -> void:
 				Vector2(width , height), # Bas droite décalé
 				Vector2(0, height + offset)         # Bas gauche décalé
 			]
+			
+			# Update label on the good place
+			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			choice_label.position = Vector2(0, offset)  # En haut à droite
+			choice_label.size = Vector2(width-10, height)
+			
 		else: # A => left
 			points = [
 				Vector2(0, 0),                # Haut gauche
@@ -138,12 +147,15 @@ func update_choice_overlay(delta_x: float) -> void:
 				Vector2(width , height - offset), # Bas droite décalé
 				Vector2(0, height)         # Bas gauche décalé
 			]
+			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+			choice_label.position = Vector2(0, 0)  # En haut à gauche
+			choice_label.size = Vector2(width+10, height)  #TODO: BUG HERE, do not offset?
 		
 		polygon.polygon = points
 	else:
 		choice_overlay.visible = false
 
-func handle_drag_preview(delta_x: float) -> void:
+func _handle_drag_preview(delta_x: float) -> void:
 	var new_direction = ""
 	if abs(delta_x) > reject_threshold * 0.5: # 🔥 Seuil pour commencer à preview
 		new_direction = "B" if delta_x > 0 else "A"
@@ -162,12 +174,14 @@ func handle_release():
 		on_choice(direction)
 	else:
 		reset_card()
+	choice_overlay.visible = false
 
 
 func reset_card():
 	var tween = create_tween()
-	tween.tween_property(current_card, "position", Vector2.ZERO, 0.25).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(current_card, "rotation_degrees", 0, 0.25).set_trans(Tween.TRANS_BACK)
+	# Parallel: both tween are in the same time
+	tween.parallel().tween_property(current_card, "position", Vector2.ZERO, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(current_card, "rotation_degrees", 0, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 func on_choice(direction: String):
