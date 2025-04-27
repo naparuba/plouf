@@ -179,10 +179,29 @@ func reset_card():
 
 
 func on_choice(direction: String):
-	var target_x = sign(current_card.position.x) * 800
+		# Calculer la direction à partir de la position de la carte
+	var target_x = current_card.position.x
+	var target_y = 600  # Ajouter un mouvement vers le bas pour donner l'effet de chute
+	var rotation_angle = 120  # La carte tournera de 60 degrés
+	
+	# Based on direction, we must rotate in a oposite way
+	if direction == "A":
+		rotation_angle *= -1
+
+	# Créer un tween pour animer la carte
 	var tween = create_tween()
-	tween.tween_property(current_card, "position:x", target_x, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	
+	# Déplacer la carte vers le bas et effectuer la rotation
+	tween.parallel().tween_property(current_card, "position", Vector2(target_x, target_y), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(current_card, "rotation_degrees", rotation_angle, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	
+	# Callback pour signaler que le choix a été effectué
 	tween.tween_callback(Callable(self, "_emit_choice").bind(direction))
+	
+	#var target_x = sign(current_card.position.x) * 800
+	#var tween = create_tween()
+	#tween.tween_property(current_card, "position:x", target_x, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	#tween.tween_callback(Callable(self, "_emit_choice").bind(direction))
 
 
 func _emit_choice(direction):
