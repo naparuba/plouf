@@ -98,6 +98,10 @@ func _ready():
 	
 	card_deck.choice_made.connect(on_swipe_choice)
 	card_deck.choice_preview.connect(_on_card_preview)
+	
+	# We can update the deck display
+	_update_current_card_deck()
+
 
 func load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -304,22 +308,25 @@ func _on_choice_b_mouse_exited() -> void:
 	_reset_possible_impacts()
 
 
-func get_current_card_image() -> String:
-	return current_problem.get("card_img_id", "PLOUF")+'.png'  # fallback
-
-func get_next_card_image() -> String:
-	var idx = current_problem_index % current_problem_list.size()
-	var next_problem = current_problem_list[idx]
-	return next_problem.get("image", "PLOUF.png")
+func _get_current_card_image() -> CompressedTexture2D:
+	var img_path = current_problem.get("card_img_id", "PLOUF")+'.png'  # fallback
+	var img = load("res://images/%s" % img_path)
+	return img
 
 func on_swipe_choice(direction: String):
 	print("→ Swipe :", direction)
 	on_choice(direction)  # ta logique existante
+	
+	_update_current_card_deck()  # we can show the new card
 
+func _update_current_card_deck():
 	# Recharge les visuels dans CardDeck
-	var current_img = load("res://images/%s" % get_current_card_image())
-	var next_img = load("res://images/%s" % get_next_card_image())
-	card_deck.set_card_images(current_img, next_img)
+	var current_img = _get_current_card_image()
+	
+	var choice_a_txt = current_problem["choice_a"]
+	var choice_b_txt = current_problem["choice_b"]
+	
+	card_deck.set_card_images(current_img, choice_a_txt, choice_b_txt)
 
 func _on_card_preview(direction: String) -> void:
 	if direction == "A":

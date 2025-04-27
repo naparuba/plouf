@@ -8,7 +8,6 @@ signal choice_preview(direction: String)
 @export var reject_threshold := 100.0
 
 @onready var current_card := $CurrentCard
-@onready var next_card := $NextCard
 
 var dragging := false
 var drag_start_pos := Vector2.ZERO
@@ -17,6 +16,9 @@ var last_preview_direction := "" # do not spam preview signal
 @onready var choice_overlay = $CurrentCard/ChoiceOverlay
 @onready var polygon  = $CurrentCard/ChoiceOverlay/Polygon
 @onready var choice_label = $CurrentCard/ChoiceOverlay/Label
+
+var current_choice_a_txt = ''
+var current_choice_b_txt = ''
 
 func _ready() -> void:
 	# Overlay
@@ -30,15 +32,6 @@ func _ready() -> void:
 	choice_overlay.size_flags_vertical = Control.SIZE_FILL
 	choice_overlay.custom_minimum_size = Vector2(0, 50)  # Hauteur du bandeau
 	
-	# ColorRect
-	#color_rect.color = Color(0, 0, 0, 0.6)  # Noir avec 60% d'opacité
-	#color_rect.anchor_left = 0.0
-	#color_rect.anchor_top = 0.0
-	#color_rect.anchor_right = 1.0
-	#color_rect.anchor_bottom = 1.0
-	#color_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	#color_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	
 	# Label for text A/B
 	choice_label.text = ""
 	choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -50,10 +43,6 @@ func _ready() -> void:
 	choice_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	choice_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	choice_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-	#choice_label.add_theme_font_size("font_size", 32)  # Facultatif : ajuster taille texte
-	#choice_label.add_theme_color("font_color", Color.WHITE)
-	
-	
 
 
 func _input(event):
@@ -68,6 +57,9 @@ func _input(event):
 	elif event is InputEventMouseMotion and dragging:
 		var delta_x = get_global_mouse_position().x - drag_start_pos.x
 		delta_x = clamp(delta_x, -max_drag_distance, max_drag_distance)
+		
+		# We are moving faster than the real move, like in the origina title
+		delta_x *= 2
 
 		current_card.position.x = delta_x
 		current_card.rotation_degrees = (delta_x / max_drag_distance) * max_rotation_degrees
@@ -107,8 +99,10 @@ func _update_choice_overlay(delta_x: float) -> void:
 
 	if abs(delta_x) > threshold_show:
 		choice_overlay.visible = true
-		choice_label.text = "B" if delta_x > 0 else "A"
-		var alpha = clamp(abs(delta_x) / max_drag_distance, 0.0, 1.0)
+		choice_label.text = current_choice_b_txt if delta_x > 0 else current_choice_a_txt
+		
+		# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
+		var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
 		choice_overlay.modulate.a = alpha
 		
 		# Let the label be horizontal
@@ -207,25 +201,22 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 	sprite.scale = Vector2(scale_factor, scale_factor)
 
-# Méthode appelée depuis Main.gd
-func set_card_images(current_image: Texture2D, next_image: Texture2D):
+# Call from Main.gd
+func set_card_images(current_image: Texture2D, choice_a_txt: String, choice_b_txt: String):
 	var sprite_current := current_card.get_node("Sprite2D")	
-	var sprite_next := next_card.get_node("Sprite2D")
-
+	
 	sprite_current.texture = current_image
-	sprite_next.texture = next_image
-
+	
 	# Redimensionner les sprites
 	_resize_sprite_to_fit(sprite_current)
-	_resize_sprite_to_fit(sprite_next)
-
+	
 	update_overlay_size()	# Let the choice overlay be the same size
 
 	current_card.position = Vector2.ZERO
 	current_card.rotation_degrees = 0
 	current_card.scale = Vector2.ONE
 	current_card.modulate.a = 1.0
-
-	next_card.position = Vector2.ZERO
-	next_card.scale = Vector2(0.95, 0.95)
-	next_card.modulate.a = 0.6
+	
+	# Update text
+	current_choice_a_txt = choice_a_txt
+	current_choice_b_txt = choice_b_txt
