@@ -174,7 +174,7 @@ func display_problem(problem):
 
 func on_choice(choice: String):
 	print("→ Choix :", choice)
-	apply_consequences(current_problem, choice)
+	_apply_consequences(current_problem, choice)
 	
 	if not validate_stats():
 		label_game_over.text = "💥 Game Over! Stats invalides"
@@ -218,7 +218,7 @@ func _get_choice_stat(choice, stat):
 	var impact = int(current_problem[key + suffix])
 	return impact
 	
-func apply_consequences(problem, choice):
+func _apply_consequences(problem, choice):
 	#var suffix = "_a" if choice == "A" else "_b"
 	for stat in stats.keys():
 		#var key = {
@@ -233,20 +233,29 @@ func apply_consequences(problem, choice):
 		
 		var stat_pct = int(round((stats[stat] / 40.0) * 100))
 		stat_pct = clamp(stat_pct, 1, 100)
+		var stat_pct_float_1 = stat_pct / 100.0
 		
 		match stat:
 			"Créativité":     
 				stat_bars["creativite"].value = stat_pct
 				progress_creativite.value = stat_pct
+				var sp = $Creativite/ProgressCreativiteSprite
+				sp.material.set_shader_parameter('progress', stat_pct_float_1)
 			"Santé mentale":  
 				stat_bars["sante_mentale"].value = stat_pct
 				progress_sante_mentale.value = stat_pct
+				var sp = $SanteMentale/ProgressSanteMentaleSprite
+				sp.material.set_shader_parameter('progress', stat_pct_float_1)
 			"Vie de famille": 
 				stat_bars["vie_famille"].value = stat_pct
 				progress_vie_famille.value = stat_pct
+				var sp = $VieFamille/ProgressVieFamilleSprite
+				sp.material.set_shader_parameter('progress', stat_pct_float_1)
 			"Temps de jeu":   
 				stat_bars["temps_jeu"].value = stat_pct
 				progress_temps_jeu.value = stat_pct
+				var sp = $TempsJeu/ProgressTempsJeuSprite
+				sp.material.set_shader_parameter('progress', stat_pct_float_1)
 
 
 	print("📊 Stats :", stats)
