@@ -11,6 +11,8 @@ shader_parameter/radius = 0.208
 shader_parameter/borderWidth = 0.02
 shader_parameter/burnMult = 0.135
 shader_parameter/burnColor = Color(0.8, 0.309804, 0, 1)
+shader_parameter/corner_radius_px = 20.0
+shader_parameter/texture_size = Vector2(300, 300)
 shader_parameter/noiseTexture = ExtResource("3_q37kp")
 
 [node name="CardDeck" type="Node2D"]
