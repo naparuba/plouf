@@ -15,7 +15,7 @@ var drag_start_pos := Vector2.ZERO
 var last_preview_direction := "" # do not spam preview signal
 
 @onready var choice_overlay = $CurrentCard/ChoiceOverlay
-@onready var color_rect = $CurrentCard/ChoiceOverlay/ColorRect
+@onready var polygon  = $CurrentCard/ChoiceOverlay/Polygon
 @onready var choice_label = $CurrentCard/ChoiceOverlay/Label
 
 func _ready() -> void:
@@ -31,13 +31,13 @@ func _ready() -> void:
 	choice_overlay.custom_minimum_size = Vector2(0, 50)  # Hauteur du bandeau
 	
 	# ColorRect
-	color_rect.color = Color(0, 0, 0, 0.6)  # Noir avec 60% d'opacité
-	color_rect.anchor_left = 0.0
-	color_rect.anchor_top = 0.0
-	color_rect.anchor_right = 1.0
-	color_rect.anchor_bottom = 1.0
-	color_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	color_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	#color_rect.color = Color(0, 0, 0, 0.6)  # Noir avec 60% d'opacité
+	#color_rect.anchor_left = 0.0
+	#color_rect.anchor_top = 0.0
+	#color_rect.anchor_right = 1.0
+	#color_rect.anchor_bottom = 1.0
+	#color_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	#color_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	
 	# Label for text A/B
 	choice_label.text = ""
@@ -83,12 +83,24 @@ func update_overlay_size():
 		return
 	
 	var size = sprite.texture.get_size() * sprite.scale  # Taille après scaling
+	var width = size.x
+	var height = 50.0  # Hauteur du bandeau
+	
+	choice_overlay.position = Vector2(-width/2, -size.y/2)  # Coller en haut du sprite
 
-	choice_overlay.position = Vector2(-size.x/2, -size.y/2)  # Centré sur Sprite
-	choice_overlay.custom_minimum_size = Vector2(size.x, 50) # Largeur = sprite, Hauteur = fixe (ex: 50px)
+	# Générer les points du trapèze de base (rectangle au départ)
+	var points = [
+		Vector2(0, 0),          # Haut gauche
+		Vector2(width, 0),      # Haut droite
+		Vector2(width, height), # Bas droite
+		Vector2(0, height)      # Bas gauche
+	]
+	
+	polygon.polygon = points
+	polygon.color = Color(0, 0, 0, 0.6)  # Noir semi-transparent
 
-	color_rect.size = Vector2(size.x, 50) # Même taille que l'overlay
-	choice_label.size = Vector2(size.x, 50)
+	choice_label.position = Vector2(0, 0)
+	choice_label.size = Vector2(width, height)
 
 func update_choice_overlay(delta_x: float) -> void:
 	var threshold_show = 20.0  # Début d'apparition
@@ -96,9 +108,38 @@ func update_choice_overlay(delta_x: float) -> void:
 	if abs(delta_x) > threshold_show:
 		choice_overlay.visible = true
 		choice_label.text = "B" if delta_x > 0 else "A"
-		# L'opacité augmente avec l'écart
 		var alpha = clamp(abs(delta_x) / max_drag_distance, 0.0, 1.0)
 		choice_overlay.modulate.a = alpha
+
+		# Déformer le bas du polygone pour rester horizontal
+		var sprite: Sprite2D = current_card.get_node("Sprite2D")
+		var size = Vector2(100, 100)
+		if sprite.texture:
+			size = sprite.texture.get_size() * sprite.scale
+		var width = size.x
+		var height = 50.0
+		
+		#choice_label.text += " rot:" + str(current_card.rotation_degrees)
+		var rotation_rad = deg_to_rad(current_card.rotation_degrees)
+		var offset = tan(rotation_rad) * width
+		var points = []
+		if delta_x > 0:  # B => right
+			# Points mis à jour
+			points = [
+				Vector2(0, 0),                # Haut gauche
+				Vector2(width, 0),            # Haut droite
+				Vector2(width , height), # Bas droite décalé
+				Vector2(0, height + offset)         # Bas gauche décalé
+			]
+		else: # A => left
+			points = [
+				Vector2(0, 0),                # Haut gauche
+				Vector2(width, 0),            # Haut droite
+				Vector2(width , height - offset), # Bas droite décalé
+				Vector2(0, height)         # Bas gauche décalé
+			]
+		
+		polygon.polygon = points
 	else:
 		choice_overlay.visible = false
 

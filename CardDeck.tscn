@@ -15,10 +15,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ColorRect" type="ColorRect" parent="CurrentCard/ChoiceOverlay"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Polygon" type="Polygon2D" parent="CurrentCard/ChoiceOverlay"]
 
 [node name="Label" type="Label" parent="CurrentCard/ChoiceOverlay"]
 layout_mode = 0
