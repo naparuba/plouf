@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqd306sitp07o"]
+[gd_scene load_steps=5 format=3 uid="uid://dqd306sitp07o"]
 
 [ext_resource type="Script" path="res://card_deck.gd" id="1_pqhgn"]
+[ext_resource type="Shader" path="res://shaders/dissolve.gdshader" id="2_gdsp0"]
+[ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="3_q37kp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lvtgt"]
+shader = ExtResource("2_gdsp0")
+shader_parameter/position = Vector2(0.5, 0.5)
+shader_parameter/radius = 0.208
+shader_parameter/borderWidth = 0.02
+shader_parameter/burnMult = 0.135
+shader_parameter/burnColor = Color(0.8, 0.309804, 0, 1)
+shader_parameter/noiseTexture = ExtResource("3_q37kp")
 
 [node name="CardDeck" type="Node2D"]
 script = ExtResource("1_pqhgn")
@@ -8,6 +19,7 @@ script = ExtResource("1_pqhgn")
 [node name="CurrentCard" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="CurrentCard"]
+material = SubResource("ShaderMaterial_lvtgt")
 
 [node name="ChoiceOverlay" type="Control" parent="CurrentCard"]
 layout_mode = 3

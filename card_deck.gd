@@ -17,6 +17,8 @@ var last_preview_direction := "" # do not spam preview signal
 @onready var polygon  = $CurrentCard/ChoiceOverlay/Polygon
 @onready var choice_label = $CurrentCard/ChoiceOverlay/Label
 
+@onready var sprite_2d : Sprite2D = $CurrentCard/Sprite2D
+
 var current_choice_a_txt = ''
 var current_choice_b_txt = ''
 
@@ -44,6 +46,9 @@ func _ready() -> void:
 	choice_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	choice_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 
+	#var shader_material = ShaderMaterial.new()
+	#shader_material.shader = load("res://shaders/round_corner.shader")
+	#sprite_2d.material = shader_material
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -188,10 +193,17 @@ func on_choice(direction: String):
 	if direction == "A":
 		rotation_angle *= -1
 
+	# Créer une référence au shader
+	var sprite: Sprite2D = current_card.get_node("Sprite2D")
+	var shader_material = sprite.material as ShaderMaterial
+
+
 	# Créer un tween pour animer la carte
 	var tween = create_tween()
 	
-	# Déplacer la carte vers le bas et effectuer la rotation
+	# Burning effect, stop at the middle, but quickly
+	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/radius', 1.0, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	# To the bottom and rotating, like a droping card
 	tween.parallel().tween_property(current_card, "position", Vector2(target_x, target_y), 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.parallel().tween_property(current_card, "rotation_degrees", rotation_angle, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
@@ -225,6 +237,11 @@ func set_card_images(current_image: Texture2D, choice_a_txt: String, choice_b_tx
 	var sprite_current := current_card.get_node("Sprite2D")	
 	
 	sprite_current.texture = current_image
+	
+	# Reset the burning shader
+	sprite_2d.material.set_shader_parameter('radius', 0.0)
+	# Make the bruning starting point random
+	sprite_2d.material.set_shader_parameter('position', Vector2(randf(), randf()))
 	
 	# Redimensionner les sprites
 	_resize_sprite_to_fit(sprite_current)
