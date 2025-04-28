@@ -42,11 +42,6 @@ var deck = []
 @onready var label_possible_impact_vie_famille = $LabelVieFamillePossibleImpact
 
 
-@onready var progress_vie_famille = $ProgressVieFamille
-@onready var progress_creativite = $ProgressCreativite
-@onready var progress_sante_mentale = $ProgressSanteMentale
-@onready var progress_temps_jeu = $ProgressTempsJeu
-
 @onready var card_viewer = $CardViewer
 
 
@@ -227,17 +222,16 @@ func _reset_progress_sprite(sprite):
 	
 	print('FIN DE PROGRESS SPRITE')			
 	
+func _change_progress_sprite(sprite, stat_pct_float_1):
+	var tween = create_tween()
+	tween.parallel().tween_property(sprite.material, 'shader_parameter/progress', stat_pct_float_1, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(sprite.material, "shader_parameter/particle_amount",30, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	# Callback go reset when finish
+	tween.tween_callback(Callable(self, "_reset_progress_sprite").bind(sprite))
+
 	
 func _apply_consequences(problem, choice):
-	#var suffix = "_a" if choice == "A" else "_b"
 	for stat in stats.keys():
-		#var key = {
-		#	"Créativité": "creativity",
-		#	"Santé mentale": "mental_health",
-		#	"Vie de famille": "family_life",
-		#	"Temps de jeu": "game_time"
-		#}[stat]
-		#var impact = int(problem[key + suffix])
 		var impact = _get_choice_stat(choice, stat)
 		stats[stat] += impact
 		
@@ -248,36 +242,22 @@ func _apply_consequences(problem, choice):
 		match stat:
 			"Créativité":     
 				stat_bars["creativite"].value = stat_pct
-				progress_creativite.value = stat_pct
-				var sp = $Creativite/ProgressCreativiteSprite
-				#sp.material.set_shader_parameter('progress', stat_pct_float_1)
+				var sprite = $Creativite/ProgressCreativiteSprite
+				_change_progress_sprite(sprite, stat_pct_float_1)
 				
-				var tween = create_tween()
-				# Burning effect, stop at the middle, but quickly
-				tween.parallel().tween_property(sp.material, 'shader_parameter/progress', stat_pct_float_1, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-				# To the bottom and rotating, like a droping card
-				#tween.parallel().tween_property(sp.material, "shader_parameter/wave_amplitude", 0.03, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-				#tween.parallel().tween_property(sp.material, "shader_parameter/wave_speed",3.0, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-				tween.parallel().tween_property(sp.material, "shader_parameter/particle_amount",30, 1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-				
-				# Callback go reset when finish
-				tween.tween_callback(Callable(self, "_reset_progress_sprite").bind(sp))
 				
 			"Santé mentale":  
 				stat_bars["sante_mentale"].value = stat_pct
-				progress_sante_mentale.value = stat_pct
-				var sp = $SanteMentale/ProgressSanteMentaleSprite
-				sp.material.set_shader_parameter('progress', stat_pct_float_1)
+				var sprite = $SanteMentale/ProgressSanteMentaleSprite
+				_change_progress_sprite(sprite, stat_pct_float_1)
 			"Vie de famille": 
 				stat_bars["vie_famille"].value = stat_pct
-				progress_vie_famille.value = stat_pct
-				var sp = $VieFamille/ProgressVieFamilleSprite
-				sp.material.set_shader_parameter('progress', stat_pct_float_1)
+				var sprite = $VieFamille/ProgressVieFamilleSprite
+				_change_progress_sprite(sprite, stat_pct_float_1)
 			"Temps de jeu":   
 				stat_bars["temps_jeu"].value = stat_pct
-				progress_temps_jeu.value = stat_pct
-				var sp = $TempsJeu/ProgressTempsJeuSprite
-				sp.material.set_shader_parameter('progress', stat_pct_float_1)
+				var sprite = $TempsJeu/ProgressTempsJeuSprite
+				_change_progress_sprite(sprite, stat_pct_float_1)
 
 
 	print("📊 Stats :", stats)
