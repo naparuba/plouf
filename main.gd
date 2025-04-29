@@ -3,18 +3,6 @@ extends CanvasLayer
 @onready var card_deck := $CardDeck
 
 
-
-# Statistiques de Plouf
-var g_stats = {
-	"creativite": 5,
-	"sante_mentale": 5,
-	"vie_famille": 5,
-	"temps_jeu": 5
-}
-
-
-var MAX_STAT = 40
-
 var card_index = 0
 var deck = []
 
@@ -22,24 +10,39 @@ var deck = []
 @onready var label_question = $LabelProblem
 @onready var label_left = $LabelA
 @onready var label_right = $LabelB
+
+
+# CRITERIA
+var CRITERIA_FLOW = 'flow'
+var CRITERIA_FAMILLY_LIFE = 'familly_life'
+var CRITERIA_VISIBILITY = 'visibility'
+var CRITERIA_RYTHM = 'rythm'
+
+var MAX_STAT = 40
+
 @onready var stat_bars = {
-	"creativite": $Creativite/progress,
-	"sante_mentale": $SanteMentale/progress,
-	"vie_famille": $VieFamille/progress,
-	"temps_jeu": $TempsJeu/progress,
+	CRITERIA_RYTHM: $Rythm/progress,
+	CRITERIA_FLOW: $Flow/progress,
+	CRITERIA_FAMILLY_LIFE: $FamillyLife/progress,
+	CRITERIA_VISIBILITY: $Visibility/progress,
 }
+var stats = {
+	CRITERIA_FLOW: 20,
+	CRITERIA_VISIBILITY: 20,
+	CRITERIA_FAMILLY_LIFE: 20,
+	CRITERIA_RYTHM: 20,
+}
+
 @onready var label_game_over = $LabelGameOver
 @onready var card = $Card
-@onready var button_a = $ChoiceA
-@onready var button_b = $ChoiceB
 
 @onready var label_objective = $LabelObjective
 
 # Possible Impact
-@onready var label_possible_impact_temps_jeu = $LabelTempsJeuPossibleImpact
-@onready var label_possible_impact_sante_mentale = $LabelSanteMentalePossibleImpact
-@onready var label_possible_impact_creativite = $LabelCreativitePossibleImpact
-@onready var label_possible_impact_vie_famille = $LabelVieFamillePossibleImpact
+@onready var label_possible_impact_visibility = $Visibility/PossibleImpact
+@onready var label_possible_impact_flow = $Flow/PossibleImpact
+@onready var label_possible_impact_rythm = $Rythm/PossibleImpact
+@onready var label_possible_impact_familly_life = $FamillyLife/PossibleImpact
 
 
 @onready var card_viewer = $CardViewer
@@ -68,28 +71,15 @@ var current_problem = {}
 #"Il ne fait plus que jouer. OBS est parti."
 
 
-
-##### Load data
-var stats = {
-	"Créativité": 20,
-	"Santé mentale": 20,
-	"Vie de famille": 20,
-	"Temps de jeu": 20,
-}
-
-
-
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
-	load_phases()
-	load_problems()
-	rotate_phases_randomly()
+	_load_phases()
+	_load_problems()
+	_rotate_phases_randomly()
 	current_phase_index = 0
 	current_problem_index = 0
 	seen_ids.clear()
-	button_a.pressed.connect(func(): on_choice("A"))
-	button_b.pressed.connect(func(): on_choice("B"))
-	load_next_phase()
+	_load_next_phase()
 	
 	card_deck.choice_made.connect(on_swipe_choice)
 	card_deck.choice_preview.connect(_on_card_preview)
@@ -98,14 +88,14 @@ func _ready():
 	_update_current_card_deck()
 
 
-func load_phases():
+func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
 	phases = data["phases"]
 	for phase in phases:
 		problems_by_phase[phase] = []
 
-func load_problems():
+func _load_problems():
 	var file = FileAccess.open("res://plouf_game_50_original_cards.csv", FileAccess.READ)
 	var header = file.get_csv_line(";")
 	while not file.eof_reached():
@@ -122,32 +112,30 @@ func load_problems():
 			var random_phase = phases[randi() % phases.size()]
 			problems_by_phase[random_phase].append(problem)
 
-func rotate_phases_randomly():
+func _rotate_phases_randomly():
 	var index = randi() % phases.size()
 	phases = phases.slice(index, phases.size()) + phases.slice(0, index)
 
 # --- Gameplay
-func load_next_phase():
+func _load_next_phase():
 	if current_phase_index >= phases.size():
 		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
-		button_a.visible = false
-		button_b.visible = false
 		return
 	
 	var phase_id = phases[current_phase_index]
 	current_problem_list = problems_by_phase[phase_id]
 	current_problem_index = 0
 	seen_ids.clear()
-	load_next_problem()
+	_load_next_problem()
 	
 	label_objective.text = "Objectif actuel: " + phase_id
 
 
-func load_next_problem():
+func _load_next_problem():
 	if seen_ids.size() >= current_problem_list.size():
 		print("✔ Phase ", phases[current_phase_index], " terminée")
 		current_phase_index += 1
-		load_next_phase()
+		_load_next_phase()
 		return
 	
 	# Prendre le prochain problème non vu
@@ -171,56 +159,25 @@ func on_choice(choice: String):
 	print("→ Choix :", choice)
 	_apply_consequences(current_problem, choice)
 	
-	if not validate_stats():
+	if not _validate_stats():
 		label_game_over.text = "💥 Game Over! Stats invalides"
 		label_game_over.visible = true
-		button_a.disabled = true
-		button_b.disabled = true
 		return
 	
-	load_next_problem()
+	_load_next_problem()
 	
 	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
 
 
-func print_problem(problem):
-	print("🔸 Problème :", problem["problem_id"], "-", problem["title"])
-	print(problem["problem_description"])
-	label_question.text = "🔸 Problème :"+ problem["problem_id"]+ "-"+ problem["title"]+ " " + problem["problem_description"]
-	
-	print("🔹 A :", problem["choice_a"], "=>", problem["outcome_a"])
-	print("Impact : C ", problem["creativity_a"], "/ S ",problem["mental_health_a"],  "/ F ",problem["family_life_a"], " / G ", problem["game_time_a"])
-	label_left.text = problem["choice_a"]+ "=>"+ problem["outcome_a"]
-	
-	print("🔹 B :", problem["choice_b"], "=>", problem["outcome_b"])
-	print("Impact : C ", problem["creativity_b"], "/ S ",problem["mental_health_b"],  "/ F ",problem["family_life_b"], " / G ", problem["game_time_b"])
-	label_right.text = problem["choice_b"]+ "=>"+ problem["outcome_b"]
-	
-func choose(option1, option2):
-	# Pour l’instant, choisit aléatoirement
-	var choice = [option1, option2][randi() % 2]
-	print("→ Choix :", choice)
-	return choice
-
 func _get_choice_stat(choice, stat):
 	var suffix = "_a" if choice == "A" else "_b"
-	var key = {
-			"Créativité": "creativity",
-			"Santé mentale": "mental_health",
-			"Vie de famille": "family_life",
-			"Temps de jeu": "game_time"
-		}[stat]
+	var key = stat
 	var impact = int(current_problem[key + suffix])
 	return impact
 	
 func _reset_progress_sprite(sprite):
 	var tween = create_tween()
-
-	#tween.parallel().tween_property(sprite.material, "shader_parameter/wave_amplitude", 0.01, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	#tween.parallel().tween_property(sprite.material, "shader_parameter/wave_speed",1.5, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.parallel().tween_property(sprite.material, "shader_parameter/particle_amount", 0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	
-	print('FIN DE PROGRESS SPRITE')			
 	
 func _change_progress_sprite(sprite, stat_pct_float_1):
 	var tween = create_tween()
@@ -240,29 +197,30 @@ func _apply_consequences(problem, choice):
 		var stat_pct_float_1 = stat_pct / 100.0
 		
 		match stat:
-			"Créativité":     
-				stat_bars["creativite"].value = stat_pct
-				var sprite = $Creativite/ProgressCreativiteSprite
+			CRITERIA_RYTHM:     
+				stat_bars[CRITERIA_RYTHM].value = stat_pct
+				var sprite = $Rythm/ProgressSprite
 				_change_progress_sprite(sprite, stat_pct_float_1)
 				
+			CRITERIA_FLOW:  
+				stat_bars[CRITERIA_FLOW].value = stat_pct
+				var sprite = $Flow/ProgressSprite
+				_change_progress_sprite(sprite, stat_pct_float_1)
 				
-			"Santé mentale":  
-				stat_bars["sante_mentale"].value = stat_pct
-				var sprite = $SanteMentale/ProgressSanteMentaleSprite
+			CRITERIA_FAMILLY_LIFE:
+				stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct
+				var sprite = $FamillyLife/ProgressSprite
 				_change_progress_sprite(sprite, stat_pct_float_1)
-			"Vie de famille": 
-				stat_bars["vie_famille"].value = stat_pct
-				var sprite = $VieFamille/ProgressVieFamilleSprite
-				_change_progress_sprite(sprite, stat_pct_float_1)
-			"Temps de jeu":   
-				stat_bars["temps_jeu"].value = stat_pct
-				var sprite = $TempsJeu/ProgressTempsJeuSprite
+				
+			CRITERIA_VISIBILITY:   
+				stat_bars[CRITERIA_VISIBILITY].value = stat_pct
+				var sprite = $Visibility/ProgressSprite
 				_change_progress_sprite(sprite, stat_pct_float_1)
 
 
 	print("📊 Stats :", stats)
 
-func validate_stats():
+func _validate_stats():
 	for stat in stats:
 		if stats[stat] < 0 or stats[stat] > MAX_STAT:
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
@@ -276,10 +234,10 @@ func _update_possible_impacts(choice):
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
 		var labels = {
-			"Créativité": label_possible_impact_creativite,
-			"Santé mentale": label_possible_impact_sante_mentale,
-			"Vie de famille": label_possible_impact_vie_famille,
-			"Temps de jeu": label_possible_impact_temps_jeu,
+			CRITERIA_RYTHM: label_possible_impact_rythm,
+			CRITERIA_FLOW: label_possible_impact_flow,
+			CRITERIA_FAMILLY_LIFE: label_possible_impact_familly_life,
+			CRITERIA_VISIBILITY: label_possible_impact_visibility,
 		}
 		impact =abs(impact)
 		if impact == 0:
@@ -292,15 +250,12 @@ func _update_possible_impacts(choice):
 		else:
 			label.text = "⬤"
 			
-		
-			
 
 func _reset_possible_impacts():
-	label_possible_impact_creativite.text = ""
-	label_possible_impact_sante_mentale.text = ""
-	label_possible_impact_vie_famille.text = ""
-	label_possible_impact_temps_jeu.text = ""
-
+	label_possible_impact_rythm.text = ""
+	label_possible_impact_flow.text = ""
+	label_possible_impact_familly_life.text = ""
+	label_possible_impact_visibility.text = ""
 
 
 func _on_choice_a_mouse_entered() -> void:
