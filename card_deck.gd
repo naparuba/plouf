@@ -46,9 +46,6 @@ func _ready() -> void:
 	choice_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	choice_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 
-	#var shader_material = ShaderMaterial.new()
-	#shader_material.shader = load("res://shaders/round_corner.shader")
-	#sprite_2d.material = shader_material
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -121,7 +118,6 @@ func _update_choice_overlay(delta_x: float) -> void:
 		var width = size.x
 		var height = 50.0
 		
-		#choice_label.text += " rot:" + str(current_card.rotation_degrees)
 		var rotation_rad = deg_to_rad(current_card.rotation_degrees)
 		var offset = tan(rotation_rad) * width
 		var points = []
@@ -137,7 +133,7 @@ func _update_choice_overlay(delta_x: float) -> void:
 			# Update label on the good place
 			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 			choice_label.position = Vector2(0, offset)  # En haut à droite
-			choice_label.size = Vector2(width-10, height)
+			choice_label.size = Vector2(width-10, height-20)
 			
 		else: # A => left
 			points = [
@@ -147,8 +143,8 @@ func _update_choice_overlay(delta_x: float) -> void:
 				Vector2(0, height)         # Bas gauche décalé
 			]
 			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-			choice_label.position = Vector2(0, 0)  # En haut à gauche
-			choice_label.size = Vector2(width+10, height)  #TODO: BUG HERE, do not offset?
+			choice_label.position = Vector2(20, 0)  # En haut à gauche
+			choice_label.size = Vector2(width+10, height - 20)  #TODO: BUG HERE, do not offset?
 		
 		polygon.polygon = points
 	else:
@@ -210,10 +206,6 @@ func on_choice(direction: String):
 	# Callback pour signaler que le choix a été effectué
 	tween.tween_callback(Callable(self, "_emit_choice").bind(direction))
 	
-	#var target_x = sign(current_card.position.x) * 800
-	#var tween = create_tween()
-	#tween.tween_property(current_card, "position:x", target_x, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	#tween.tween_callback(Callable(self, "_emit_choice").bind(direction))
 
 
 func _emit_choice(direction):
@@ -225,7 +217,7 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 		return
 	
 	var max_width = 300.0
-	var max_height = 200.0
+	var max_height = 300.0
 	var tex_size = sprite.texture.get_size()
 
 	var scale_factor = min(max_width / tex_size.x, max_height / tex_size.y)
