@@ -91,7 +91,7 @@ func update_overlay_size():
 	]
 	
 	polygon.polygon = points
-	polygon.color = Color(0, 0, 0, 0.6)  # Noir semi-transparent
+	polygon.color = Color(0, 0, 0, 0.8)  # Noir semi-transparent
 
 	choice_label.position = Vector2(0, 0)
 	choice_label.size = Vector2(width, height)
@@ -105,7 +105,9 @@ func _update_choice_overlay(delta_x: float) -> void:
 		
 		# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
 		var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
+		#alpha = 0.5
 		choice_overlay.modulate.a = alpha
+		print('ALPHA:', alpha)
 		
 		# Let the label be horizontal
 		choice_label.rotation_degrees = -current_card.rotation_degrees
@@ -135,7 +137,7 @@ func _update_choice_overlay(delta_x: float) -> void:
 			]
 			
 			# Update label on the good place
-			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 			choice_label.position = Vector2(0, offset)  # En haut à droite
 			choice_label.size = Vector2(width-10, height-20)
 			
@@ -150,9 +152,9 @@ func _update_choice_overlay(delta_x: float) -> void:
 				Vector2(width , height - offset), # Bas droite décalé
 				Vector2(0, height)         # Bas gauche décalé
 			]
-			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-			choice_label.position = Vector2(20, 0)  # En haut à gauche
-			choice_label.size = Vector2(width+10, height - 20)  #TODO: BUG HERE, do not offset?
+			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			choice_label.position = Vector2(10, 0)  # En haut à gauche
+			choice_label.size = Vector2(width-20, height - 20)  #TODO: BUG HERE, do not offset?
 		
 		polygon.polygon = points
 	else:

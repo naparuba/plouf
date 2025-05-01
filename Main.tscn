@@ -107,6 +107,7 @@ autowrap_mode = 3
 position = Vector2(403, 17)
 
 [node name="Label" type="Label" parent="Visibility"]
+visible = false
 offset_left = 44.0
 offset_top = 2.0
 offset_right = 193.0
@@ -114,6 +115,7 @@ offset_bottom = 25.0
 text = "Visibilité  "
 
 [node name="progress" type="ProgressBar" parent="Visibility"]
+visible = false
 offset_left = 153.0
 offset_right = 157.0
 offset_bottom = 27.0
@@ -130,16 +132,16 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_hmdp1")
 
 [node name="PossibleImpact" type="Label" parent="Visibility"]
-offset_left = 65.0
-offset_top = -18.0
-offset_right = 88.0
-offset_bottom = 5.0
-text = " "
+offset_left = 61.0
+offset_top = 5.0
+offset_right = 84.0
+offset_bottom = 28.0
 
 [node name="Flow" type="Node2D" parent="."]
 position = Vector2(276, 28)
 
 [node name="Label" type="Label" parent="Flow"]
+visible = false
 offset_left = 42.0
 offset_top = -11.0
 offset_right = 183.0
@@ -147,6 +149,7 @@ offset_bottom = 12.0
 text = "Flow"
 
 [node name="progress" type="ProgressBar" parent="Flow"]
+visible = false
 offset_left = 116.0
 offset_top = -17.0
 offset_right = 120.0
@@ -164,22 +167,23 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_iyi2x")
 
 [node name="PossibleImpact" type="Label" parent="Flow"]
-offset_left = 74.0
-offset_top = -21.0
-offset_right = 79.0
-offset_bottom = 2.0
-text = " "
+offset_left = 61.0
+offset_top = -12.0
+offset_right = 76.0
+offset_bottom = 11.0
 
 [node name="Rythm" type="Node2D" parent="."]
 position = Vector2(152, 20)
 
 [node name="Label" type="Label" parent="Rythm"]
+visible = false
 offset_left = 25.0
 offset_right = 121.0
 offset_bottom = 23.0
 text = "Rythme"
 
 [node name="progress" type="ProgressBar" parent="Rythm"]
+visible = false
 offset_left = 100.0
 offset_right = 104.0
 offset_bottom = 27.0
@@ -196,22 +200,23 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_k0u7c")
 
 [node name="PossibleImpact" type="Label" parent="Rythm"]
-offset_left = 54.0
-offset_top = -9.0
-offset_right = 59.0
-offset_bottom = 14.0
-text = " "
+offset_left = 38.0
+offset_top = -6.0
+offset_right = 53.0
+offset_bottom = 17.0
 
 [node name="FamillyLife" type="Node2D" parent="."]
 position = Vector2(12, 17)
 
 [node name="Label" type="Label" parent="FamillyLife"]
+visible = false
 offset_top = 2.0
 offset_right = 125.0
 offset_bottom = 25.0
 text = "Vie de famille     "
 
 [node name="progress" type="ProgressBar" parent="FamillyLife"]
+visible = false
 offset_left = 129.0
 offset_right = 133.0
 offset_bottom = 27.0
@@ -228,11 +233,10 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_frkv5")
 
 [node name="PossibleImpact" type="Label" parent="FamillyLife"]
-offset_left = 41.0
-offset_top = -12.0
-offset_right = 64.0
-offset_bottom = 11.0
-text = " "
+offset_left = 48.0
+offset_top = -3.0
+offset_right = 71.0
+offset_bottom = 20.0
 
 [node name="LabelGameOver" type="Label" parent="."]
 offset_left = 264.0
@@ -253,6 +257,7 @@ horizontal_alignment = 1
 position = Vector2(285, 544)
 
 [node name="DEBUGProblem" type="Label" parent="."]
+visible = false
 offset_left = 377.0
 offset_top = 108.0
 offset_right = 568.0
@@ -260,6 +265,7 @@ offset_bottom = 218.0
 text = "Problématique"
 
 [node name="DEBUGA" type="Label" parent="."]
+visible = false
 offset_left = 384.0
 offset_top = 241.0
 offset_right = 573.0
@@ -267,6 +273,7 @@ offset_bottom = 313.0
 text = "TEXTE EXPLICATIF A"
 
 [node name="DEBUGB" type="Label" parent="."]
+visible = false
 offset_left = 381.0
 offset_top = 298.0
 offset_right = 573.0

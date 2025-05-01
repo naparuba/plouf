@@ -77,7 +77,9 @@ func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	_load_phases()
 	_load_problems()
-	_rotate_phases_randomly()
+	
+	#_rotate_phases_randomly()   # Currently disabled, want to have the same overall logic progression
+	
 	current_phase_index = 0
 	current_problem_index = 0
 	seen_ids.clear()
@@ -131,6 +133,7 @@ func _load_next_phase():
 	_load_next_problem()
 	
 	label_objective.text = "Objectif actuel: " + phase_id
+
 
 
 func _load_next_problem():
