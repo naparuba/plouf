@@ -3,9 +3,9 @@ extends Node2D
 signal choice_made(direction: String)
 signal choice_preview(direction: String)
 
-@export var max_drag_distance := 150.0
+@export var max_drag_distance := 75.0
 @export var max_rotation_degrees := 15.0
-@export var reject_threshold := 100.0
+@export var reject_threshold := 50.0
 
 @onready var current_card := $CurrentCard
 

@@ -8,8 +8,10 @@ var deck = []
 
 # UI nodes
 @onready var label_question = $LabelProblem
-@onready var label_left = $LabelA
-@onready var label_right = $LabelB
+# DEBUG part
+@onready var label_debug_question = $DEBUGProblem
+@onready var label_debug_a = $DEBUGA
+@onready var label_debug_b = $DEBUGB
 
 
 # CRITERIA
@@ -149,11 +151,10 @@ func _load_next_problem():
 			break
 
 func display_problem(problem):
-	label_question.text = "🔸 %s - %s\n\n%s" % [
-		problem["problem_id"], problem["title"], problem["problem_description"]
-	]
-	label_left.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
-	label_right.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
+	label_question.text = problem["problem_description"]
+	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
+	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
+	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
 func on_choice(choice: String):
 	print("→ Choix :", choice)
@@ -220,13 +221,13 @@ func _apply_consequences(problem, choice):
 
 	print("📊 Stats :", stats)
 
+
 func _validate_stats():
 	for stat in stats:
 		if stats[stat] < 0 or stats[stat] > MAX_STAT:
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
 			return false
 	return true
-
 
 
 func _update_possible_impacts(choice):

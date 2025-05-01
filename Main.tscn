@@ -1,14 +1,14 @@
 [gd_scene load_steps=16 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
-[ext_resource type="Texture2D" uid="uid://dp2sxb6hdlcp7" path="res://images/creativite.png" id="3_0cgfe"]
+[ext_resource type="Texture2D" uid="uid://cheim83nmgnx2" path="res://images/visibility.png" id="2_hpoc5"]
 [ext_resource type="Texture2D" uid="uid://e6o1cpp23a6x" path="res://images/vie_famille.png" id="3_6vj60"]
 [ext_resource type="Texture2D" uid="uid://d2q5nexaq2ara" path="res://images/chrono.png" id="3_qlnja"]
 [ext_resource type="Texture2D" uid="uid://tqkt6aiddivf" path="res://images/vie_famille_full.png" id="4_frkv5"]
+[ext_resource type="Texture2D" uid="uid://cg1sjwafgdgmm" path="res://images/visibility_full.png" id="4_hmdp1"]
 [ext_resource type="Texture2D" uid="uid://cmf4jhvvtlu4v" path="res://images/chrono_full.png" id="4_k0u7c"]
-[ext_resource type="Texture2D" uid="uid://cf8yv75dtqeav" path="res://images/creativite_full.png" id="4_k64f8"]
-[ext_resource type="Texture2D" uid="uid://dyv5drdl8topb" path="res://images/sante_mentale.png" id="5_adfv6"]
-[ext_resource type="Texture2D" uid="uid://0gmcb05rrl48" path="res://images/sante_mentale_full.png" id="6_kk18s"]
+[ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="5_m3b4r"]
+[ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/flow_full.png" id="6_iyi2x"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 
@@ -28,7 +28,7 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 20
-shader_parameter/mask_texture = ExtResource("4_k0u7c")
+shader_parameter/mask_texture = ExtResource("4_hmdp1")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kee6s"]
 shader = ExtResource("7_w23tw")
@@ -46,7 +46,7 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 20
-shader_parameter/mask_texture = ExtResource("6_kk18s")
+shader_parameter/mask_texture = ExtResource("6_iyi2x")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vvtcr"]
 shader = ExtResource("7_w23tw")
@@ -64,7 +64,7 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 2
-shader_parameter/mask_texture = ExtResource("4_k64f8")
+shader_parameter/mask_texture = ExtResource("4_k0u7c")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sncj2"]
 shader = ExtResource("7_w23tw")
@@ -111,14 +111,14 @@ offset_bottom = 27.0
 
 [node name="ProgressSpriteBack" type="Sprite2D" parent="Visibility"]
 position = Vector2(74, 54)
-scale = Vector2(0.201, 0.198)
-texture = ExtResource("3_qlnja")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_hpoc5")
 
 [node name="ProgressSprite" type="Sprite2D" parent="Visibility"]
 material = SubResource("ShaderMaterial_d4wxv")
 position = Vector2(74, 54)
-scale = Vector2(0.20068, 0.198225)
-texture = ExtResource("4_k0u7c")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_hmdp1")
 
 [node name="PossibleImpact" type="Label" parent="Visibility"]
 offset_left = 65.0
@@ -145,14 +145,14 @@ offset_bottom = 10.0
 
 [node name="ProgressSpriteBack" type="Sprite2D" parent="Flow"]
 position = Vector2(69, 45)
-scale = Vector2(0.238, 0.26)
-texture = ExtResource("5_adfv6")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_m3b4r")
 
 [node name="ProgressSprite" type="Sprite2D" parent="Flow"]
 material = SubResource("ShaderMaterial_kee6s")
 position = Vector2(69, 45)
-scale = Vector2(0.237778, 0.26)
-texture = ExtResource("6_kk18s")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_iyi2x")
 
 [node name="PossibleImpact" type="Label" parent="Flow"]
 offset_left = 74.0
@@ -177,14 +177,14 @@ offset_bottom = 27.0
 
 [node name="ProgressSpriteBack" type="Sprite2D" parent="Rythm"]
 position = Vector2(46, 49)
-scale = Vector2(0.681, 0.663)
-texture = ExtResource("3_0cgfe")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_qlnja")
 
 [node name="ProgressSprite" type="Sprite2D" parent="Rythm"]
 material = SubResource("ShaderMaterial_vvtcr")
 position = Vector2(46, 49)
-scale = Vector2(0.680556, 0.6625)
-texture = ExtResource("4_k64f8")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_k0u7c")
 
 [node name="PossibleImpact" type="Label" parent="Rythm"]
 offset_left = 54.0
@@ -209,13 +209,13 @@ offset_bottom = 27.0
 
 [node name="ProgressSpriteBack" type="Sprite2D" parent="FamillyLife"]
 position = Vector2(55, 49)
-scale = Vector2(0.34, 0.405)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_6vj60")
 
 [node name="ProgressSprite" type="Sprite2D" parent="FamillyLife"]
 material = SubResource("ShaderMaterial_sncj2")
 position = Vector2(55, 49)
-scale = Vector2(0.340278, 0.404762)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_frkv5")
 
 [node name="PossibleImpact" type="Label" parent="FamillyLife"]
@@ -224,20 +224,6 @@ offset_top = -12.0
 offset_right = 64.0
 offset_bottom = 11.0
 text = " "
-
-[node name="LabelA" type="Label" parent="."]
-offset_left = 4.0
-offset_top = 496.0
-offset_right = 193.0
-offset_bottom = 568.0
-text = "TEXTE EXPLICATIF A"
-
-[node name="LabelB" type="Label" parent="."]
-offset_left = 387.0
-offset_top = 480.0
-offset_right = 579.0
-offset_bottom = 557.0
-text = "TEXTE EXPLICATIF B"
 
 [node name="LabelGameOver" type="Label" parent="."]
 offset_left = 264.0
@@ -254,3 +240,24 @@ text = "XXXX"
 
 [node name="CardDeck" parent="." instance=ExtResource("11_dmsid")]
 position = Vector2(335, 310)
+
+[node name="DEBUGProblem" type="Label" parent="."]
+offset_left = 556.0
+offset_top = 133.0
+offset_right = 747.0
+offset_bottom = 243.0
+text = "Problématique"
+
+[node name="DEBUGA" type="Label" parent="."]
+offset_left = 556.0
+offset_top = 228.0
+offset_right = 745.0
+offset_bottom = 300.0
+text = "TEXTE EXPLICATIF A"
+
+[node name="DEBUGB" type="Label" parent="."]
+offset_left = 560.0
+offset_top = 311.0
+offset_right = 752.0
+offset_bottom = 388.0
+text = "TEXTE EXPLICATIF B"
