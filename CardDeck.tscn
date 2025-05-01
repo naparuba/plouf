@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqd306sitp07o"]
+[gd_scene load_steps=6 format=3 uid="uid://dqd306sitp07o"]
 
 [ext_resource type="Script" path="res://card_deck.gd" id="1_pqhgn"]
 [ext_resource type="Shader" path="res://shaders/dissolve.gdshader" id="2_gdsp0"]
+[ext_resource type="Texture2D" uid="uid://bnfpqllt824ky" path="res://images/BACK_PLAGE.png" id="3_itjmq"]
 [ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="3_q37kp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lvtgt"]
@@ -14,6 +15,7 @@ shader_parameter/burnColor = Color(0.8, 0.309804, 0, 1)
 shader_parameter/corner_radius_px = 20.0
 shader_parameter/texture_size = Vector2(300, 300)
 shader_parameter/noiseTexture = ExtResource("3_q37kp")
+shader_parameter/backTexture = ExtResource("3_itjmq")
 
 [node name="CardDeck" type="Node2D"]
 script = ExtResource("1_pqhgn")

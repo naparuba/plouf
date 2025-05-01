@@ -238,7 +238,7 @@ func set_card_data(current_image: Texture2D, choice_a_txt: String, choice_b_txt:
 	var sprite_current := current_card.get_node("Sprite2D")	
 	
 	$CurrentCard/GlobalMessage.text = global_message
-		
+	
 	print('CARD_DECK:: set_card_images:: '+ choice_a_txt)
 	
 	sprite_current.texture = current_image

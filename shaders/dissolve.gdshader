@@ -6,11 +6,19 @@ uniform float borderWidth = 0.02;
 uniform float burnMult = 0.135;
 uniform sampler2D noiseTexture;
 uniform vec4 burnColor : source_color;
+uniform sampler2D backTexture;
 
 uniform float corner_radius_px : hint_range(0.0,20.0) = 10.0;
 uniform vec2 texture_size = vec2(300.0, 300.0);
 
 void fragment() {
+	vec4 back_rgb = texture(backTexture, UV);  // Pixel from the background
+	// If the original pixel is transparent, then copy the background one instead
+	if (COLOR.a == 0.0){
+		COLOR = back_rgb;
+	}
+		
+	
 	float dist = length(position - UV) + (texture(noiseTexture, UV).b) * burnMult;
 	COLOR.rgb = mix(COLOR.rgb, burnColor.rgb, float(dist<radius+borderWidth));
 	COLOR.a *= 1.0-(float(dist<radius));
