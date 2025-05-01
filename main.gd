@@ -177,7 +177,7 @@ func _jump_to_next_phase():
 	# Get a message for the end of our phase
 	var finish_phase_id = phases[current_phase_index-1]  # was incremented just before
 	var finish_message = __get_random_phase_finish_message(finish_phase_id)
-	var message = '[color=black]'+finish_message+'[/color]'
+	var message = '[bgcolor=grey][color=black]'+finish_message+'[/color][/bgcolor]'
 	_switch_to_message_card(message)
 	
 	
