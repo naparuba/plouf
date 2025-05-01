@@ -58,6 +58,19 @@ var current_problem_index = 0
 var current_problem_list = []
 var current_problem = {}
 
+var phases_display = {
+	"CHOOSE_CHRONIQUE_GAME" : "choisir le jeu",
+	"PLAY_CHRONIQUE_GAME" : "jouer au jeu",
+	"WRITE_CHRONIQUE" : "écrire la chronique",
+	"REGISTER_VOICE" : "enregistrer la voix",
+	"DRAW_CHRONIQUE" : "dessiner la chronique",
+	"ANIMATE_CHRONIQUE" : "faire les animations",
+	"MOUNT_CHRONIQUE_VIDEO" : "monter la vidéo",
+	"UPLOAD_CHRONIQUE_VIDEO" : "uploader sur YT",
+	"ANSWER_CHRONIQUE_COMMENTS" : "commentaires YT",
+	"STREAM_POST_CHRONIQUE" : "stream post-chronique",
+}
+
 ## GAMEOVER:
 # "creativite":
 # "Monsieur Plouf n’a plus d’idées… il chronique des menus d’options."
@@ -132,8 +145,24 @@ func _load_next_phase():
 	seen_ids.clear()
 	_load_next_problem()
 	
-	label_objective.text = "Objectif actuel: " + phase_id
+	_show_objective_progression()
 
+func _show_objective_progression():
+	var objectives_node = $Objectives
+	
+	for i in phases.size():
+		var label = objectives_node.get_node(str(i+1))
+		var phase_id = phases[i]
+		var phase_display = phases_display[phase_id]
+		var prefix = ''
+		if i == current_phase_index:
+			prefix = '[color=orange]→[/color]'
+		elif i < current_phase_index:
+			prefix = '[color=green]✔[/color]'
+		else:
+			prefix = '[color=red]Х[/color]'
+		label.text = prefix + ' ' + phase_display
+		
 
 
 func _load_next_problem():

@@ -244,14 +244,85 @@ offset_top = 508.0
 offset_right = 456.0
 offset_bottom = 585.0
 
-[node name="LabelObjective" type="Label" parent="."]
-offset_left = 27.0
-offset_top = 979.0
-offset_right = 518.0
-offset_bottom = 1046.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "XXXX"
-horizontal_alignment = 1
+[node name="Objectives" type="Node2D" parent="."]
+position = Vector2(21, 967)
+
+[node name="1" type="RichTextLabel" parent="Objectives"]
+offset_left = 162.0
+offset_top = -19.0
+offset_right = 352.0
+offset_bottom = 4.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="2" type="RichTextLabel" parent="Objectives"]
+offset_left = 322.0
+offset_top = -7.0
+offset_right = 519.0
+offset_bottom = 16.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="3" type="RichTextLabel" parent="Objectives"]
+offset_left = 344.0
+offset_top = 20.0
+offset_right = 540.0
+offset_bottom = 43.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="4" type="RichTextLabel" parent="Objectives"]
+offset_left = 344.0
+offset_top = 43.0
+offset_right = 539.0
+offset_bottom = 68.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="5" type="RichTextLabel" parent="Objectives"]
+offset_left = 320.0
+offset_top = 69.0
+offset_right = 535.0
+offset_bottom = 93.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="6" type="RichTextLabel" parent="Objectives"]
+offset_left = 145.0
+offset_top = 83.0
+offset_right = 342.0
+offset_bottom = 107.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="7" type="RichTextLabel" parent="Objectives"]
+offset_top = 63.0
+offset_right = 213.0
+offset_bottom = 89.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="8" type="RichTextLabel" parent="Objectives"]
+offset_left = -13.0
+offset_top = 43.0
+offset_right = 209.0
+offset_bottom = 66.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="9" type="RichTextLabel" parent="Objectives"]
+offset_left = -13.0
+offset_top = 23.0
+offset_right = 213.0
+offset_bottom = 46.0
+bbcode_enabled = true
+text = "XXX"
+
+[node name="10" type="RichTextLabel" parent="Objectives"]
+offset_right = 203.0
+offset_bottom = 23.0
+bbcode_enabled = true
+text = "XXX"
 
 [node name="CardDeck" parent="." instance=ExtResource("11_dmsid")]
 position = Vector2(285, 544)
