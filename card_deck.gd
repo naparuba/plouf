@@ -124,8 +124,12 @@ func _update_choice_overlay(delta_x: float) -> void:
 		if delta_x > 0:  # B => right
 			# Points mis à jour
 			points = [
-				Vector2(0, 0),                # Haut gauche
-				Vector2(width, 0),            # Haut droite
+				Vector2(0, 10),                # Haut gauche, rounded
+				Vector2(10, 0),
+				
+				Vector2(width-10, 0),            # Haut droite rounded
+				Vector2(width, 10),          
+				
 				Vector2(width , height), # Bas droite décalé
 				Vector2(0, height + offset)         # Bas gauche décalé
 			]
@@ -137,8 +141,12 @@ func _update_choice_overlay(delta_x: float) -> void:
 			
 		else: # A => left
 			points = [
-				Vector2(0, 0),                # Haut gauche
-				Vector2(width, 0),            # Haut droite
+				Vector2(0, 10),                # Haut gauche rounded
+				Vector2(10, 0),
+				
+				Vector2(width-10, 0),            # Haut droite
+				Vector2(width, 10),
+				
 				Vector2(width , height - offset), # Bas droite décalé
 				Vector2(0, height)         # Bas gauche décalé
 			]
