@@ -22,6 +22,7 @@ var last_preview_direction := "" # do not spam preview signal
 var current_choice_a_txt = ''
 var current_choice_b_txt = ''
 
+
 func _ready() -> void:
 	# Overlay
 	choice_overlay.visible = false
@@ -71,7 +72,7 @@ func _input(event):
 		_handle_drag_preview(delta_x)
 
 
-func update_overlay_size():
+func _update_overlay_size():
 	var sprite: Sprite2D = current_card.get_node("Sprite2D")
 	if not sprite.texture:
 		return
@@ -105,9 +106,7 @@ func _update_choice_overlay(delta_x: float) -> void:
 		
 		# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
 		var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
-		#alpha = 0.5
 		choice_overlay.modulate.a = alpha
-		print('ALPHA:', alpha)
 		
 		# Let the label be horizontal
 		choice_label.rotation_degrees = -current_card.rotation_degrees
@@ -233,9 +232,14 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 	sprite.scale = Vector2(scale_factor, scale_factor)
 
-# Call from Main.gd
-func set_card_images(current_image: Texture2D, choice_a_txt: String, choice_b_txt: String):
+
+# Main call from Main.gd
+func set_card_data(current_image: Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String):
 	var sprite_current := current_card.get_node("Sprite2D")	
+	
+	$CurrentCard/GlobalMessage.text = global_message
+		
+	print('CARD_DECK:: set_card_images:: '+ choice_a_txt)
 	
 	sprite_current.texture = current_image
 	
@@ -247,7 +251,7 @@ func set_card_images(current_image: Texture2D, choice_a_txt: String, choice_b_tx
 	# Redimensionner les sprites
 	_resize_sprite_to_fit(sprite_current)
 	
-	update_overlay_size()	# Let the choice overlay be the same size
+	_update_overlay_size()	# Let the choice overlay be the same size
 
 	current_card.position = Vector2.ZERO
 	current_card.rotation_degrees = 0

@@ -71,6 +71,14 @@ var phases_display = {
 	"STREAM_POST_CHRONIQUE" : "stream post-chronique",
 }
 
+# Messages to display when we are finishing a phase
+var phases_finish_messages = {}
+
+# Card message: when going to messag card, we don't care about the result, it just means the
+#               user did read it, and we can go in the next problem
+var g_is_in_card_message : bool = false
+
+
 ## GAMEOVER:
 # "creativite":
 # "Monsieur Plouf n’a plus d’idées… il chronique des menus d’options."
@@ -96,10 +104,10 @@ func _ready():
 	current_phase_index = 0
 	current_problem_index = 0
 	seen_ids.clear()
-	_load_next_phase()
+	_initial_phase()
 	
 	card_deck.choice_made.connect(on_swipe_choice)
-	card_deck.choice_preview.connect(_on_card_preview)
+	card_deck.choice_preview.connect(on_card_preview)
 	
 	# We can update the deck display
 	_update_current_card_deck()
@@ -111,6 +119,11 @@ func _load_phases():
 	phases = data["phases"]
 	for phase in phases:
 		problems_by_phase[phase] = []
+	
+	# Loading finish messages (to display when we are finishing a phase)
+	file = FileAccess.open("res://phases_finish.json", FileAccess.READ)
+	phases_finish_messages = JSON.parse_string(file.get_as_text())	
+	print('Phase finish:', phases_finish_messages)
 
 func _load_problems():
 	var file = FileAccess.open("res://plouf_game_50_original_cards.csv", FileAccess.READ)
@@ -129,23 +142,53 @@ func _load_problems():
 			var random_phase = phases[randi() % phases.size()]
 			problems_by_phase[random_phase].append(problem)
 
+func __get_random_phase_finish_message(phase_id: String):
+	var messages = phases_finish_messages[phase_id]
+	var random_idx =  randi() % messages.size()
+	return messages[random_idx]
+
 func _rotate_phases_randomly():
 	var index = randi() % phases.size()
 	phases = phases.slice(index, phases.size()) + phases.slice(0, index)
 
 # --- Gameplay
-func _load_next_phase():
-	if current_phase_index >= phases.size():
-		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
-		return
-	
+func _initial_phase():  # only at _ready
 	var phase_id = phases[current_phase_index]
 	current_problem_list = problems_by_phase[phase_id]
 	current_problem_index = 0
 	seen_ids.clear()
 	_load_next_problem()
-	
 	_show_objective_progression()
+
+
+# When finish the last problem of a phase:
+# * if no more phases: you fnish, congrats!
+# * load next phase
+#   - display a message card
+#   - when the message card finish: we will display the next problem 
+func _jump_to_next_phase():
+	print('JUMP TO NEXT PHASE')
+	_show_objective_progression()
+	
+	if current_phase_index >= phases.size():
+		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
+		return
+	
+	# Get a message for the end of our phase
+	var finish_phase_id = phases[current_phase_index-1]  # was incremented just before
+	var finish_message = __get_random_phase_finish_message(finish_phase_id)
+	var message = '[color=black]'+finish_message+'[/color]'
+	_switch_to_message_card(message)
+	
+	
+func _display_problem_after_phase_change():
+	print('_display_problem_after_phase_change:: gogogo')
+	var phase_id = phases[current_phase_index]
+	current_problem_list = problems_by_phase[phase_id]
+	current_problem_index = 0
+	seen_ids.clear()
+	_load_next_problem() # load data
+	_update_current_card_deck() # show problem card
 
 func _show_objective_progression():
 	var objectives_node = $Objectives
@@ -166,13 +209,14 @@ func _show_objective_progression():
 		label.text = prefix + ' [color=black]' + phase_display +' [/color]'
 		
 
-
-func _load_next_problem():
+# validate the current problem, and return if we did change phase
+func _load_next_problem() -> bool:
+	print('_load_next_problem')
 	if seen_ids.size() >= current_problem_list.size():
 		print("✔ Phase ", phases[current_phase_index], " terminée")
 		current_phase_index += 1
-		_load_next_phase()
-		return
+		_jump_to_next_phase()
+		return true
 	
 	# Prendre le prochain problème non vu
 	while true:
@@ -181,27 +225,32 @@ func _load_next_problem():
 		if not seen_ids.has(p["problem_id"]):
 			current_problem = p
 			seen_ids[p["problem_id"]] = true
-			display_problem(p)
+			_display_problem(p)
 			break
+	return false
 
-func display_problem(problem):
+func _display_problem(problem):
 	label_question.text = problem["problem_description"]
 	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
 	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
 	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
-func on_choice(choice: String):
+
+# return if the phase did change
+func _apply_choice(choice: String) -> bool:
 	print("→ Choix :", choice)
-	_apply_consequences(current_problem, choice)
+	_apply_stats_consequences(current_problem, choice)
+	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
 	
 	if not _validate_stats():
 		label_game_over.text = "💥 Game Over! Stats invalides"
 		label_game_over.visible = true
-		return
+		return false
 	
-	_load_next_problem()
+	var did_change_phase = _load_next_problem()
+	return did_change_phase
 	
-	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
+	
 
 
 func _get_choice_stat(choice, stat):
@@ -222,7 +271,7 @@ func _change_progress_sprite(sprite, stat_pct_float_1):
 	tween.tween_callback(Callable(self, "_reset_progress_sprite").bind(sprite))
 
 	
-func _apply_consequences(problem, choice):
+func _apply_stats_consequences(problem, choice):
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
 		stats[stat] += impact
@@ -265,7 +314,6 @@ func _validate_stats():
 
 
 func _update_possible_impacts(choice):
-	# """"
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
 		var labels = {
@@ -293,17 +341,31 @@ func _reset_possible_impacts():
 	label_possible_impact_visibility.text = ""
 
 
+func _switch_to_message_card(message:String):
+	var img = load("res://images/FADED.png")
+	g_is_in_card_message = true
+	print('Display message card: ', message)
+	card_deck.set_card_data(img, "OK", "OK", message)
+	
 
 func _get_current_card_image() -> CompressedTexture2D:
 	var img_path = current_problem.get("card_img_id", "PLOUF")+'.png'  # fallback
 	var img = load("res://images/%s" % img_path)
 	return img
 
+
 func on_swipe_choice(direction: String):
-	print("→ Swipe :", direction)
-	on_choice(direction)  # ta logique existante
+	if g_is_in_card_message:  # we have a return from a message card, just show the next problem
+		g_is_in_card_message = false  # no more a message
+		_display_problem_after_phase_change()
+		return
 	
-	_update_current_card_deck()  # we can show the new card
+	print("→ Swipe :", direction)
+	var did_change_phase = _apply_choice(direction)  # ta logique existante
+	
+	# if we are in the same phase, we can directly show the new problem
+	if not did_change_phase:
+		_update_current_card_deck()  # we can show the new card
 
 func _update_current_card_deck():
 	# Recharge les visuels dans CardDeck
@@ -312,9 +374,11 @@ func _update_current_card_deck():
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
 	
-	card_deck.set_card_images(current_img, choice_a_txt, choice_b_txt)
+	card_deck.set_card_data(current_img, choice_a_txt, choice_b_txt, "")
 
-func _on_card_preview(direction: String) -> void:
+func on_card_preview(direction: String) -> void:
+	if g_is_in_card_message:  # if we are just showing a message card, preview means nothing
+		return
 	if direction == "A":
 		_update_possible_impacts("A")
 	elif direction == "B":
