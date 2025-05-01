@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=18 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/flow_full.png" id="6_iyi2x"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
+[ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d4wxv"]
 shader = ExtResource("7_w23tw")
@@ -323,6 +324,11 @@ offset_right = 203.0
 offset_bottom = 23.0
 bbcode_enabled = true
 text = "XXX"
+
+[node name="Circle" type="Sprite2D" parent="Objectives"]
+position = Vector2(229, 43)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_7j1ur")
 
 [node name="CardDeck" parent="." instance=ExtResource("11_dmsid")]
 position = Vector2(285, 544)

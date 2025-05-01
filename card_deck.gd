@@ -217,7 +217,6 @@ func on_choice(direction: String):
 	tween.tween_callback(Callable(self, "_emit_choice").bind(direction))
 	
 
-
 func _emit_choice(direction):
 	emit_signal("choice_made", direction)
 

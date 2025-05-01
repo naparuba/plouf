@@ -155,13 +155,15 @@ func _show_objective_progression():
 		var phase_id = phases[i]
 		var phase_display = phases_display[phase_id]
 		var prefix = ''
+		var txt_color = 'black'
 		if i == current_phase_index:
 			prefix = '[color=orange]→[/color]'
+			txt_color= 'orange'
 		elif i < current_phase_index:
-			prefix = '[color=green]✔[/color]'
+			prefix = '[color=green]✓[/color]'
 		else:
 			prefix = '[color=red]Х[/color]'
-		label.text = prefix + ' ' + phase_display
+		label.text = prefix + ' [color=black]' + phase_display +' [/color]'
 		
 
 
@@ -290,21 +292,6 @@ func _reset_possible_impacts():
 	label_possible_impact_familly_life.text = ""
 	label_possible_impact_visibility.text = ""
 
-
-func _on_choice_a_mouse_entered() -> void:
-	_update_possible_impacts("A")
-
-
-func _on_choice_a_mouse_exited() -> void:
-	_reset_possible_impacts()
-
-
-func _on_choice_b_mouse_entered() -> void:
-	_update_possible_impacts("B")
-
-
-func _on_choice_b_mouse_exited() -> void:
-	_reset_possible_impacts()
 
 
 func _get_current_card_image() -> CompressedTexture2D:
