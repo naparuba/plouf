@@ -30,6 +30,9 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 20
+shader_parameter/warning_threshold = 0.2
+shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
+shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_hmdp1")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kee6s"]
@@ -48,6 +51,9 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 20
+shader_parameter/warning_threshold = 0.2
+shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
+shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("6_iyi2x")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vvtcr"]
@@ -66,11 +72,14 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 2
+shader_parameter/warning_threshold = 0.2
+shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
+shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_k0u7c")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sncj2"]
 shader = ExtResource("7_w23tw")
-shader_parameter/progress = 0.5
+shader_parameter/progress = 0.479
 shader_parameter/background_color = Color(0.5, 0.5, 0.5, 0)
 shader_parameter/wave_amplitude = 0.01
 shader_parameter/wave_frequency = 3.0
@@ -84,6 +93,9 @@ shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
 shader_parameter/particle_amount = 2
+shader_parameter/warning_threshold = 0.2
+shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
+shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_frkv5")
 
 [node name="CanvasLayer" type="CanvasLayer"]

@@ -22,6 +22,11 @@ uniform float particle_scale_randomness : hint_range(0.0, 1.0) = 0.5;
 uniform sampler2D particle_alpha_gradient : source_color;
 uniform int particle_amount : hint_range(0, 50) = 20;
 
+// Warning effect parameters
+uniform float warning_threshold : hint_range(0.0, 0.5) = 0.2; // 20% threshold
+uniform vec4 warning_color : source_color = vec4(1.0, 0.3, 0.3, 1.0); // Reddish color
+uniform float pulse_speed : hint_range(0.5, 5.0) = 1.0; // Pulsations per second
+
 // Pseudo-random function
 float rand(vec2 co) {
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -59,8 +64,7 @@ void fragment() {
 
     // Sample the mask texture or use default (fully visible) if not provided
     float mask = texture(mask_texture, uv).r;
-
-	vec4 mask_color = texture(mask_texture, uv);
+    vec4 mask_color = texture(mask_texture, uv);
 
     // Calculate wave offset
     float wave_offset = wave_amplitude * sin(wave_frequency * uv.x + TIME * wave_speed);
@@ -75,10 +79,9 @@ void fragment() {
     vec4 final_color = background_color;
 
     // Apply the progress bar with mask
-    if (uv.y > (1.0 - wave_progress)) {
-        //final_color = mix(background_color, gradient_color, mask);
-		//final_color = mix(background_color, mask_color, mask);
-		final_color = mask_color;
+	bool is_under_progress = uv.y > (1.0 - wave_progress);
+    if (is_under_progress) {
+        final_color = mask_color;
     }
 
     // Generate particles
@@ -90,6 +93,27 @@ void fragment() {
 
     // Add particles to the final color
     final_color = mix(final_color, gradient_color, particles * step(uv.y, 1.0));
+
+    // Calculate warning effect (reddish tint when progress is too low or too high)
+    float warning_factor = 0.0;
+    
+    // For low values (below 20%)
+    if (progress < warning_threshold) {
+        warning_factor = 1.0 - smoothstep(0.0, warning_threshold, progress);
+    } 
+    // For high values (above 80%)
+    else if (progress > (1.0 - warning_threshold)) {
+        warning_factor = 1.0 - smoothstep(1.0 - warning_threshold, 1.0, progress);
+    }
+    
+    // Pulsation effect (smooth oscillation over 1 second)
+    float pulse = (sin(TIME * pulse_speed * 6.283) + 1.0) * 0.5; // 6.283 = 2*PI for 1s period
+    warning_factor *= pulse; // Modulate warning by pulse
+
+    // Apply warning color to non-black areas (preserve contours)
+    if ((length(final_color.rgb) > 0.1) && (is_under_progress)) { // Threshold to preserve black/dark areas
+        final_color = mix(final_color, warning_color, warning_factor * 0.7); // 0.7 controls intensity
+    }
 
     COLOR = final_color;
 }
