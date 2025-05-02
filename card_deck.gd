@@ -103,7 +103,7 @@ func _update_choice_overlay(delta_x: float) -> void:
 	if abs(delta_x) > threshold_show:
 		choice_overlay.visible = true
 		choice_label.text = current_choice_b_txt if delta_x > 0 else current_choice_a_txt
-		
+				
 		# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
 		var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
 		choice_overlay.modulate.a = alpha
@@ -234,14 +234,20 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 
 # Main call from Main.gd
-func set_card_data(current_image: Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String):
+func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String):
 	var sprite_current := current_card.get_node("Sprite2D")	
-	
+		
 	$CurrentCard/GlobalMessage.text = global_message
 	
 	print('CARD_DECK:: set_card_images:: '+ choice_a_txt)
 	
-	sprite_current.texture = current_image
+	if character_texture != null:
+		sprite_current.texture = character_texture
+	else:  # message card, don't care about sprite_texture
+		sprite_current.texture = background_texture
+	
+	print('Give backtexture ', background_texture)
+	sprite_2d.material.set_shader_parameter('backTexture', background_texture)
 	
 	# Reset the burning shader
 	sprite_2d.material.set_shader_parameter('radius', 0.0)

@@ -345,13 +345,16 @@ func _switch_to_message_card(message:String):
 	var img = load("res://images/FADED.png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	card_deck.set_card_data(img, "OK", "OK", message)
+	card_deck.set_card_data(null, img, "OK", "OK", message)
 	
 
-func _get_current_card_image() -> CompressedTexture2D:
-	var img_path = current_problem.get("card_img_id", "PLOUF")+'.png'  # fallback
-	var img = load("res://images/%s" % img_path)
-	return img
+func _get_current_card_textures() -> Dictionary:
+	var character_path = current_problem.get("character_img_id", "PLOUF")+'.png'  # fallback
+	var character_texture = load("res://images/%s" % character_path)
+	var background_path = current_problem.get("background_img_id", "FADED")+'.png'  # fallback
+	print('LOADING BACKGROUND texture ', background_path)
+	var background_texture = load("res://images/%s" % background_path)
+	return {'character':character_texture, 'background':background_texture}
 
 
 func on_swipe_choice(direction: String):
@@ -369,12 +372,14 @@ func on_swipe_choice(direction: String):
 
 func _update_current_card_deck():
 	# Recharge les visuels dans CardDeck
-	var current_img = _get_current_card_image()
+	var textures = _get_current_card_textures()
+	var character_texture = textures['character']
+	var background_texture = textures['background']
 	
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
 	
-	card_deck.set_card_data(current_img, choice_a_txt, choice_b_txt, "")
+	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "")
 
 func on_card_preview(direction: String) -> void:
 	if g_is_in_card_message:  # if we are just showing a message card, preview means nothing
