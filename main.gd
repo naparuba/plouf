@@ -35,7 +35,6 @@ var stats = {
 	CRITERIA_RYTHM: 20,
 }
 
-@onready var label_game_over = $LabelGameOver
 @onready var card = $Card
 
 @onready var label_objective = $LabelObjective
@@ -57,6 +56,8 @@ var current_phase_index = 0
 var current_problem_index = 0
 var current_problem_list = []
 var current_problem = {}
+
+var g_game_over = false  # did we win or loose the game, if so, will just exit
 
 var phases_display = {
 	"CHOOSE_CHRONIQUE_GAME" : "choisir le jeu",
@@ -98,8 +99,6 @@ func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	_load_phases()
 	_load_problems()
-	
-	#_rotate_phases_randomly()   # Currently disabled, want to have the same overall logic progression
 	
 	current_phase_index = 0
 	current_problem_index = 0
@@ -147,9 +146,6 @@ func __get_random_phase_finish_message(phase_id: String):
 	var random_idx =  randi() % messages.size()
 	return messages[random_idx]
 
-func _rotate_phases_randomly():
-	var index = randi() % phases.size()
-	phases = phases.slice(index, phases.size()) + phases.slice(0, index)
 
 # --- Gameplay
 func _initial_phase():  # only at _ready
@@ -172,6 +168,8 @@ func _jump_to_next_phase():
 	
 	if current_phase_index >= phases.size():
 		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
+		self.g_game_over = true
+		_switch_to_message_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.")
 		return
 	
 	# Get a message for the end of our phase
@@ -236,21 +234,64 @@ func _display_problem(problem):
 	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
 
+func _validate_stats():
+	for stat in stats:
+		if stats[stat] < 0:
+			print("⚠ Stat", stat, "est hors limites :", stats[stat])
+			return {'state':'too_low', 'stat':stat}
+		if stats[stat] > MAX_STAT or true:
+			print("⚠ Stat", stat, "est hors limites :", stats[stat])
+			return {'state':'too_high', 'stat':stat}
+	return {'state':'ok', 'stat':''}
+
 # return if the phase did change
 func _apply_choice(choice: String) -> bool:
 	print("→ Choix :", choice)
 	_apply_stats_consequences(current_problem, choice)
 	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
 	
-	if not _validate_stats():
-		label_game_over.text = "💥 Game Over! Stats invalides"
-		label_game_over.visible = true
-		return false
+	var r = _validate_stats()
+	if r['state'] != 'ok':
+		var _bad_stat = r['stat']
+		var error = r['state']
+		var _err = "💥 Game Over! "+_bad_stat+ " is "+error
+		var img_path = ''
+		match _bad_stat:
+			CRITERIA_FLOW: 
+				if error == 'too_low':
+					_err = "💥 [b]Page Blanche[/b]!\nIl regarde son écran depuis 7h, mais rien ne vient."
+					img_path = 'FLOW_TOO_LOW'
+				else:
+					_err = "💥 [b]Plouf en feu[/b]!\nSes idées l'ont dévoré. Il chronique les nuages et intérupteurs.\nIl ne dors plus, il [i]crée[/i]."
+					img_path = 'FLOW_TOO_HIGH'
+			CRITERIA_FAMILLY_LIFE:
+				if error == 'too_low':
+					_err = "💥 [b]Papa, c'est qui lui?[/b]!\nSa fille ne le reconnait plus."
+					img_path = 'FAMILLY_LIFE_TOO_LOW'
+				else:
+					_err = "💥 [b]PloufFamille VLog[/b]!\nIl a renommé sa chaine Youtube. Il ne parle désormais que de tuto pour faire des slimes."
+					img_path = 'FAMILLY_LIFE_TOO_HIGH'
+			CRITERIA_VISIBILITY:
+				if error == 'too_low':
+					_err = "💥 [b]Le grand silence[/b]!\nMême l'algorithme de Youtube l'a oublié."
+					img_path = 'VISIBILITY_TOO_LOW'
+				else:
+					_err = "💥 [b]Influenceur[/b]!\nMacDo, Nike et même [i]UbiSoft[/i]: tout le monde veut sponsoriser Plouf!."
+					img_path = 'VISIBILITY_TOO_HIGH'
+			CRITERIA_RYTHM:
+				if error == 'too_low':
+					_err = "💥 [b]Plouf fusionne avec sa chaise[/b]!\nIl fait parti du fauteuil\nTwitch a mis le tag 'objet inanimé' sur son live."
+					img_path = 'RYTHM_TOO_LOW'
+				else:
+					_err = "💥 [b]Productivité terminale[/b]!\nUne vidéo toutes les heures. Il ne voit plus les saisons passer. Il [i]est[/i] le contenu."
+					img_path = 'RYTHM_TOO_HIGH'
+		g_game_over = true
+		_err = '[bgcolor=grey][color=black]' + _err + '[/color][/bgcolor]'
+		_switch_to_gameover_card(_err, 'Arg, une autre semaine peut être...', img_path)
+		return true  # simulate like if we did change state, as we move to the end game
 	
 	var did_change_phase = _load_next_problem()
 	return did_change_phase
-	
-	
 
 
 func _get_choice_stat(choice, stat):
@@ -300,17 +341,10 @@ func _apply_stats_consequences(problem, choice):
 				stat_bars[CRITERIA_VISIBILITY].value = stat_pct
 				var sprite = $Visibility/ProgressSprite
 				_change_progress_sprite(sprite, stat_pct_float_1)
-
-
 	print("📊 Stats :", stats)
 
 
-func _validate_stats():
-	for stat in stats:
-		if stats[stat] < 0 or stats[stat] > MAX_STAT:
-			print("⚠ Stat", stat, "est hors limites :", stats[stat])
-			return false
-	return true
+
 
 
 func _update_possible_impacts(choice):
@@ -348,6 +382,12 @@ func _switch_to_message_card(message:String):
 	card_deck.set_card_data(null, img, "OK", "OK", message)
 	
 
+func _switch_to_gameover_card(message:String, swipe_message:String, img_path : String):
+	var img = load("res://images/"+img_path+".png")
+	g_is_in_card_message = true
+	print('Display message card: ', message)
+	card_deck.set_card_data(null, img, swipe_message, swipe_message, message)
+
 func _get_current_card_textures() -> Dictionary:
 	var character_path = current_problem.get("character_img_id", "PLOUF")+'.png'  # fallback
 	var character_texture = load("res://images/%s" % character_path)
@@ -360,6 +400,12 @@ func _get_current_card_textures() -> Dictionary:
 func on_swipe_choice(direction: String):
 	if g_is_in_card_message:  # we have a return from a message card, just show the next problem
 		g_is_in_card_message = false  # no more a message
+		
+		if g_game_over: # we did finish, just close the game currently
+			OS.shell_open("https://www.youtube.com/@MonsieurPlouf")
+			self.get_tree().quit()  # Bye bye
+			return
+		
 		_display_problem_after_phase_change()
 		return
 	
