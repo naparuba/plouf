@@ -38,6 +38,15 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="EndingMessage" type="RichTextLabel" parent="CurrentCard"]
+offset_left = -140.0
+offset_top = 204.0
+offset_right = 144.0
+offset_bottom = 352.0
+bbcode_enabled = true
+text = " "
+fit_content = true
+
 [node name="GlobalMessage" type="RichTextLabel" parent="CurrentCard"]
 offset_left = -140.0
 offset_top = -52.0

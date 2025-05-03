@@ -234,10 +234,14 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 
 # Main call from Main.gd
-func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String):
+func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String, is_ending_message: bool):
 	var sprite_current := current_card.get_node("Sprite2D")	
-		
-	$CurrentCard/GlobalMessage.text = global_message
+	
+	if not is_ending_message:
+		$CurrentCard/GlobalMessage.text = global_message
+	else:
+		$CurrentCard/GlobalMessage.text = ""
+		$CurrentCard/EndingMessage.text = global_message
 	
 	print('CARD_DECK:: set_card_images:: '+ choice_a_txt)
 	

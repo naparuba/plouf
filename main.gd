@@ -169,7 +169,7 @@ func _jump_to_next_phase():
 	if current_phase_index >= phases.size():
 		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
 		self.g_game_over = true
-		_switch_to_message_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.")
+		_switch_to_gameover_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "Au revoir les gents!", "ENDING")
 		return
 	
 	# Get a message for the end of our phase
@@ -239,7 +239,7 @@ func _validate_stats():
 		if stats[stat] < 0:
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
 			return {'state':'too_low', 'stat':stat}
-		if stats[stat] > MAX_STAT or true:
+		if stats[stat] > MAX_STAT:
 			print("⚠ Stat", stat, "est hors limites :", stats[stat])
 			return {'state':'too_high', 'stat':stat}
 	return {'state':'ok', 'stat':''}
@@ -276,7 +276,7 @@ func _apply_choice(choice: String) -> bool:
 					_err = "💥 [b]Le grand silence[/b]!\nMême l'algorithme de Youtube l'a oublié."
 					img_path = 'VISIBILITY_TOO_LOW'
 				else:
-					_err = "💥 [b]Influenceur[/b]!\nMacDo, Nike et même [i]UbiSoft[/i]: tout le monde veut sponsoriser Plouf!."
+					_err = "💥 [b]Influenceur[/b]!\nMacDo, Ubisoft et même [i]Konami[/i]: tout le monde veut sponsoriser Plouf!."
 					img_path = 'VISIBILITY_TOO_HIGH'
 			CRITERIA_RYTHM:
 				if error == 'too_low':
@@ -379,14 +379,14 @@ func _switch_to_message_card(message:String):
 	var img = load("res://images/FADED.png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	card_deck.set_card_data(null, img, "OK", "OK", message)
+	card_deck.set_card_data(null, img, "OK", "OK", message, false)
 	
 
 func _switch_to_gameover_card(message:String, swipe_message:String, img_path : String):
 	var img = load("res://images/"+img_path+".png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	card_deck.set_card_data(null, img, swipe_message, swipe_message, message)
+	card_deck.set_card_data(null, img, swipe_message, swipe_message, message, true)
 
 func _get_current_card_textures() -> Dictionary:
 	var character_path = current_problem.get("character_img_id", "PLOUF")+'.png'  # fallback
@@ -425,7 +425,7 @@ func _update_current_card_deck():
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
 	
-	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "")
+	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false)
 
 func on_card_preview(direction: String) -> void:
 	if g_is_in_card_message:  # if we are just showing a message card, preview means nothing
