@@ -116,6 +116,8 @@ func _ready():
 	# We can update the deck display
 	_update_current_card_deck()
 
+	# By default the problem text are printing fast
+	label_question.set_fast_mode()
 
 func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -172,7 +174,7 @@ func _jump_to_next_phase():
 	_show_objective_progression()
 	
 	if current_phase_index >= phases.size():
-		label_question.text = "🎉 Fin de la semaine de Monsieur Plouf !"
+		__set_problem_text("🎉 Fin de la semaine de Monsieur Plouf !")
 		self.g_game_over = true
 		_switch_to_gameover_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "Au revoir les gents!", "ENDING")
 		return
@@ -233,11 +235,14 @@ func _load_next_problem() -> bool:
 	return false
 
 func _display_problem(problem):
-	label_question.text = problem["problem_description"]
+	__set_problem_text(problem["problem_description"])
 	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
 	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
 	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
+
+func __set_problem_text(txt):
+	label_question.reveal_text(txt)
 
 func _validate_stats():
 	for stat in stats:
@@ -375,6 +380,8 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 			print('RYTHM: get back as normal')
 			# no impact on shaders
 			card_deck.unset_rush()
+			
+			label_question.set_fast_mode()
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
@@ -388,7 +395,7 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 	if too_high:
 		print('RYTHM: get too high')
 		__set_criteria_fire_as_red(fire)
-		pass
+		label_question.set_slow_mode()  # Plouf is too fast, he see the text as too slow ^^
 			
 
 # Flow:

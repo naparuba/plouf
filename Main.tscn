@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=34 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cheim83nmgnx2" path="res://images/visibility.png" id="2_hpoc5"]
 [ext_resource type="Texture2D" uid="uid://e6o1cpp23a6x" path="res://images/vie_famille.png" id="3_6vj60"]
 [ext_resource type="Texture2D" uid="uid://d2q5nexaq2ara" path="res://images/chrono.png" id="3_qlnja"]
+[ext_resource type="Script" path="res://progressive_text.gd" id="4_dxl5p"]
 [ext_resource type="Texture2D" uid="uid://tqkt6aiddivf" path="res://images/vie_famille_full.png" id="4_frkv5"]
 [ext_resource type="Texture2D" uid="uid://cg1sjwafgdgmm" path="res://images/visibility_full.png" id="4_hmdp1"]
 [ext_resource type="Texture2D" uid="uid://cmf4jhvvtlu4v" path="res://images/chrono_full.png" id="4_k0u7c"]
@@ -166,6 +167,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Problématique"
 horizontal_alignment = 1
 autowrap_mode = 3
+script = ExtResource("4_dxl5p")
 
 [node name="Visibility" type="Node2D" parent="."]
 position = Vector2(403, 17)
