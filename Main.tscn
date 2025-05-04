@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=33 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -11,7 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://cmf4jhvvtlu4v" path="res://images/chrono_full.png" id="4_k0u7c"]
 [ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="5_m3b4r"]
 [ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/flow_full.png" id="6_iyi2x"]
+[ext_resource type="Shader" path="res://shaders/b_fire.gdshader" id="7_2rojy"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
+[ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="8_5v6y7"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 [ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 [ext_resource type="Texture2D" uid="uid://d2lhpl3sw6pqc" path="res://images/on_ne_parle_pas_de_la_croix.png" id="14_k1278"]
@@ -28,6 +30,15 @@ shader_parameter/deform_strength = 0.0
 shader_parameter/pixel_size = 1.0
 shader_parameter/contrast = 1.0
 shader_parameter/grayness_strength = 0.0
+shader_parameter/recurring_hide = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gk4m6"]
+shader = ExtResource("7_2rojy")
+shader_parameter/too_high = true
+shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_speed = Vector2(0, 0.5)
+shader_parameter/fire_aperture = 0.6
+shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d4wxv"]
 shader = ExtResource("7_w23tw")
@@ -50,6 +61,14 @@ shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
 shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_hmdp1")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exgja"]
+shader = ExtResource("7_2rojy")
+shader_parameter/too_high = true
+shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_speed = Vector2(0, 0.5)
+shader_parameter/fire_aperture = 0.6
+shader_parameter/noise_tex = ExtResource("8_5v6y7")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kee6s"]
 shader = ExtResource("7_w23tw")
 shader_parameter/progress = 0.5
@@ -71,6 +90,14 @@ shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
 shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("6_iyi2x")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dtb54"]
+shader = ExtResource("7_2rojy")
+shader_parameter/too_high = true
+shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_speed = Vector2(0, 0.5)
+shader_parameter/fire_aperture = 0.6
+shader_parameter/noise_tex = ExtResource("8_5v6y7")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vvtcr"]
 shader = ExtResource("7_w23tw")
 shader_parameter/progress = 0.5
@@ -91,6 +118,14 @@ shader_parameter/warning_threshold = 0.2
 shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
 shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_k0u7c")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h120p"]
+shader = ExtResource("7_2rojy")
+shader_parameter/too_high = true
+shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_speed = Vector2(0, 0.5)
+shader_parameter/fire_aperture = 0.6
+shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sncj2"]
 shader = ExtResource("7_w23tw")
@@ -135,6 +170,13 @@ autowrap_mode = 3
 [node name="Visibility" type="Node2D" parent="."]
 position = Vector2(403, 17)
 
+[node name="fire" type="Sprite2D" parent="Visibility"]
+visible = false
+material = SubResource("ShaderMaterial_gk4m6")
+position = Vector2(73, 40)
+scale = Vector2(0.56, 1.04)
+texture = ExtResource("2_hpoc5")
+
 [node name="Label" type="Label" parent="Visibility"]
 visible = false
 offset_left = 44.0
@@ -168,6 +210,13 @@ offset_bottom = 28.0
 
 [node name="Flow" type="Node2D" parent="."]
 position = Vector2(276, 28)
+
+[node name="fire" type="Sprite2D" parent="Flow"]
+visible = false
+material = SubResource("ShaderMaterial_exgja")
+position = Vector2(70, 28)
+scale = Vector2(0.56, 1.04)
+texture = ExtResource("2_hpoc5")
 
 [node name="Label" type="Label" parent="Flow"]
 visible = false
@@ -204,6 +253,13 @@ offset_bottom = 11.0
 [node name="Rythm" type="Node2D" parent="."]
 position = Vector2(152, 20)
 
+[node name="fire" type="Sprite2D" parent="Rythm"]
+visible = false
+material = SubResource("ShaderMaterial_dtb54")
+position = Vector2(49, 30)
+scale = Vector2(0.56, 1.04)
+texture = ExtResource("2_hpoc5")
+
 [node name="Label" type="Label" parent="Rythm"]
 visible = false
 offset_left = 25.0
@@ -236,6 +292,13 @@ offset_bottom = 17.0
 
 [node name="FamillyLife" type="Node2D" parent="."]
 position = Vector2(12, 17)
+
+[node name="fire" type="Sprite2D" parent="FamillyLife"]
+visible = false
+material = SubResource("ShaderMaterial_h120p")
+position = Vector2(56, 27)
+scale = Vector2(0.56, 1.04)
+texture = ExtResource("2_hpoc5")
 
 [node name="Label" type="Label" parent="FamillyLife"]
 visible = false

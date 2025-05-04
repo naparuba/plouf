@@ -348,34 +348,59 @@ func __criteria_goes_low(stat_pct_float_1: float):
 func __criteria_goes_high(stat_pct_float_1: float):
 	return stat_pct_float_1 > 1.0 - CRITERIA_WARNING_THRESHOLD
 
+# The shader take one parameter: too_high=true=>red, and =false=>blue 
+func __set_criteria_fire_as_red(fire):
+	fire.material.set_shader_parameter('too_high', true)
+func __set_criteria_fire_as_blue(fire):
+	fire.material.set_shader_parameter('too_high', false)
 
 # Rythm :
 # - low: timer of 10s for choosing
 # - high: all is VERY slow
 func __manage_criteria_rythm(stat_pct_float_1: float):
+	stat_pct_float_1 = randf_range(0.01, 0.3)
 	print('New RYTHM: ', stat_pct_float_1)
 	stat_bars[CRITERIA_RYTHM].value = stat_pct_float_1 * 100
 	var sprite = $Rythm/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
+	# Fire shader
+	var fire = $Rythm/fire
 	
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
 	
 	if  (not (too_low or too_high)):
 		if impact_is_activated_rythm:  # no more activated
+			print('RYTHM: get back as normal')
 			# no impact on shaders
-			pass
+			card_deck.unset_rush()
+			fire.visible= false  # get back as normal, so hide the fire indicator
+		return
+		
+	impact_is_activated_rythm = true
+	fire.visible = true # let the user be eye attract by this problem
+	if too_low:  # go brut
+		print('RYTHM: get too low')
+		__set_criteria_fire_as_blue(fire)
+		card_deck.set_rush()  # only 10s for choice
+		
+	if too_high:
+		print('RYTHM: get too high')
+		__set_criteria_fire_as_red(fire)
+		pass
 			
 
 # Flow:
 # - low: going brut shader
 # - high: activating spyche shader
 func __manage_criteria_flow(stat_pct_float_1: float):
-	stat_pct_float_1 = randf_range(0.01, 0.3)
+	#stat_pct_float_1 = randf_range(0.01, 0.3)
 	print('New FLOW: ', stat_pct_float_1)
 	stat_bars[CRITERIA_FLOW].value = stat_pct_float_1 * 100
 	var sprite = $Flow/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
+	# Fire shader
+	var fire = $Flow/fire
 	
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
@@ -383,30 +408,37 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 	var background_shader = $Background.material
 	
 	if  (not(too_low or too_high)):
-		if impact_is_activated_rythm:  # no more activated
+		if impact_is_activated_flow:  # no more activated
+			print('FLOW: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			card_deck.unset_text_wobby()  # card text are stable again
 			card_deck.unset_text_raw()  # no more text block
+			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
-	impact_is_activated_rythm = true
+	impact_is_activated_flow = true
+	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
+		print('FLOW: get too low')
 		var tween = create_tween()
 		tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 32.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_raw()  # text goes blocky
+		__set_criteria_fire_as_blue(fire)
 		
 	if too_high:
+		print('FLOW: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.5, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_wobby()  # text goes wobby, pshyche
+		__set_criteria_fire_as_red(fire)
 
 # Visibility:
 # - low: hiding UI for 1s every 5s
 # - high: logo are bouncing every where
 func __manage_criteria_visibility(stat_pct_float_1: float):
-	#stat_pct_float_1 = randf_range(0.5, 0.9)
+	#stat_pct_float_1 = randf_range(0.05, 0.3)
 	print('New VISIBILITY: ', stat_pct_float_1)
 	stat_bars[CRITERIA_VISIBILITY].value = stat_pct_float_1 * 100
 	var sprite = $Visibility/ProgressSprite
@@ -414,22 +446,33 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
+	# Fire shader
+	var fire = $Visibility/fire
 	
 	var logos_node = $Logos
 	
 	if  (not(too_low or too_high)):
-		if impact_is_activated_rythm:  # no more activated
+		if impact_is_activated_visibility:  # no more activated
+			print('VISIBILITY: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(logos_node, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			card_deck.unset_text_blink() # we can now always show the text
+			$Background.material.set_shader_parameter('recurring_hide', false)
+			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
-	impact_is_activated_rythm = true
+	impact_is_activated_visibility = true
+	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
-		pass
+		print('VISIBILITY: get too low')
+		card_deck.set_text_blink()
+		$Background.material.set_shader_parameter('recurring_hide', true)
+		__set_criteria_fire_as_blue(fire)
 	if too_high: # logo are bouncing every where
+		print('VISIBILITY: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(logos_node, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-
+		__set_criteria_fire_as_red(fire)
 
 # Familly life:
 # - low: goes grey, sad, no sound
@@ -440,6 +483,8 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 	stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct_float_1 * 100
 	var sprite = $FamillyLife/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
+	# Fire shader
+	var fire = $FamillyLife/fire
 	
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
@@ -447,24 +492,30 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 	var background_shader = $Background.material
 	var familly_invasion = $FamillyInvasion
 	
-	if  (not(too_low or too_high)):
-		if impact_is_activated_rythm:  # no more activated
+	if (not(too_low or too_high)):
+		if impact_is_activated_familly_life:  # no more activated
+			print('FAMILLY_LIFE: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			tween.parallel().tween_property(familly_invasion, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			card_deck.unset_grey()  # no more grey for the card too
-			return
+			fire.visible = false  # get back as normal, so hide the fire indicator
+		return
 		
-	impact_is_activated_rythm = true
+	impact_is_activated_familly_life = true
+	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # goes grey, sad
+		print('FAMILLY_LIFE: get too low')
 		var tween = create_tween()
 		tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_grey()  # go grey for the card too
+		__set_criteria_fire_as_blue(fire)
 		
 	if too_high: # familly invasion
+		print('FAMILLY_LIFE: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(familly_invasion, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-			
+		__set_criteria_fire_as_red(fire)
 
 func _update_possible_impacts(choice):
 	for stat in stats.keys():

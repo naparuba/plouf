@@ -47,6 +47,8 @@ func _ready() -> void:
 	choice_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	choice_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 
+	# Give myself to rush so to can callback myself
+	$Rush.set_parent(self)
 
 func _input(event):
 	if event is InputEventMouseButton:
@@ -275,31 +277,51 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 
 ### Impacts:
 func set_grey():
+	print('set_grey')
 	var tween = create_tween()
 	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_grey():
+	print('unset_grey')
 	var tween = create_tween()
 	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
 func set_text_wobby():
+	print('set_text_wobby')
 	var tween = create_tween()
-	var txt_label = $CurrentCard/ChoiceOverlay/Label
-	tween.parallel().tween_property(txt_label.material, 'shader_parameter/deform_strength', 0.5, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(choice_label.material, 'shader_parameter/deform_strength', 0.5, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_text_wobby():
+	print('unset_text_wobby')
 	var tween = create_tween()
-	var txt_label = $CurrentCard/ChoiceOverlay/Label
-	tween.parallel().tween_property(txt_label.material, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(choice_label.material, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
 func set_text_raw():
+	print('set_text_raw')
 	var tween = create_tween()
-	var txt_label = $CurrentCard/ChoiceOverlay/Label
-	tween.parallel().tween_property(txt_label.material, 'shader_parameter/pixel_size', 150, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(choice_label.material, 'shader_parameter/pixel_size', 150, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_text_raw():
+	print('unset_text_raw')
 	var tween = create_tween()
-	var txt_label = $CurrentCard/ChoiceOverlay/Label
-	tween.parallel().tween_property(txt_label.material, 'shader_parameter/pixel_size', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(choice_label.material, 'shader_parameter/pixel_size', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
+func set_text_blink():
+	print('set_text_blink')
+	#choice_label.material.set_shader_parameter('recurring_hide', true)
+
+func unset_text_blink():
+	print('unset_text_blink')
+	#choice_label.material.set_shader_parameter('recurring_hide', false)
+
+func set_rush():
+	$Rush.start()
+	
+func unset_rush():
+	$Rush.stop()
+
+func callback_rush_timeout():
+	current_choice_a_txt = 'RUSH! Plus le temps de réfléchir!'
+	current_choice_b_txt = current_choice_a_txt
+	choice_label.text = current_choice_a_txt
