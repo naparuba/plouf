@@ -10,11 +10,11 @@
 [ext_resource type="Texture2D" uid="uid://tqkt6aiddivf" path="res://images/vie_famille_full.png" id="4_frkv5"]
 [ext_resource type="Texture2D" uid="uid://cg1sjwafgdgmm" path="res://images/visibility_full.png" id="4_hmdp1"]
 [ext_resource type="Texture2D" uid="uid://cmf4jhvvtlu4v" path="res://images/chrono_full.png" id="4_k0u7c"]
-[ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="5_m3b4r"]
 [ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/flow_full.png" id="6_iyi2x"]
 [ext_resource type="Shader" path="res://shaders/b_fire.gdshader" id="7_2rojy"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
 [ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="8_5v6y7"]
+[ext_resource type="Texture2D" uid="uid://dopw8dqb8p3sp" path="res://images/flow_full_back.png" id="10_0kyyk"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 [ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 [ext_resource type="Texture2D" uid="uid://d2lhpl3sw6pqc" path="res://images/on_ne_parle_pas_de_la_croix.png" id="14_k1278"]
@@ -85,7 +85,7 @@ shader_parameter/particle_offset = Vector2(0, 0)
 shader_parameter/particle_start_scale = Vector2(0.02, 0.02)
 shader_parameter/particle_end_scale = Vector2(0.01, 0.01)
 shader_parameter/particle_scale_randomness = 0.5
-shader_parameter/particle_amount = 20
+shader_parameter/particle_amount = 2
 shader_parameter/warning_threshold = 0.2
 shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
 shader_parameter/pulse_speed = 1.0
@@ -238,7 +238,7 @@ offset_bottom = 10.0
 [node name="ProgressSpriteBack" type="Sprite2D" parent="Flow"]
 position = Vector2(69, 45)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_m3b4r")
+texture = ExtResource("10_0kyyk")
 
 [node name="ProgressSprite" type="Sprite2D" parent="Flow"]
 material = SubResource("ShaderMaterial_kee6s")

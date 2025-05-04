@@ -63,7 +63,7 @@ void fragment() {
     vec2 uv = UV;
 
     // Sample the mask texture or use default (fully visible) if not provided
-    float mask = texture(mask_texture, uv).r;
+    float mask = texture(mask_texture, uv).a;
     vec4 mask_color = texture(mask_texture, uv);
 
     // Calculate wave offset
@@ -113,6 +113,7 @@ void fragment() {
     // Apply warning color to non-black areas (preserve contours)
     if ((length(final_color.rgb) > 0.1) && (is_under_progress)) { // Threshold to preserve black/dark areas
         final_color = mix(final_color, warning_color, warning_factor * 0.7); // 0.7 controls intensity
+		final_color.a = mask_color.a;
     }
 
     COLOR = final_color;
