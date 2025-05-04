@@ -21,6 +21,7 @@ var CRITERIA_VISIBILITY = 'visibility'
 var CRITERIA_RYTHM = 'rythm'
 
 var MAX_STAT = 40
+var CRITERIA_WARNING_THRESHOLD = 0.2  # 20% => warning!
 
 @onready var stat_bars = {
 	CRITERIA_RYTHM: $Rythm/progress,
@@ -45,6 +46,10 @@ var stats = {
 @onready var label_possible_impact_rythm = $Rythm/PossibleImpact
 @onready var label_possible_impact_familly_life = $FamillyLife/PossibleImpact
 
+var impact_is_activated_flow = false
+var impact_is_activated_visibility = false
+var impact_is_activated_rythm = false
+var impact_is_activated_familly_life = false
 
 @onready var card_viewer = $CardViewer
 
@@ -322,30 +327,144 @@ func _apply_stats_consequences(problem, choice):
 		var stat_pct_float_1 = stat_pct / 100.0
 		
 		match stat:
-			CRITERIA_RYTHM:     
-				stat_bars[CRITERIA_RYTHM].value = stat_pct
-				var sprite = $Rythm/ProgressSprite
-				_change_progress_sprite(sprite, stat_pct_float_1)
+			CRITERIA_RYTHM:
+				__manage_criteria_rythm(stat_pct_float_1)
 				
 			CRITERIA_FLOW:  
-				stat_bars[CRITERIA_FLOW].value = stat_pct
-				var sprite = $Flow/ProgressSprite
-				_change_progress_sprite(sprite, stat_pct_float_1)
+				__manage_criteria_flow(stat_pct_float_1)
 				
 			CRITERIA_FAMILLY_LIFE:
-				stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct
-				var sprite = $FamillyLife/ProgressSprite
-				_change_progress_sprite(sprite, stat_pct_float_1)
-				
-			CRITERIA_VISIBILITY:   
-				stat_bars[CRITERIA_VISIBILITY].value = stat_pct
-				var sprite = $Visibility/ProgressSprite
-				_change_progress_sprite(sprite, stat_pct_float_1)
+				__manage_criteria_familly_life(stat_pct_float_1)
+
+			CRITERIA_VISIBILITY:
+				__manage_criteria_visibility(stat_pct_float_1)
+
 	print("📊 Stats :", stats)
 
 
+func __criteria_goes_low(stat_pct_float_1: float):
+	return stat_pct_float_1 < CRITERIA_WARNING_THRESHOLD
+
+func __criteria_goes_high(stat_pct_float_1: float):
+	return stat_pct_float_1 > 1.0 - CRITERIA_WARNING_THRESHOLD
 
 
+# Rythm :
+# - low: timer of 10s for choosing
+# - high: all is VERY slow
+func __manage_criteria_rythm(stat_pct_float_1: float):
+	print('New RYTHM: ', stat_pct_float_1)
+	stat_bars[CRITERIA_RYTHM].value = stat_pct_float_1 * 100
+	var sprite = $Rythm/ProgressSprite
+	_change_progress_sprite(sprite, stat_pct_float_1)
+	
+	var too_low = __criteria_goes_low(stat_pct_float_1)
+	var too_high = __criteria_goes_high(stat_pct_float_1)
+	
+	if  (not (too_low or too_high)):
+		if impact_is_activated_rythm:  # no more activated
+			# no impact on shaders
+			pass
+			
+
+# Flow:
+# - low: going brut shader
+# - high: activating spyche shader
+func __manage_criteria_flow(stat_pct_float_1: float):
+	stat_pct_float_1 = randf_range(0.01, 0.3)
+	print('New FLOW: ', stat_pct_float_1)
+	stat_bars[CRITERIA_FLOW].value = stat_pct_float_1 * 100
+	var sprite = $Flow/ProgressSprite
+	_change_progress_sprite(sprite, stat_pct_float_1)
+	
+	var too_low = __criteria_goes_low(stat_pct_float_1)
+	var too_high = __criteria_goes_high(stat_pct_float_1)
+	
+	var background_shader = $Background.material
+	
+	if  (not(too_low or too_high)):
+		if impact_is_activated_rythm:  # no more activated
+			var tween = create_tween()
+			tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			card_deck.unset_text_wobby()  # card text are stable again
+			card_deck.unset_text_raw()  # no more text block
+		return
+		
+	impact_is_activated_rythm = true
+	if too_low:  # go brut
+		var tween = create_tween()
+		tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 32.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		card_deck.set_text_raw()  # text goes blocky
+		
+	if too_high:
+		var tween = create_tween()
+		tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.5, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		card_deck.set_text_wobby()  # text goes wobby, pshyche
+
+# Visibility:
+# - low: hiding UI for 1s every 5s
+# - high: logo are bouncing every where
+func __manage_criteria_visibility(stat_pct_float_1: float):
+	#stat_pct_float_1 = randf_range(0.5, 0.9)
+	print('New VISIBILITY: ', stat_pct_float_1)
+	stat_bars[CRITERIA_VISIBILITY].value = stat_pct_float_1 * 100
+	var sprite = $Visibility/ProgressSprite
+	_change_progress_sprite(sprite, stat_pct_float_1)
+
+	var too_low = __criteria_goes_low(stat_pct_float_1)
+	var too_high = __criteria_goes_high(stat_pct_float_1)
+	
+	var logos_node = $Logos
+	
+	if  (not(too_low or too_high)):
+		if impact_is_activated_rythm:  # no more activated
+			var tween = create_tween()
+			tween.parallel().tween_property(logos_node, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		return
+		
+	impact_is_activated_rythm = true
+	if too_low:  # hiding UI for 1s every 5s
+		pass
+	if too_high: # logo are bouncing every where
+		var tween = create_tween()
+		tween.parallel().tween_property(logos_node, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+
+
+# Familly life:
+# - low: goes grey, sad, no sound
+# - high: familly invasion :)
+func __manage_criteria_familly_life(stat_pct_float_1: float):
+	#stat_pct_float_1 = randf_range(0.01, 0.3)
+	print('New FAMILLY_LIFE: ', stat_pct_float_1)
+	stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct_float_1 * 100
+	var sprite = $FamillyLife/ProgressSprite
+	_change_progress_sprite(sprite, stat_pct_float_1)
+	
+	var too_low = __criteria_goes_low(stat_pct_float_1)
+	var too_high = __criteria_goes_high(stat_pct_float_1)
+	
+	var background_shader = $Background.material
+	var familly_invasion = $FamillyInvasion
+	
+	if  (not(too_low or too_high)):
+		if impact_is_activated_rythm:  # no more activated
+			var tween = create_tween()
+			tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			tween.parallel().tween_property(familly_invasion, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			card_deck.unset_grey()  # no more grey for the card too
+			return
+		
+	impact_is_activated_rythm = true
+	if too_low:  # goes grey, sad
+		var tween = create_tween()
+		tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		card_deck.set_grey()  # go grey for the card too
+		
+	if too_high: # familly invasion
+		var tween = create_tween()
+		tween.parallel().tween_property(familly_invasion, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			
 
 func _update_possible_impacts(choice):
 	for stat in stats.keys():

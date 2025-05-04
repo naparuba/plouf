@@ -11,6 +11,8 @@ uniform sampler2D backTexture;
 uniform float corner_radius_px : hint_range(0.0,20.0) = 10.0;
 uniform vec2 texture_size = vec2(300.0, 300.0);
 
+uniform float grayness_strength : hint_range(0.0, 1.0) = 0.0;
+
 void fragment() {
 	vec4 back_rgb = texture(backTexture, UV);  // Pixel from the background
 	// If the original pixel is transparent, then copy the background one instead
@@ -49,5 +51,11 @@ void fragment() {
         // On est dans la zone de coin arrondi → supprimer le pixel
         COLOR.a = 0.0;
     }
+	
+	
+	// Apply the grey at the end
+	float gray = dot(COLOR.rgb, vec3(0.299, 0.587, 0.114));
+    vec3 grayscale = vec3(gray);
+    COLOR = vec4(mix(COLOR.rgb, grayscale, grayness_strength), COLOR.a);
 
 }

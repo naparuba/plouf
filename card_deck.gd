@@ -271,3 +271,35 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	# Update text
 	current_choice_a_txt = choice_a_txt
 	current_choice_b_txt = choice_b_txt
+
+
+### Impacts:
+func set_grey():
+	var tween = create_tween()
+	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			
+func unset_grey():
+	var tween = create_tween()
+	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+
+
+func set_text_wobby():
+	var tween = create_tween()
+	var txt_label = $CurrentCard/ChoiceOverlay/Label
+	tween.parallel().tween_property(txt_label.material, 'shader_parameter/deform_strength', 0.5, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			
+func unset_text_wobby():
+	var tween = create_tween()
+	var txt_label = $CurrentCard/ChoiceOverlay/Label
+	tween.parallel().tween_property(txt_label.material, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	
+func set_text_raw():
+	var tween = create_tween()
+	var txt_label = $CurrentCard/ChoiceOverlay/Label
+	tween.parallel().tween_property(txt_label.material, 'shader_parameter/pixel_size', 150, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+			
+func unset_text_raw():
+	var tween = create_tween()
+	var txt_label = $CurrentCard/ChoiceOverlay/Label
+	tween.parallel().tween_property(txt_label.material, 'shader_parameter/pixel_size', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	

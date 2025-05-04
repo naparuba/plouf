@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=27 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
+[ext_resource type="Shader" path="res://shaders/impacts.gdshader" id="2_b3nhu"]
 [ext_resource type="Texture2D" uid="uid://cheim83nmgnx2" path="res://images/visibility.png" id="2_hpoc5"]
 [ext_resource type="Texture2D" uid="uid://e6o1cpp23a6x" path="res://images/vie_famille.png" id="3_6vj60"]
 [ext_resource type="Texture2D" uid="uid://d2q5nexaq2ara" path="res://images/chrono.png" id="3_qlnja"]
@@ -14,6 +15,19 @@
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 [ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 [ext_resource type="Texture2D" uid="uid://d2lhpl3sw6pqc" path="res://images/on_ne_parle_pas_de_la_croix.png" id="14_k1278"]
+[ext_resource type="Texture2D" uid="uid://b2whv5x0ka2dd" path="res://images/MMEPLOUF.png" id="16_4dfum"]
+[ext_resource type="Texture2D" uid="uid://d21n111d1cg3a" path="res://images/ea.png" id="16_vrim4"]
+[ext_resource type="Script" path="res://logo_move_around.gd" id="17_2js6e"]
+[ext_resource type="Texture2D" uid="uid://b2bmqdemfckih" path="res://images/konami.png" id="17_6rv31"]
+[ext_resource type="Texture2D" uid="uid://b3jn7w86wl3wp" path="res://images/ubi.png" id="18_2jq48"]
+[ext_resource type="Texture2D" uid="uid://wqdxmqhblrxm" path="res://images/PLOUF_FILLE.png" id="18_8otj2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rvbbl"]
+shader = ExtResource("2_b3nhu")
+shader_parameter/deform_strength = 0.0
+shader_parameter/pixel_size = 1.0
+shader_parameter/contrast = 1.0
+shader_parameter/grayness_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d4wxv"]
 shader = ExtResource("7_w23tw")
@@ -103,6 +117,7 @@ shader_parameter/mask_texture = ExtResource("4_frkv5")
 script = ExtResource("1_47kuj")
 
 [node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_rvbbl")
 position = Vector2(285, 540)
 scale = Vector2(0.76, 0.763251)
 texture = ExtResource("2_6smxf")
@@ -368,3 +383,29 @@ text = "TEXTE EXPLICATIF B"
 position = Vector2(555.75, 15.25)
 scale = Vector2(0.364198, 0.355422)
 texture = ExtResource("14_k1278")
+
+[node name="FamillyInvasion" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+
+[node name="mmeplouf" type="Sprite2D" parent="FamillyInvasion"]
+texture = ExtResource("16_4dfum")
+script = ExtResource("17_2js6e")
+
+[node name="fille" type="Sprite2D" parent="FamillyInvasion"]
+texture = ExtResource("18_8otj2")
+script = ExtResource("17_2js6e")
+
+[node name="Logos" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+
+[node name="ea" type="Sprite2D" parent="Logos"]
+texture = ExtResource("16_vrim4")
+script = ExtResource("17_2js6e")
+
+[node name="konami" type="Sprite2D" parent="Logos"]
+texture = ExtResource("17_6rv31")
+script = ExtResource("17_2js6e")
+
+[node name="ubi" type="Sprite2D" parent="Logos"]
+texture = ExtResource("18_2jq48")
+script = ExtResource("17_2js6e")
