@@ -358,7 +358,8 @@ func __set_criteria_fire_as_blue(fire):
 # - low: timer of 10s for choosing
 # - high: all is VERY slow
 func __manage_criteria_rythm(stat_pct_float_1: float):
-	stat_pct_float_1 = randf_range(0.01, 0.3)
+	#stat_pct_float_1 = randf_range(0.01, 0.3)
+	stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New RYTHM: ', stat_pct_float_1)
 	stat_bars[CRITERIA_RYTHM].value = stat_pct_float_1 * 100
 	var sprite = $Rythm/ProgressSprite
@@ -395,6 +396,7 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 # - high: activating spyche shader
 func __manage_criteria_flow(stat_pct_float_1: float):
 	#stat_pct_float_1 = randf_range(0.01, 0.3)
+	stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New FLOW: ', stat_pct_float_1)
 	stat_bars[CRITERIA_FLOW].value = stat_pct_float_1 * 100
 	var sprite = $Flow/ProgressSprite
@@ -439,6 +441,7 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 # - high: logo are bouncing every where
 func __manage_criteria_visibility(stat_pct_float_1: float):
 	#stat_pct_float_1 = randf_range(0.05, 0.3)
+	stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New VISIBILITY: ', stat_pct_float_1)
 	stat_bars[CRITERIA_VISIBILITY].value = stat_pct_float_1 * 100
 	var sprite = $Visibility/ProgressSprite
@@ -479,6 +482,7 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 # - high: familly invasion :)
 func __manage_criteria_familly_life(stat_pct_float_1: float):
 	#stat_pct_float_1 = randf_range(0.01, 0.3)
+	stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New FAMILLY_LIFE: ', stat_pct_float_1)
 	stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct_float_1 * 100
 	var sprite = $FamillyLife/ProgressSprite

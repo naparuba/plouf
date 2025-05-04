@@ -129,8 +129,8 @@ shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sncj2"]
 shader = ExtResource("7_w23tw")
-shader_parameter/progress = 0.479
-shader_parameter/background_color = Color(0.5, 0.5, 0.5, 0)
+shader_parameter/progress = 0.5
+shader_parameter/background_color = Color(0.501961, 0.501961, 0.501961, 0)
 shader_parameter/wave_amplitude = 0.01
 shader_parameter/wave_frequency = 3.0
 shader_parameter/wave_speed = 1.5
