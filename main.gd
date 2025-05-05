@@ -617,3 +617,20 @@ func on_card_preview(direction: String) -> void:
 		_update_possible_impacts("B")
 	else:
 		_reset_possible_impacts()
+
+
+func _on_help_1_pressed() -> void:
+	$help_1.visible = false
+	print('Help 1 was skip')
+	$help_2.visible = true
+
+
+func _on_help_2_pressed() -> void:
+	$help_2.visible = false
+	print('Help 2 was skip')
+	$help_3.visible = true
+
+
+func _on_help_3_pressed() -> void:
+	$help_3.visible = false
+	print('Help 3 was skip')

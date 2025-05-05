@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=36 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -24,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://b2bmqdemfckih" path="res://images/konami.png" id="17_6rv31"]
 [ext_resource type="Texture2D" uid="uid://b3jn7w86wl3wp" path="res://images/ubi.png" id="18_2jq48"]
 [ext_resource type="Texture2D" uid="uid://wqdxmqhblrxm" path="res://images/PLOUF_FILLE.png" id="18_8otj2"]
+[ext_resource type="Texture2D" uid="uid://bfpdvyhrj5y53" path="res://images/next.png" id="25_wf8uf"]
+[ext_resource type="Texture2D" uid="uid://4x8ogodl07a1" path="res://images/go.png" id="26_k6y5s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvbbl"]
 shader = ExtResource("2_b3nhu")
@@ -474,3 +476,162 @@ script = ExtResource("17_2js6e")
 [node name="ubi" type="Sprite2D" parent="Logos"]
 texture = ExtResource("18_2jq48")
 script = ExtResource("17_2js6e")
+
+[node name="help_1" type="Button" parent="."]
+offset_top = -4.0
+offset_right = 568.0
+offset_bottom = 1078.0
+flat = true
+
+[node name="ColorRect" type="ColorRect" parent="help_1"]
+layout_mode = 0
+offset_top = 137.0
+offset_right = 570.0
+offset_bottom = 1085.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="help_1/ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 46.0
+offset_right = 542.0
+offset_bottom = 906.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="help_1/ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 508.0
+offset_bottom = 851.0
+mouse_filter = 1
+bbcode_enabled = true
+text = "[color=black]Bonjour, et bienvenue dans la vie de [/color][color=purple]monsieur Plouf[/color]
+
+[color=black]Votre objectif est de mener à bien la création complète d'une [/color][color=purple]chronique[/color][color=black] avec toutes ses étapes (choisir un jeu, jouer, écrire la chronique, etc).[/color]
+
+[color=black]Pour cela vous aller devoir faire des [/color][color=purple]choix[/color][color=black] et avancer jusqu'à votre objectif au bout d'une [/color][color=purple]semaine[/color][color=black] fortement chargée.[/color]
+
+[color=black]Il va falloir faire attention au [/color][color=#04AA6D]4 critères[/color][color=black] de la vie de [/color][color=purple]monsieur Plouf[/color][color=black] et chercher à les maintenir en [color=#04AA6D]équilibre[/color]: [color=red]ni trop haut[/color], [color=blue]ni trop bas[/color]!
+
+[color=#04AA6D]Vie de famille[/color]
+[color=red]↗[/color][color=black] passer du bon temps en famille
+[color=blue]↘[/color][color=black] mais avoir du temps pour son travail[/color]
+
+[color=#04AA6D]Timing pour sortir la chronique à temps[/color]
+[color=red]↗[/color][color=black] un jeudi sur deux
+[color=blue]↘[/color][color=black] aller trop vite va le rendre fou![/color]
+
+[color=#04AA6D]Inspiration[/color]
+[color=red]↗[/color][color=black] Si les textes de [color=purple]monsieur Plouf[/color] sont comme du miel pour nos oreilles, c'est grace à son inspiration
+[color=blue]↘[/color][color=black] trop peut le faire délirer[/color]
+
+[color=#04AA6D]Visibilité du public[/color]
+[color=red]↗[/color][color=black] Etre gentil avec l'algorithme de Youtube, mais sans vendre son âme
+[color=blue]↘[/color][color=black] sans public, plus de [color=purple]chroniques[/color], et ça serait trop triste comme monde[/color]
+
+"
+
+[node name="next" type="Sprite2D" parent="help_1"]
+position = Vector2(436, 850)
+texture = ExtResource("25_wf8uf")
+
+[node name="help_2" type="Button" parent="."]
+visible = false
+offset_top = -2.0
+offset_right = 568.0
+offset_bottom = 1076.0
+flat = true
+
+[node name="ColorRectTop" type="ColorRect" parent="help_2"]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 570.0
+offset_bottom = 192.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="help_2"]
+layout_mode = 0
+offset_top = 787.0
+offset_right = 570.0
+offset_bottom = 1083.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="help_2/ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 17.0
+offset_right = 542.0
+offset_bottom = 192.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="help_2/ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 508.0
+offset_bottom = 175.0
+mouse_filter = 1
+bbcode_enabled = true
+text = "[color=black]Ici [color=purple]monsieur Plouf[/color][color=black] va être confronté à des [color=purple]problèmes[/color][color=black], et il aura alors à faire un [color=purple]choix[/color] entre [color=purple]2 possibilités[/color].
+
+[color=black]A noter que chaque [color=purple]choix[/color] aura des impacts sur les [color=#04AA6D]Critères de succès[/color][color=black], et survoler le choix vous présentera sa force ([color=yellow] 🞄  ●  ⬤[/color] ), mais attention, vous ne saurez pas s'il sont [color=red]↗[/color][color=black] ou [/color][color=blue]↘[/color]
+
+"
+
+[node name="next" type="Sprite2D" parent="help_2"]
+position = Vector2(475, 1031)
+texture = ExtResource("25_wf8uf")
+
+[node name="help_3" type="Button" parent="."]
+visible = false
+offset_top = -4.0
+offset_right = 568.0
+offset_bottom = 1074.0
+flat = true
+
+[node name="ColorRect" type="ColorRect" parent="help_3"]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 570.0
+offset_bottom = 895.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="help_3/ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 589.0
+offset_right = 542.0
+offset_bottom = 776.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="help_3/ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 508.0
+offset_bottom = 175.0
+mouse_filter = 1
+bbcode_enabled = true
+text = "[color=black]Voici tous les objectifs de [/color][color=purple]monsieur Plouf[/color][color=black] pour une [color=purple]chronique[/color][color=black] (oui il faut tout ça, et que ce soit prêt un jeudi sur 2!). [/color]
+
+[color=black]Aidez le donc grâce à vos [color=purple]choix, et avancer jusqu'à atteindre tous les objectifs en maintenant les [/color][color=#04AA6D]Critères de succès[/color][color=black] à flot.[/color]
+
+[color=black]C'est parti![/color]
+
+"
+
+[node name="go" type="Sprite2D" parent="help_3"]
+position = Vector2(472, 843)
+texture = ExtResource("26_k6y5s")
+
+[connection signal="pressed" from="help_1" to="." method="_on_help_1_pressed"]
+[connection signal="pressed" from="help_2" to="." method="_on_help_2_pressed"]
+[connection signal="pressed" from="help_3" to="." method="_on_help_3_pressed"]
