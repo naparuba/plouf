@@ -64,6 +64,7 @@ var current_problem = {}
 
 var g_game_over = false  # did we win or loose the game, if so, will just exit
 
+
 var phases_display = {
 	"CHOOSE_CHRONIQUE_GAME" : "choisir le jeu",
 	"PLAY_CHRONIQUE_GAME" : "jouer au jeu",
@@ -118,6 +119,11 @@ func _ready():
 
 	# By default the problem text are printing fast
 	label_question.set_fast_mode()
+	
+	# We can show the help/tuto
+	$help_1.visible = true
+	$help_2.visible = false
+	$help_3.visible = false
 
 func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -629,8 +635,12 @@ func _on_help_2_pressed() -> void:
 	$help_2.visible = false
 	print('Help 2 was skip')
 	$help_3.visible = true
+	# note: during this tuto, the card deck is disabled to avoid the user to
+	#       miss-click
 
 
 func _on_help_3_pressed() -> void:
 	$help_3.visible = false
 	print('Help 3 was skip')
+	# We can now enable the carddesk to move, so the user don't miss-click
+	card_deck.enable_interaction()

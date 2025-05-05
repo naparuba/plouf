@@ -463,6 +463,7 @@ texture = ExtResource("18_8otj2")
 script = ExtResource("17_2js6e")
 
 [node name="Logos" type="Node2D" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0)
 
 [node name="ea" type="Sprite2D" parent="Logos"]
@@ -478,6 +479,7 @@ texture = ExtResource("18_2jq48")
 script = ExtResource("17_2js6e")
 
 [node name="help_1" type="Button" parent="."]
+visible = false
 offset_top = -4.0
 offset_right = 568.0
 offset_bottom = 1078.0

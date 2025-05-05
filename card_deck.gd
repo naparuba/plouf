@@ -22,6 +22,7 @@ var last_preview_direction := "" # do not spam preview signal
 var current_choice_a_txt = ''
 var current_choice_b_txt = ''
 
+var are_interaction_enabled = false
 
 func _ready() -> void:
 	# Overlay
@@ -51,6 +52,9 @@ func _ready() -> void:
 	$Rush.set_parent(self)
 
 func _input(event):
+	if not self.are_interaction_enabled:
+		return
+	
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
@@ -73,6 +77,11 @@ func _input(event):
 		
 		_handle_drag_preview(delta_x)
 
+
+# At startup, during the tuto, we are disabling the interaction so the user don't skip tuto without reading
+func enable_interaction():
+	self.are_interaction_enabled = true
+	
 
 func _update_overlay_size():
 	var sprite: Sprite2D = current_card.get_node("Sprite2D")
