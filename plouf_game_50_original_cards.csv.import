@@ -1,15 +1,3 @@
 [remap]
 
-importer="csv_translation"
-type="Translation"
-uid="uid://csbvhtg0vqohf"
-valid=false
-
-[deps]
-
-source_file="res://plouf_game_50_original_cards.csv"
-
-[params]
-
-compress=true
-delimiter=0
+importer="keep"

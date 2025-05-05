@@ -128,6 +128,7 @@ func _ready():
 func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
+	
 	phases = data["phases"]
 	for phase in phases:
 		problems_by_phase[phase] = []
@@ -142,6 +143,7 @@ func _load_problems():
 	var header = file.get_csv_line(";")
 	while not file.eof_reached():
 		var line = file.get_csv_line(";")
+		
 		if line.size() < header.size():
 			continue
 		var problem = {}
