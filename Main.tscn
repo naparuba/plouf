@@ -537,7 +537,7 @@ text = "[color=black]Bonjour, et bienvenue dans la vie de [/color][color=purple]
 "
 
 [node name="next" type="Sprite2D" parent="help_1"]
-position = Vector2(436, 850)
+position = Vector2(441, 981)
 texture = ExtResource("25_wf8uf")
 
 [node name="help_2" type="Button" parent="."]
