@@ -19,6 +19,9 @@ var last_preview_direction := "" # do not spam preview signal
 
 @onready var sprite_2d : Sprite2D = $CurrentCard/Sprite2D
 
+
+var current_character_texture = null
+var current_background_texture = null
 var current_choice_a_txt = ''
 var current_choice_b_txt = ''
 
@@ -50,6 +53,9 @@ func _ready() -> void:
 
 	# Give myself to rush so to can callback myself
 	$Rush.set_parent(self)
+	
+	# Let the deck know self so it can callback us
+	_generate_deck_cards(3)
 
 func _input(event):
 	if not self.are_interaction_enabled:
@@ -78,6 +84,60 @@ func _input(event):
 		_handle_drag_preview(delta_x)
 
 
+func _generate_deck_cards(count:int):
+	var deck = $Deck
+	# First clean Deck object to be sure it's void
+	for child in deck.get_children():
+		deck.remove_child(child)
+		child.queue_free()
+		
+	# Charge la texture et le shader
+	var tex = load("res://images/FADED.png")
+	var shader = load("res://shaders/card_in_deck.gdshader")
+	var script := load("res://one_card_deck.gd")
+
+	# Crée les sprites en pile
+	for i in count:
+		var sprite = Sprite2D.new()
+		sprite.texture = tex
+		sprite.set_script(script)
+		sprite.set_parent(self)  # so it can callback us when flip done
+		
+		# Position légèrement décalée pour l'effet "tas"
+		sprite.position = Vector2(-(count-i-1) * 5, (count-i-1) * 5)  # décale chaque carte
+		
+		# Matériau avec shader
+		var mat := ShaderMaterial.new()
+		mat.shader = shader
+		mat.set_shader_parameter("corner_radius_px", 20)
+		sprite.material = mat
+		
+		deck.add_child(sprite)
+	
+func __get_top_deck_card():
+	var deck = $Deck
+	var card = null
+	# First clean Deck object to be sure it's void
+	for c in deck.get_children():
+		card = c
+	return card
+	
+func _flip_top_deck_card():
+	var deck = $Deck
+	var card = self.__get_top_deck_card()
+	
+	card.flip_card(current_character_texture, current_background_texture)
+	
+# the top deck card is flip, we can display the interactive one, and drop the top desk card
+func flip_top_deck_card_done():  
+	$CurrentCard.visible = true
+	
+	# drop the top card: the last one
+	var card = __get_top_deck_card()
+	if card:
+		card.queue_free()
+	
+	
 # At startup, during the tuto, we are disabling the interaction so the user don't skip tuto without reading
 func enable_interaction():
 	self.are_interaction_enabled = true
@@ -246,7 +306,9 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 # Main call from Main.gd
 func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String, is_ending_message: bool):
-	var sprite_current := current_card.get_node("Sprite2D")	
+	var sprite_current := current_card.get_node("Sprite2D")
+	
+	current_card.visible = false  # will be shown when top card flip will be done
 	
 	if not is_ending_message:
 		$CurrentCard/GlobalMessage.text = global_message
@@ -260,6 +322,9 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 		sprite_current.texture = character_texture
 	else:  # message card, don't care about sprite_texture
 		sprite_current.texture = background_texture
+	
+	current_character_texture = character_texture
+	current_background_texture = background_texture
 	
 	print('Give backtexture ', background_texture)
 	sprite_2d.material.set_shader_parameter('backTexture', background_texture)
@@ -282,6 +347,10 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	# Update text
 	current_choice_a_txt = choice_a_txt
 	current_choice_b_txt = choice_b_txt
+	
+	_generate_deck_cards(3)
+	
+	_flip_top_deck_card()
 
 
 ### Impacts:

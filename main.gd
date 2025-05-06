@@ -3,6 +3,8 @@ extends CanvasLayer
 @onready var card_deck := $CardDeck
 
 
+var IS_DEBUG = true
+
 var card_index = 0
 var deck = []
 
@@ -124,6 +126,18 @@ func _ready():
 	$help_1.visible = true
 	$help_2.visible = false
 	$help_3.visible = false
+	
+	if IS_DEBUG:
+		$help_1.visible = false
+		card_deck.enable_interaction()
+
+
+func _input(event):
+	# Quit on escape key
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		print("Touche Échap pressée !")
+		get_tree().quit()
+
 
 func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
