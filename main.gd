@@ -385,6 +385,9 @@ func _apply_stats_consequences(problem, choice):
 		stat_pct = clamp(stat_pct, 1, 100)
 		var stat_pct_float_1 = stat_pct / 100.0
 		
+		print('SPAWN CRITERIA PARTICLE:', choice, ' stat', stat, ' ',str(impact))
+		_spawn_criteria_particle(choice, stat, impact)
+		
 		match stat:
 			CRITERIA_RYTHM:
 				__manage_criteria_rythm(stat_pct_float_1)
@@ -397,7 +400,7 @@ func _apply_stats_consequences(problem, choice):
 
 			CRITERIA_VISIBILITY:
 				__manage_criteria_visibility(stat_pct_float_1)
-
+		
 	print("📊 Stats :", stats)
 
 
@@ -659,6 +662,7 @@ func on_swipe_choice(direction: String):
 		_display_problem_after_phase_change()
 		return
 	
+	
 	print("→ Swipe :", direction)
 	var did_change_phase = _apply_choice(direction)  # ta logique existante
 	
@@ -720,3 +724,38 @@ func _on_help_3_pressed() -> void:
 	print('Help 3 was skip')
 	# We can now enable the carddesk to move, so the user don't miss-click
 	card_deck.enable_interaction()
+
+
+############# Criteria particle
+func _spawn_criteria_particle(choice: String, to_stat:String, impact:int):
+	if impact == 0:
+		return
+	var nb_particle = abs(impact)
+	var particle_img_path = 'particle_plus'
+	if impact < 0:
+		particle_img_path = 'particle_minus'
+	var img = load('res://images/'+particle_img_path+'.png')
+	var particle_emiter = $particle_emiter_a
+	if choice == 'B':
+		particle_emiter = $particle_emiter_b
+	for i in nb_particle:
+		var sprite = Sprite2D.new()
+		sprite.texture = img
+		sprite.scale = Vector2(0.3, 0.4)  # more thin that the basic sprite
+		var random_offset = Vector2(randf_range(-20.0, 20.0), randf_range(-20.0, 20.0))
+		sprite.position = particle_emiter.position + random_offset
+		$particles.add_child(sprite)
+		
+		var dests = {
+			CRITERIA_FAMILLY_LIFE : $FamillyLife/ProgressSpriteBack.global_position,  # NOTE: global position and not jsut position
+			CRITERIA_FLOW : $Flow/ProgressSpriteBack.global_position,
+			CRITERIA_RYTHM: $Rythm/ProgressSpriteBack.global_position,
+			CRITERIA_VISIBILITY: $Visibility/ProgressSpriteBack.global_position,
+		}
+		
+		var dest = dests.get(to_stat) + random_offset
+		print('_spawn_criteria_particle', to_stat , ' =>', dest)
+		var tween = create_tween()
+		tween.tween_property(sprite, "position", dest, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_callback(Callable(sprite, "queue_free"))  # don't forget to remove it after!
+	

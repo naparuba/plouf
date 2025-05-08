@@ -634,6 +634,14 @@ text = "[color=black]Voici tous les objectifs de [/color][color=purple]monsieur 
 position = Vector2(472, 843)
 texture = ExtResource("26_k6y5s")
 
+[node name="particle_emiter_a" type="Node2D" parent="."]
+position = Vector2(70, 664)
+
+[node name="particle_emiter_b" type="Node2D" parent="."]
+position = Vector2(489, 659)
+
+[node name="particles" type="Node2D" parent="."]
+
 [connection signal="pressed" from="help_1" to="." method="_on_help_1_pressed"]
 [connection signal="pressed" from="help_2" to="." method="_on_help_2_pressed"]
 [connection signal="pressed" from="help_3" to="." method="_on_help_3_pressed"]

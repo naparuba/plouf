@@ -116,6 +116,7 @@ text = "Rush!
 Plus que Xs"
 
 [node name="GlobalMessages" type="Button" parent="."]
+visible = false
 offset_left = -285.0
 offset_top = -546.0
 offset_right = 285.0
