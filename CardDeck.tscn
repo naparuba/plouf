@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqd306sitp07o"]
+[gd_scene load_steps=18 format=3 uid="uid://dqd306sitp07o"]
 
 [ext_resource type="Script" path="res://card_deck.gd" id="1_pqhgn"]
 [ext_resource type="Shader" path="res://shaders/card_in_deck.gdshader" id="2_6e30h"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://d2q5nexaq2ara" path="res://images/chrono.png" id="6_8v3lw"]
 [ext_resource type="Script" path="res://rush.gd" id="6_cptfo"]
 [ext_resource type="Shader" path="res://shaders/blink.gdshader" id="7_vmqky"]
+[ext_resource type="Texture2D" uid="uid://evv2j8mio2vc" path="res://images/ENDING.png" id="13_6hc37"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yg80w"]
 shader = ExtResource("2_6e30h")
@@ -139,23 +140,28 @@ color = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_top = 288.0
 offset_right = 572.0
-offset_bottom = 494.0
+offset_bottom = 697.0
 mouse_filter = 1
-color = Color(0.691357, 0.691357, 0.691357, 1)
+color = Color(0.148215, 0.671492, 0.570857, 1)
 
 [node name="label_message" type="RichTextLabel" parent="GlobalMessages/message_back"]
 layout_mode = 0
 offset_right = 571.0
-offset_bottom = 206.0
+offset_bottom = 409.0
 mouse_filter = 1
 bbcode_enabled = true
+text = "Je suis un texte d'exemple"
 
 [node name="bottom_border" type="ColorRect" parent="GlobalMessages"]
 layout_mode = 0
-offset_top = 495.0
+offset_top = 697.0
 offset_right = 572.0
-offset_bottom = 507.0
+offset_bottom = 709.0
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
+
+[node name="sprite" type="Sprite2D" parent="GlobalMessages"]
+position = Vector2(286, 890)
+texture = ExtResource("13_6hc37")
 
 [connection signal="pressed" from="GlobalMessages" to="." method="_on_global_messages_pressed"]

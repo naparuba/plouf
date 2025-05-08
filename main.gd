@@ -2,8 +2,11 @@ extends CanvasLayer
 
 @onready var card_deck := $CardDeck
 
+# Some debug flag for... the dev, me
+var DEBUG_SKIP_TUTO = true
+var DEBUG_GAMEOVER = false
+var DEBUG_WIN = false
 
-var IS_DEBUG = true
 
 var card_index = 0
 var deck = []
@@ -131,7 +134,7 @@ func _ready():
 	$help_2.visible = false
 	$help_3.visible = false
 	
-	if IS_DEBUG:
+	if DEBUG_SKIP_TUTO:
 		$help_1.visible = false
 		card_deck.enable_interaction()
 
@@ -199,17 +202,17 @@ func _jump_to_next_phase():
 	print('JUMP TO NEXT PHASE')
 	_show_objective_progression()
 	
-	if current_phase_index >= phases.size():
+	if current_phase_index >= phases.size() or DEBUG_WIN:
 		__set_problem_text("🎉 Fin de la semaine de Monsieur Plouf !")
 		self.g_game_over = true
-		_switch_to_gameover_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "Au revoir les gents!", "ENDING")
+		_switch_to_win_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "ENDING")
 		return
 	
 	# Get a message for the end of our phase
 	var finish_phase_id = phases[current_phase_index-1]  # was incremented just before
 	var finish_message = __get_random_phase_finish_message(finish_phase_id)
-	var message = '[bgcolor=grey][color=black]'+finish_message+'[/color][/bgcolor]'
-	_switch_to_message_card(message)
+	var message = '[color=black]'+finish_message+'[/color]'
+	_display_next_phase_message(message)
 	
 	
 func _display_problem_after_phase_change():
@@ -306,6 +309,12 @@ func _apply_choice(choice: String) -> bool:
 	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
 	
 	var r = _validate_stats()
+	
+	# To debug the gameover
+	if DEBUG_GAMEOVER:
+		r['state'] = 'too_high'
+		r['stat'] = CRITERIA_FLOW
+		
 	if r['state'] != 'ok':
 		var _bad_stat = r['stat']
 		var error = r['state']
@@ -341,8 +350,8 @@ func _apply_choice(choice: String) -> bool:
 					_err = "💥 [b]Productivité terminale[/b]!\nUne vidéo toutes les heures. Il ne voit plus les saisons passer. Il [i]est[/i] le contenu."
 					img_path = 'RYTHM_TOO_HIGH'
 		g_game_over = true
-		_err = '[bgcolor=grey][color=black]' + _err + '[/color][/bgcolor]'
-		_switch_to_gameover_card(_err, 'Arg, une autre semaine peut être...', img_path)
+		_err = '[color=white]' + _err + '[/color]'
+		_switch_to_gameover(_err, 'Arg, une autre semaine peut être...', img_path)
 		return true  # simulate like if we did change state, as we move to the end game
 	
 	var did_change_phase = _load_next_problem()
@@ -601,20 +610,33 @@ func _reset_possible_impacts():
 	label_possible_impact_visibility.text = ""
 
 
+#TODO: get back message cards maybe?
 func _switch_to_message_card(message:String):
 	var img = load("res://images/FADED.png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	#card_deck.set_card_data(null, img, "OK", "OK", message, false)
 	card_deck.display_global_message(message, 'grey')
 	
 
-func _switch_to_gameover_card(message:String, swipe_message:String, img_path : String):
+func _display_next_phase_message(message:String):
+	g_is_in_card_message = true
+	print('Display message card: ', message)
+	card_deck.display_next_phase_message(message)
+
+
+func _switch_to_win_card(message:String, img_path : String):
 	var img = load("res://images/"+img_path+".png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	#card_deck.set_card_data(null, img, swipe_message, swipe_message, message, true)
-	card_deck.display_global_message(message, 'black')
+	card_deck.display_win_message(message, img)
+
+
+func _switch_to_gameover(message:String, swipe_message:String, img_path : String):
+	var img = load("res://images/"+img_path+".png")
+	g_is_in_card_message = true
+	print('Display message card: ', message, 'with ', img_path, ' =>', img)
+	card_deck.display_gameover_message(message, img)
+
 
 func _get_current_card_textures() -> Dictionary:
 	var character_path = current_problem.get("character_img_id", "PLOUF")+'.png'  # fallback
@@ -644,6 +666,7 @@ func on_swipe_choice(direction: String):
 	if not did_change_phase:
 		_update_current_card_deck()  # we can show the new card
 
+
 func _update_current_card_deck():
 	# Recharge les visuels dans CardDeck
 	var textures = _get_current_card_textures()
@@ -652,7 +675,6 @@ func _update_current_card_deck():
 	
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
-	
 	
 	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false)
 

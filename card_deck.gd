@@ -466,13 +466,41 @@ func display_global_message(message:String, color:String):
 	print('DECK:: display_global_message')
 	self.disable_interaction()  # don't want to move card during this message
 	$GlobalMessages/message_back/label_message.text = message
+	$GlobalMessages/message_back.color = '#b0b0b0'
+	$GlobalMessages/sprite.visible = false
 	$GlobalMessages.visible = true
-	
+
+
+func display_gameover_message(message:String, tex: Texture2D):
+	print('DECK:: display_global_message')
+	self.disable_interaction()  # don't want to move card during this message
+	$GlobalMessages/message_back/label_message.text = message
+	$GlobalMessages/message_back.color = '#151515'
+	$GlobalMessages/sprite.texture = tex
+	$GlobalMessages/sprite.visible = true
+	$GlobalMessages.visible = true
+
+func display_next_phase_message(message:String):
+	print('DECK:: display_global_message')
+	self.disable_interaction()  # don't want to move card during this message
+	$GlobalMessages/message_back/label_message.text = message
+	$GlobalMessages/message_back.color = '#8e7ffb'
+	$GlobalMessages/sprite.visible = false
+	$GlobalMessages.visible = true
+
+func display_win_message(message:String, tex: Texture2D):
+	print('DECK:: display_global_message')
+	self.disable_interaction()  # don't want to move card during this message
+	$GlobalMessages/message_back/label_message.text = message
+	$GlobalMessages/message_back.color = '#26ab92'
+	$GlobalMessages/sprite.texture = tex
+	$GlobalMessages/sprite.visible = true
+	$GlobalMessages.visible = true
 
 func _on_global_messages_pressed() -> void:
 	print('DECK:: _on_global_messages_pressed')
 	$GlobalMessages.visible = false
 	
-	# we are NOT enabling the interactn, will be done when card flip will be done
+	# NOTE: we are NOT enabling the interaction, will be done when card flip will be done
 	
 	emit_signal("global_message_read")
