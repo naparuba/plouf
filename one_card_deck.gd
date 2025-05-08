@@ -20,13 +20,13 @@ func flip_card(texture_character: Texture2D, texture_background: Texture2D):
 	var tween := create_tween()
 
 	# Étape 1 : réduire scale.x à 0 (effet de repli)
-	tween.tween_property(self, "scale:x", 0.0, 1)
+	tween.tween_property(self, "scale:x", 0.0, 0.2)
 
 	# Étape 2 : callback au milieu du flip (pour changer visuel si besoin)
 	tween.tween_callback(Callable(self, "_on_half_flip"))
 
 	# Étape 3 : remettre scale.x à 1.0 (retour de l'autre côté)
-	tween.tween_property(self, "scale:x", 1.0, 1)
+	tween.tween_property(self, "scale:x", 1.0, 0.2)
 
 	# Étape 4 : callback à la fin
 	tween.tween_callback(Callable(self, "_on_flip_done"))

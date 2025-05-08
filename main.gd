@@ -119,7 +119,8 @@ func _ready():
 	card_deck.global_message_read.connect(on_global_message_read)
 	
 	# We can update the deck display
-	card_deck.stack_cards(len(g_remaining_current_problems))
+	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems))
+	await stack_animation.finished  # for the the stack to be in the good place
 	_update_current_card_deck()
 
 	# By default the problem text are printing fast
@@ -220,7 +221,8 @@ func _display_problem_after_phase_change():
 	_load_next_problem() # load data
 	
 	# As we know how much cards are fremaining,we can show them
-	card_deck.stack_cards(len(g_remaining_current_problems))
+	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems))
+	await stack_animation.finished  # for the the stack to be in the good place
 	
 	_update_current_card_deck() # show problem card
 

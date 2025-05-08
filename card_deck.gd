@@ -8,7 +8,7 @@ signal global_message_read()
 @export var max_rotation_degrees := 15.0
 @export var reject_threshold := 50.0
 
-var nb_stack_cards = 0
+var STACK_OFFSET = 5  # each card have a x,y = 5 offset
 @onready var current_card := $CurrentCard
 
 var dragging := false
@@ -58,7 +58,6 @@ func _ready() -> void:
 	
 	$GlobalMessages.visible = false
 	
-	#_stack_cards(3)
 
 func _input(event):
 	if not self.are_interaction_enabled:
@@ -103,23 +102,38 @@ func stack_cards(count:int):
 	var shader = load("res://shaders/card_in_deck.gdshader")
 	var script := load("res://one_card_deck.gd")
 
-	# Crée les sprites en pile
+	var tween = create_tween()
+	var stacking_animation_duration = 0.5  # max time for the stacking
+	
+	var off_screen_position = Vector2(-500, 200)
+	
+	# Create sprite as a distant stack taht will move to a final dest
 	for i in count:
 		var sprite = Sprite2D.new()
 		sprite.texture = tex
 		sprite.set_script(script)
 		sprite.set_parent(self)  # so it can callback us when flip done
 		
-		# Position légèrement décalée pour l'effet "tas"
-		sprite.position = Vector2(-(count-i-1) * 5, (count-i-1) * 5)  # décale chaque carte
-		
+		# Position are smooth offset to see a "stack"
+		var final_position = Vector2(-(count-i-1) * STACK_OFFSET, (count-i-1) * STACK_OFFSET)  # décale chaque carte
+		var original_position = off_screen_position  # tODO: already offset them?
+		sprite.position = original_position
+		sprite.scale = Vector2(0.2, 0.2)
+		print('DESK:: STACK:: ', str(i),'/',count, ' is on ', final_position)
 		# Matériau avec shader
 		var mat := ShaderMaterial.new()
 		mat.shader = shader
 		mat.set_shader_parameter("corner_radius_px", 20)
 		sprite.material = mat
 		
+		var move_duration_ratio = float(count) / (i+1)  # so not all cards are moving the same speed
+		print('MOVE DURATION', move_duration_ratio)
+		
 		deck.add_child(sprite)
+		tween.parallel().tween_property(sprite, 'position', final_position, stacking_animation_duration / move_duration_ratio)
+		tween.parallel().tween_property(sprite, 'scale', Vector2(1.0, 1.0), stacking_animation_duration  / move_duration_ratio)
+		
+	return tween # so the caller can wait for it
 	
 func __get_top_deck_card():
 	var deck = $Deck
@@ -130,6 +144,7 @@ func __get_top_deck_card():
 	return card
 	
 func _flip_top_deck_card():
+	print('DECK:: _flip_top_deck_card')
 	var deck = $Deck
 	var card = self.__get_top_deck_card()
 	
@@ -139,7 +154,8 @@ func _flip_top_deck_card():
 # the top deck card is flip, we can display the interactive one, and drop the top desk card
 func flip_top_deck_card_done():  
 	print('CARD_DECK:: flip_top_deck_card_done ')
-	$CurrentCard.visible = true
+	
+	current_card.visible = true
 	
 	# drop the top card: the last one
 	var card = __get_top_deck_card()
@@ -332,6 +348,7 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	
 	# We don't want to interact or even show the card until all animations are done
 	self.disable_interaction()
+	
 	current_card.visible = false  # will be shown when top card flip will be done
 	
 	if not is_ending_message:
@@ -371,8 +388,27 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	current_choice_b_txt = choice_b_txt
 	
 	print('DECK:: GLOBAL MESSAGE ',global_message)
+	# Now we will:
+	# 1- move all remaining card to one step higher, but NOT the top one
+	# 2- that is flipping directly
+	_move_up_bottom_cards()
 	_flip_top_deck_card()
 
+func _move_up_bottom_cards():
+	print('DECK:: _move_up_bottom_cards')
+	var deck = $Deck
+	var top_card = self.__get_top_deck_card()
+	var tween = create_tween()
+	var nb = 0
+	for c in deck.get_children():
+		nb += 1
+		if c == top_card:  # the top card is flipping, so avoid to touch it
+			print('TOP CARD BEFORE MOVING: ', c.position)
+			continue
+		var new_pos = Vector2(c.position.x+STACK_OFFSET, c.position.y-STACK_OFFSET)
+		print('DESK:: stack:: before moving ', str(nb),c.position, ' => ', new_pos)
+		tween.parallel().tween_property(c, 'position', new_pos, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	#tween.connect("finished", Callable(self, "_flip_top_deck_card"))
 
 ### Impacts:
 func set_grey():
@@ -428,12 +464,15 @@ func callback_rush_timeout():
 
 func display_global_message(message:String, color:String):
 	print('DECK:: display_global_message')
+	self.disable_interaction()  # don't want to move card during this message
 	$GlobalMessages/message_back/label_message.text = message
-	
 	$GlobalMessages.visible = true
 	
 
 func _on_global_messages_pressed() -> void:
 	print('DECK:: _on_global_messages_pressed')
 	$GlobalMessages.visible = false
+	
+	# we are NOT enabling the interactn, will be done when card flip will be done
+	
 	emit_signal("global_message_read")
