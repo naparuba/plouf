@@ -2,11 +2,13 @@ extends Node2D
 
 signal choice_made(direction: String)
 signal choice_preview(direction: String)
+signal global_message_read()
 
 @export var max_drag_distance := 75.0
 @export var max_rotation_degrees := 15.0
 @export var reject_threshold := 50.0
 
+var nb_stack_cards = 0
 @onready var current_card := $CurrentCard
 
 var dragging := false
@@ -54,8 +56,9 @@ func _ready() -> void:
 	# Give myself to rush so to can callback myself
 	$Rush.set_parent(self)
 	
-	# Let the deck know self so it can callback us
-	_generate_deck_cards(3)
+	$GlobalMessages.visible = false
+	
+	#_stack_cards(3)
 
 func _input(event):
 	if not self.are_interaction_enabled:
@@ -68,7 +71,7 @@ func _input(event):
 				drag_start_pos = get_global_mouse_position()
 			else:
 				dragging = false
-				handle_release()
+				self._handle_release()
 	elif event is InputEventMouseMotion and dragging:
 		var delta_x = get_global_mouse_position().x - drag_start_pos.x
 		delta_x = clamp(delta_x, -max_drag_distance, max_drag_distance)
@@ -84,7 +87,11 @@ func _input(event):
 		_handle_drag_preview(delta_x)
 
 
-func _generate_deck_cards(count:int):
+func stack_cards(count:int):
+	print('CARD_DECK:: stack_cards '+ str(count))
+	# When drawing, in all cases we don't want interactions, only reenable it when finish and flip the
+	# top card
+	self.disable_interaction()
 	var deck = $Deck
 	# First clean Deck object to be sure it's void
 	for child in deck.get_children():
@@ -126,10 +133,12 @@ func _flip_top_deck_card():
 	var deck = $Deck
 	var card = self.__get_top_deck_card()
 	
-	card.flip_card(current_character_texture, current_background_texture)
+	if card:
+		card.flip_card(current_character_texture, current_background_texture)
 	
 # the top deck card is flip, we can display the interactive one, and drop the top desk card
 func flip_top_deck_card_done():  
+	print('CARD_DECK:: flip_top_deck_card_done ')
 	$CurrentCard.visible = true
 	
 	# drop the top card: the last one
@@ -137,11 +146,20 @@ func flip_top_deck_card_done():
 	if card:
 		card.queue_free()
 	
+	# We are done with the flip, we can reenable interaction
+	self.enable_interaction()
+	
 	
 # At startup, during the tuto, we are disabling the interaction so the user don't skip tuto without reading
 func enable_interaction():
+	print('CARD_DECK:: enable_interaction ')
 	self.are_interaction_enabled = true
 	
+
+func disable_interaction():
+	print('CARD_DECK:: disable_interaction ')
+	self.are_interaction_enabled = false
+
 
 func _update_overlay_size():
 	var sprite: Sprite2D = current_card.get_node("Sprite2D")
@@ -242,7 +260,8 @@ func _handle_drag_preview(delta_x: float) -> void:
 		else:
 			emit_signal("choice_preview", "none") # 🔥 aucun choix clair (optionnel)
 
-func handle_release():
+func _handle_release():
+	print('CARD_DECK:: _handle_release ')
 	var delta_x = current_card.position.x
 	if abs(delta_x) > reject_threshold:
 		var direction = "B" if delta_x > 0 else "A"
@@ -260,6 +279,7 @@ func reset_card():
 
 
 func on_choice(direction: String):
+	print('CARD_DECK:: on_choice '+ direction)
 		# Calculer la direction à partir de la position de la carte
 	var target_x = current_card.position.x
 	var target_y = 600  # Ajouter un mouvement vers le bas pour donner l'effet de chute
@@ -288,6 +308,7 @@ func on_choice(direction: String):
 	
 
 func _emit_choice(direction):
+	print('CARD_DECK:: choice_made '+ direction)
 	emit_signal("choice_made", direction)
 
 
@@ -306,8 +327,11 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 # Main call from Main.gd
 func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String, is_ending_message: bool):
+	print('CARD_DECK:: set_card_data:: '+ choice_a_txt)
 	var sprite_current := current_card.get_node("Sprite2D")
 	
+	# We don't want to interact or even show the card until all animations are done
+	self.disable_interaction()
 	current_card.visible = false  # will be shown when top card flip will be done
 	
 	if not is_ending_message:
@@ -315,9 +339,7 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	else:
 		$CurrentCard/GlobalMessage.text = ""
 		$CurrentCard/EndingMessage.text = global_message
-	
-	print('CARD_DECK:: set_card_images:: '+ choice_a_txt)
-	
+		
 	if character_texture != null:
 		sprite_current.texture = character_texture
 	else:  # message card, don't care about sprite_texture
@@ -326,7 +348,7 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	current_character_texture = character_texture
 	current_background_texture = background_texture
 	
-	print('Give backtexture ', background_texture)
+	print('DECK:: Give backtexture ', background_texture)
 	sprite_2d.material.set_shader_parameter('backTexture', background_texture)
 	
 	# Reset the burning shader
@@ -348,49 +370,48 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	current_choice_a_txt = choice_a_txt
 	current_choice_b_txt = choice_b_txt
 	
-	_generate_deck_cards(3)
-	
+	print('DECK:: GLOBAL MESSAGE ',global_message)
 	_flip_top_deck_card()
 
 
 ### Impacts:
 func set_grey():
-	print('set_grey')
+	print('DECK:: set_grey')
 	var tween = create_tween()
 	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_grey():
-	print('unset_grey')
+	print('DECK:: unset_grey')
 	var tween = create_tween()
 	tween.parallel().tween_property(sprite_2d.material, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 
 
 func set_text_wobby():
-	print('set_text_wobby')
+	print('DECK:: set_text_wobby')
 	var tween = create_tween()
 	tween.parallel().tween_property(choice_label.material, 'shader_parameter/deform_strength', 0.5, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_text_wobby():
-	print('unset_text_wobby')
+	print('DECK:: unset_text_wobby')
 	var tween = create_tween()
 	tween.parallel().tween_property(choice_label.material, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
 func set_text_raw():
-	print('set_text_raw')
+	print('DECK:: set_text_raw')
 	var tween = create_tween()
 	tween.parallel().tween_property(choice_label.material, 'shader_parameter/pixel_size', 150, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			
 func unset_text_raw():
-	print('unset_text_raw')
+	print('DECK:: unset_text_raw')
 	var tween = create_tween()
 	tween.parallel().tween_property(choice_label.material, 'shader_parameter/pixel_size', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
 func set_text_blink():
-	print('set_text_blink')
+	print('DECK:: set_text_blink')
 	#choice_label.material.set_shader_parameter('recurring_hide', true)
 
 func unset_text_blink():
-	print('unset_text_blink')
+	print('DECK:: unset_text_blink')
 	#choice_label.material.set_shader_parameter('recurring_hide', false)
 
 func set_rush():
@@ -403,3 +424,16 @@ func callback_rush_timeout():
 	current_choice_a_txt = 'RUSH! Plus le temps de réfléchir!'
 	current_choice_b_txt = current_choice_a_txt
 	choice_label.text = current_choice_a_txt
+
+
+func display_global_message(message:String, color:String):
+	print('DECK:: display_global_message')
+	$GlobalMessages/message_back/label_message.text = message
+	
+	$GlobalMessages.visible = true
+	
+
+func _on_global_messages_pressed() -> void:
+	print('DECK:: _on_global_messages_pressed')
+	$GlobalMessages.visible = false
+	emit_signal("global_message_read")

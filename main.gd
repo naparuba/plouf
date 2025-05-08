@@ -63,6 +63,7 @@ var current_phase_index = 0
 var current_problem_index = 0
 var current_problem_list = []
 var current_problem = {}
+var g_remaining_current_problems = []
 
 var g_game_over = false  # did we win or loose the game, if so, will just exit
 
@@ -115,8 +116,10 @@ func _ready():
 	
 	card_deck.choice_made.connect(on_swipe_choice)
 	card_deck.choice_preview.connect(on_card_preview)
+	card_deck.global_message_read.connect(on_global_message_read)
 	
 	# We can update the deck display
+	card_deck.stack_cards(len(g_remaining_current_problems))
 	_update_current_card_deck()
 
 	# By default the problem text are printing fast
@@ -215,6 +218,10 @@ func _display_problem_after_phase_change():
 	current_problem_index = 0
 	seen_ids.clear()
 	_load_next_problem() # load data
+	
+	# As we know how much cards are fremaining,we can show them
+	card_deck.stack_cards(len(g_remaining_current_problems))
+	
 	_update_current_card_deck() # show problem card
 
 func _show_objective_progression():
@@ -236,6 +243,17 @@ func _show_objective_progression():
 		label.text = prefix + ' [color=black]' + phase_display +' [/color]'
 		
 
+func __refresh_remaining_problems():
+	var unseens = []
+	for p in current_problem_list:
+		var pb_id = p["problem_id"]
+		if seen_ids.has( pb_id ):
+			continue
+		unseens.append(pb_id)
+	g_remaining_current_problems = unseens
+	return 
+	
+
 # validate the current problem, and return if we did change phase
 func _load_next_problem() -> bool:
 	print('_load_next_problem')
@@ -244,6 +262,9 @@ func _load_next_problem() -> bool:
 		current_phase_index += 1
 		_jump_to_next_phase()
 		return true
+	
+	__refresh_remaining_problems()
+	print('Remaining problems: ', len(g_remaining_current_problems), ' : ', g_remaining_current_problems)
 	
 	# Prendre le prochain problème non vu
 	while true:
@@ -582,14 +603,16 @@ func _switch_to_message_card(message:String):
 	var img = load("res://images/FADED.png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	card_deck.set_card_data(null, img, "OK", "OK", message, false)
+	#card_deck.set_card_data(null, img, "OK", "OK", message, false)
+	card_deck.display_global_message(message, 'grey')
 	
 
 func _switch_to_gameover_card(message:String, swipe_message:String, img_path : String):
 	var img = load("res://images/"+img_path+".png")
 	g_is_in_card_message = true
 	print('Display message card: ', message)
-	card_deck.set_card_data(null, img, swipe_message, swipe_message, message, true)
+	#card_deck.set_card_data(null, img, swipe_message, swipe_message, message, true)
+	card_deck.display_global_message(message, 'black')
 
 func _get_current_card_textures() -> Dictionary:
 	var character_path = current_problem.get("character_img_id", "PLOUF")+'.png'  # fallback
@@ -628,6 +651,7 @@ func _update_current_card_deck():
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
 	
+	
 	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false)
 
 func on_card_preview(direction: String) -> void:
@@ -640,6 +664,18 @@ func on_card_preview(direction: String) -> void:
 	else:
 		_reset_possible_impacts()
 
+
+func on_global_message_read():
+	print('on_global_message_read')
+	g_is_in_card_message = false  # no more a message
+	
+	if g_game_over: # we did finish, just close the game currently
+		OS.shell_open("https://www.youtube.com/@MonsieurPlouf")
+		self.get_tree().quit()  # Bye bye
+		return
+	
+	_display_problem_after_phase_change()
+	return
 
 func _on_help_1_pressed() -> void:
 	$help_1.visible = false

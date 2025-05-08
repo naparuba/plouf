@@ -421,6 +421,9 @@ texture = ExtResource("12_7j1ur")
 
 [node name="CardDeck" parent="." instance=ExtResource("11_dmsid")]
 position = Vector2(285, 544)
+max_drag_distance = 75.0
+max_rotation_degrees = 15.0
+reject_threshold = 50.0
 
 [node name="DEBUGProblem" type="Label" parent="."]
 visible = false

@@ -113,3 +113,49 @@ offset_bottom = 52.0
 bbcode_enabled = true
 text = "Rush!
 Plus que Xs"
+
+[node name="GlobalMessages" type="Button" parent="."]
+offset_left = -285.0
+offset_top = -546.0
+offset_right = 285.0
+offset_bottom = 536.0
+
+[node name="full_panel" type="ColorRect" parent="GlobalMessages"]
+layout_mode = 0
+offset_right = 572.0
+offset_bottom = 1084.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.701961)
+
+[node name="top_border" type="ColorRect" parent="GlobalMessages"]
+layout_mode = 0
+offset_top = 271.0
+offset_right = 572.0
+offset_bottom = 286.0
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[node name="message_back" type="ColorRect" parent="GlobalMessages"]
+layout_mode = 0
+offset_top = 288.0
+offset_right = 572.0
+offset_bottom = 494.0
+mouse_filter = 1
+color = Color(0.691357, 0.691357, 0.691357, 1)
+
+[node name="label_message" type="RichTextLabel" parent="GlobalMessages/message_back"]
+layout_mode = 0
+offset_right = 571.0
+offset_bottom = 206.0
+mouse_filter = 1
+bbcode_enabled = true
+
+[node name="bottom_border" type="ColorRect" parent="GlobalMessages"]
+layout_mode = 0
+offset_top = 495.0
+offset_right = 572.0
+offset_bottom = 507.0
+mouse_filter = 1
+color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="GlobalMessages" to="." method="_on_global_messages_pressed"]

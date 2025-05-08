@@ -32,13 +32,13 @@ func flip_card(texture_character: Texture2D, texture_background: Texture2D):
 	tween.tween_callback(Callable(self, "_on_flip_done"))
 
 func _on_half_flip():
-	print("Mi-flip atteinte ! Tu peux changer la texture ici.")
+	print("one-card:: flip texture")
 	self.texture = to_texture_character
 	self.material.set_shader_parameter('backTexture', to_texture_background)
 	
 
 func _on_flip_done():
-	print("Flip terminé !")
+	print("one-card:: Flip terminé !")
 	if self.parent:
 		self.parent.flip_top_deck_card_done()
 
