@@ -62,6 +62,11 @@ var impact_is_activated_visibility = false
 var impact_is_activated_rythm = false
 var impact_is_activated_familly_life = false
 
+@onready var label_choice_impact = $LabelImpact
+var label_choice_impact_tween: Tween = null
+var label_choice_impact_timer: Timer = null
+var LABEL_CHOICE_IMPACT_DISPLAY_DURATION = 10
+
 @onready var card_viewer = $CardViewer
 
 
@@ -132,6 +137,9 @@ func _ready():
 	$help_1.visible = true
 	$help_2.visible = false
 	$help_3.visible = false
+	
+	# don't show any result
+	label_choice_impact.visible = false
 	
 	if DEBUG_SKIP_TUTO:
 		$help_1.visible = false
@@ -442,6 +450,12 @@ func _get_choice_stat(choice, stat):
 	var impact = int(current_problem[key + suffix]) * current_problem['impact_multiplier']  # was loaded as string from csv
 	return impact
 
+func _get_choice_impact_text(choice):
+	var suffix = "_a" if choice == "A" else "_b"
+	var choice_impact = current_problem['outcome'+suffix]
+	# change the $GAME into it
+	choice_impact = _change_text_with_played_game(choice_impact)
+	return choice_impact
 
 func _reset_progress_sprite(sprite):
 	var tween = create_tween()
@@ -457,6 +471,7 @@ func _change_progress_sprite(sprite, stat_pct_float_1):
 
 
 func _apply_stats_consequences(problem, choice):
+	# first apply impacts stats
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
 		stats[stat] += impact
@@ -482,6 +497,36 @@ func _apply_stats_consequences(problem, choice):
 				__manage_criteria_visibility(stat_pct_float_1)
 		
 	print("📊 Stats :", stats)
+	
+	_display_choice_impact_text(choice)
+	
+
+# Display the result of the last card and hide it after 5s
+func _display_choice_impact_text(choice: String):
+	# Then display the problem text
+	if self.label_choice_impact_tween and self.label_choice_impact_tween.is_running():
+		self.label_choice_impact_tween.kill()  # if the previous animation was on, just stop it and reset
+	if self.label_choice_impact_timer:
+		self.label_choice_impact_timer.queue_free()
+	label_choice_impact.text = 'Résultat: ' + _get_choice_impact_text(choice)
+	label_choice_impact.visible = true
+	label_choice_impact.visible_ratio = 0.0
+	self.label_choice_impact_tween = create_tween()
+	self.label_choice_impact_tween.tween_property(label_choice_impact, 'visible_ratio', 1.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	
+	# To not block this call, adding a callback to make disapear the text in 5s
+	self.label_choice_impact_timer = Timer.new()
+	self.label_choice_impact_timer.wait_time = LABEL_CHOICE_IMPACT_DISPLAY_DURATION - 0.2
+	self.label_choice_impact_timer.one_shot = true
+	self.label_choice_impact_timer.timeout.connect(_on_label_choice_impact_timeout)
+	add_child(self.label_choice_impact_timer)
+	self.label_choice_impact_timer.start()
+	
+
+# After 5s, we are fading the label choice impact text
+func _on_label_choice_impact_timeout():
+	self.label_choice_impact_tween = create_tween()
+	self.label_choice_impact_tween.tween_property(label_choice_impact, 'visible_ratio', 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 func __criteria_goes_low(stat_pct_float_1: float):
