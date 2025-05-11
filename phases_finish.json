@@ -1,72 +1,72 @@
 {
   "CHOOSE_CHRONIQUE_GAME": [
-    "Plouf a passé 4 heures sur Steam pour finir par lancer *Zuma Deluxe*.",
-    "Plouf a refait trois fois sa liste... puis est parti marcher sans choisir.",
-    "Plouf a tenté un pile ou face, mais la pièce est tombée dans une bouche d’égout.",
-    "Plouf a lancé un sondage Twitter : c’est *Rugby 22* qui a gagné.",
-    "Plouf a voulu faire un jeu méconnu... et a redémarré *Dark Souls*."
+    "Plouf a passé 4 heures sur Steam pour finalement choisir $GAME.",
+    "Plouf a refait trois fois sa liste... puis est parti marcher sans choisir. Il a finalement pris $GAME le lendemain.",
+    "Plouf a tenté un pile ou face, mais la pièce est tombée dans une bouche d’égout. Il a donc pris $GAME a défaut, sans trop y croire.",
+    "Plouf a lancé un sondage Twitter : c’est $GAME qui a gagné.",
+    "Plouf a voulu faire un jeu méconnu... et a démarré $GAME."
   ],
   "PLAY_CHRONIQUE_GAME": [
-    "Plouf a testé le tutoriel pendant 12 heures. Plouf pense que c’est fini.",
-    "Le jeu était trop buggué. Plouf a tout chroniqué à partir du menu principal.",
-    "Plouf a oublié d'enregistrer son gameplay. Encore.",
-    "Plouf a eu un crash et perdu sa sauvegarde... deux fois.",
-    "Plouf a rage quit, puis a décidé que ce serait une chronique sur la frustration."
+    "Plouf a testé le tutoriel de $GAME pendant 12 heures. Plouf pense que c’est fini.",
+    "$GAME était trop buggué. Plouf va orienter sa chronique sur le menu principal.",
+    "Plouf a oublié d'enregistrer son gameplay de $GAME. Encore.",
+    "$GAME a eu un crash et perdu sa sauvegarde... deux fois.",
+    "Plouf a rage quit $GAME, puis a décidé que ce serait une chronique sur la gestion de la frustration."
   ],
   "WRITE_CHRONIQUE": [
-    "Plouf a passé 2 jours sur le titre de la vidéo.",
-    "Plouf a écrit 12 pages... puis tout effacé pour recommencer en rimes.",
+    "Plouf a passé 2 jours sur le titre de la chronique sur $GAME.",
+    "Plouf a écrit 12 pages... puis tout effacé pour recommencer en rimes avec $GAME.",
     "Plouf a tout rédigé en Comic Sans pour 'le style'.",
-    "Plouf a oublié le nom du jeu à mi-script. A improvisé un autre.",
+    "Plouf a oublié le nom de $GAME à mi-script. Il l'a renommé en Super Mario par la suite.",
     "Plouf a remplacé tous les mots par 'jeux', 'vidéo' et 'narratif'."
   ],
   "REGISTER_VOICE": [
     "Plouf a éternué à chaque phrase. Tout est à refaire.",
     "Son micro était à l’envers. Belle réverbération.",
-    "Plouf a fait des voix de personnages... et s’est perdu dans son lore.",
+    "Plouf a fait des voix de personnages... et tout sonne comme Gros nounours!",
     "Plouf a tout enregistré en ASMR par erreur.",
-    "Plouf a imité Marcus et Joueur du Grenier... simultanément."
+    "Plouf a tenté d'imiter les personnages de $GAME."
   ],
   "DRAW_CHRONIQUE": [
-    "Son stylet est tombé dans une tasse de café.",
-    "Plouf a passé 3 jours à dessiner une chaise. Superbe chaise.",
-    "Plouf a tenté un style *Pixel Art Renaissance Minimaliste*. Échec.",
-    "Plouf a animé ses personnages avec des têtes de chats. Juste pour voir.",
+    "Sa souris s'est noyée dans une tasse de café.",
+    "Plouf a passé 3 jours à dessiner une chaise. Superbe chaise. Dommage qu'il n'y en ait pas dans $GAME.",
+    "Plouf a tenté un style *Pixel Art Renaissance Minimaliste* de $GAME. Échec.",
+    "Plouf a animé les personnages de $GAME en style chibi. Juste pour voir.",
     "Plouf a redessiné l’intro 4 fois parce qu’il trouvait le regard 'pas assez sarcastique'."
   ],
   "ANIMATE_CHRONIQUE": [
-    "Plouf a tout animé à 6 fps. C’était 'artistique'.",
+    "Plouf a tout animé à 60 fps. C’était 'artistique' et toujours deux fois plus que $GAME.",
     "Plouf a oublié d’animer la bouche. Tout le monde croit que c’est voulu.",
-    "Plouf a utilisé des GIFs de grenouilles pour les transitions.",
+    "Plouf a réussi à refaire tous les décors de $GAME en une seule chronique.",
     "Plouf a fait des effets 'zoom dramatique' sur chaque mot. Trop.",
-    "Plouf a réutilisé l’animation d’un vieux jeu de société... avec les pions."
+    "Plouf a réutilisé l’animation d’une vieille chronique pour celle sur $GAME. Sur un malentendu ça passe."
   ],
   "MOUNT_CHRONIQUE_VIDEO": [
-    "Plouf a exporté 25 versions avec des fautes dans le titre.",
-    "Plouf a mis 5 intros différentes. Plouf ne savait pas choisir.",
-    "Le fond musical couvre toute sa voix. ASMR involontaire.",
-    "Plouf a utilisé une transition en forme de pancake. Oui.",
+    "Plouf a exporté 25 versions de $GAME avec des fautes dans le titre.",
+    "Plouf a mis 5 intros différentes pour la chronique sur $GAME. Plouf ne savait pas choisir.",
+    "Le fond musical de $GAME couvre toute sa voix. ASMR involontaire.",
+    "Plouf a utilisé une transition en forme de pancake. Aucun rapport avec $GAME, mais ça rends bien.",
     "Plouf a oublié de couper ses toussotements. Bonus naturel."
   ],
   "UPLOAD_CHRONIQUE_VIDEO": [
     "Plouf a oublié le mot de passe de sa chaîne YouTube. Encore.",
-    "Plouf a mis en ligne en 144p. Par nostalgie.",
-    "La miniature est un zoom flou de sa narine gauche.",
-    "Plouf a titré : 'Chronique sur un jeu - Très bien'.",
-    "Plouf a laissé 'version finale V11_bis_dernier_def_def_ok2' en titre."
+    "Plouf a mis en ligne la chronique sur $GAME en 144p. Par nostalgie.",
+    "La miniature de $GAME est un zoom flou de sa narine gauche.",
+    "Plouf a titré : 'Chronique sur un jeu - Très bien'. Bon dommage il a oublié le nom de $GAME dedans.",
+    "Plouf a laissé 'version finale V11_bis_dernier_def_def_ok2' en titre. Pas dit que ce soit plus clair que $GAME."
   ],
   "ANSWER_CHRONIQUE_COMMENTS": [
     "Plouf a répondu à tout le monde avec des GIFs de canards.",
     "Plouf a déclenché un débat de 600 messages sur les JRPG en répondant 'meh'.",
     "Plouf a liké tous les commentaires négatifs. Par fatigue.",
-    "Plouf a lancé une FAQ… mais a répondu uniquement avec des énigmes.",
-    "Plouf a bloqué un type parce qu’il disait aimer *Fortnite*."
+    "Plouf ne pensais pas que $GAME pouvait soulever autant de polémiques. Et pourtant.",
+    "Plouf a bloqué un type parce qu’il disait ne pas aimer Mario et la porte Millénaire. La bonté de Pouf a aussi ses limites."
   ],
   "STREAM_POST_CHRONIQUE": [
-    "Plouf a lancé le stream sans micro pendant 45 minutes.",
+    "Plouf a lancé le stream sur $GAME sans micro pendant 45 minutes.",
     "Plouf a parlé à son chat... le félin, pas le chat Twitch.",
-    "Plouf a streamé son bureau. Littéralement son bureau. Bois chêne.",
-    "Plouf a fini par lancer *Papers, Please* et a pleuré en direct.",
-    "Plouf a oublié d’éteindre le stream et s’est endormi. 4h de ronflements."
+    "Plouf a streamé son bureau. Littéralement son bureau. Bois chêne de 90cm par 60cm, très joli.",
+    "Plouf a fini par lancer $GAME et semble découvrir le jeu.",
+    "Plouf a oublié d’éteindre le stream sur $GAME et s’est endormi. 4h de ronflements."
   ]
 }

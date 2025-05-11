@@ -76,6 +76,9 @@ var g_remaining_current_problems = []
 
 var g_game_over = false  # did we win or loose the game, if so, will just exit
 
+# Play games
+var played_games = []
+var played_game = 'Paper Mario'
 
 var phases_display = {
 	"CHOOSE_CHRONIQUE_GAME" : "choisir le jeu",
@@ -102,6 +105,7 @@ var g_is_in_card_message : bool = false
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	_load_phases()
+	_load_play_games()
 	_load_problems()
 	_limit_problems_counts()  # don't have too much problems by phase
 	_generate_impact_multiplier()  # dynamic set the impact levels
@@ -151,9 +155,22 @@ func _load_phases():
 	
 	# Loading finish messages (to display when we are finishing a phase)
 	file = FileAccess.open("res://phases_finish.json", FileAccess.READ)
-	phases_finish_messages = JSON.parse_string(file.get_as_text())	
-	print('Phase finish:', phases_finish_messages)
+	self.phases_finish_messages = JSON.parse_string(file.get_as_text())	
+	print('Phase finish:', self.phases_finish_messages)
 
+
+func _load_play_games():
+	var file = FileAccess.open("res://possible_games.json", FileAccess.READ)
+	self.played_games = JSON.parse_string(file.get_as_text())	
+	print('Possible games:', self.played_games)
+	# And we are alrady choosing a game, yes we are lying to the user that think
+	# Plouf is choosing the game in the first phase, but eh, that's what games are about: magic ^^
+	self.played_game = self.played_games[randi() % self.played_games.size()]
+	print('In fact Plouf will choose '+self.played_game)
+	
+
+func _change_text_with_played_game(text:String):
+	return text.replace('$GAME', self.played_game)
 
 # to fill all phases, we need to get less fill ones, so it's uniform distributed
 func _get_least_filled_phase() -> String:
@@ -227,9 +244,11 @@ func _generate_impact_multiplier():
 
 
 func __get_random_phase_finish_message(phase_id: String):
-	var messages = phases_finish_messages[phase_id]
+	var messages = self.phases_finish_messages[phase_id]
 	var random_idx =  randi() % messages.size()
-	return messages[random_idx]
+	var original_text = messages[random_idx]
+	var with_game_text = _change_text_with_played_game(original_text)
+	return with_game_text
 
 
 # --- Gameplay
