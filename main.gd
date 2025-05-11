@@ -745,6 +745,14 @@ func _update_current_card_deck():
 	var choice_b_txt = current_problem["choice_b"]
 	
 	var is_huge_impact = current_problem['impact_multiplier'] == MULTIPLIER_HUGE_IMPACT
+	var huge_warning_label = $LabelHugeImpactWarning
+	if not is_huge_impact:
+		huge_warning_label.visible = false
+	else:
+		huge_warning_label.visible = true
+		huge_warning_label.visible_ratio = 0.0  # hide the text
+		var tween = create_tween()
+		tween.tween_property(huge_warning_label, "visible_ratio", 1.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT) # and display it progressivly so the player can see it
 	
 	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false, is_huge_impact)
 
