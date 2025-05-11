@@ -29,6 +29,9 @@ var current_choice_b_txt = ''
 
 var are_interaction_enabled = false
 
+# Border for cards
+var border_color_huge_impact_color = Color("#8c5bf1")  # dark purple
+
 func _ready() -> void:
 	# Overlay
 	choice_overlay.visible = false
@@ -86,8 +89,8 @@ func _input(event):
 		_handle_drag_preview(delta_x)
 
 
-func stack_cards(count:int):
-	print('CARD_DECK:: stack_cards '+ str(count))
+func stack_cards(count:int, huge_impact_card_index:int):
+	print('CARD_DECK:: stack_cards '+ str(count)+ ' with huge impact index:'+ str(huge_impact_card_index))
 	# When drawing, in all cases we don't want interactions, only reenable it when finish and flip the
 	# top card
 	self.disable_interaction()
@@ -124,6 +127,9 @@ func stack_cards(count:int):
 		var mat := ShaderMaterial.new()
 		mat.shader = shader
 		mat.set_shader_parameter("corner_radius_px", 20)
+		mat.set_shader_parameter("border_thickness", 2.0)
+		if i == huge_impact_card_index:  # this one have a huge impact, so show it to the player
+			mat.set_shader_parameter("border_color", border_color_huge_impact_color)
 		sprite.material = mat
 		
 		var move_duration_ratio = float(count) / (i+1)  # so not all cards are moving the same speed
@@ -376,7 +382,7 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	# Manage huge impact => border size & color
 	if is_huge_impact:
 		sprite_2d.material.set_shader_parameter('border_width_px', 5.0)  # large
-		sprite_2d.material.set_shader_parameter('border_color', Color("#8c5bf1"))  # dark purple as in the background
+		sprite_2d.material.set_shader_parameter('border_color', border_color_huge_impact_color)  # dark purple as in the background
 	else:
 		sprite_2d.material.set_shader_parameter('border_width_px', 2.0)  # thin
 		sprite_2d.material.set_shader_parameter('border_color', Color("black"))

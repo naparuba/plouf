@@ -2,7 +2,10 @@ shader_type canvas_item;
 
 uniform float corner_radius_px : hint_range(0.0, 20.0) = 10.0;
 uniform vec2 texture_size = vec2(300.0, 300.0);
+
+// Border
 uniform float border_thickness = 2.0;
+uniform vec4 border_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 uniform sampler2D backTexture;
 
@@ -57,6 +60,6 @@ void fragment() {
 	}
 
 	if ((is_border || is_corner_border) && COLOR.a > 0.0) {
-		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+		COLOR = border_color; //vec4(0.0, 0.0, 0.0, 1.0);
 	}
 }

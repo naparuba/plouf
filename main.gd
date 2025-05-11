@@ -116,7 +116,8 @@ func _ready():
 	card_deck.global_message_read.connect(on_global_message_read)
 	
 	# We can update the deck display
-	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems))
+	var next_huge_impact_card_index = __get_index_for_next_huge_impact_card()
+	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems), next_huge_impact_card_index)
 	await stack_animation.finished  # for the the stack to be in the good place
 	_update_current_card_deck()
 
@@ -271,7 +272,8 @@ func _display_problem_after_phase_change():
 	_load_next_problem() # load data
 	
 	# As we know how much cards are fremaining,we can show them
-	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems))
+	var next_huge_impact_card_index = __get_index_for_next_huge_impact_card()
+	var stack_animation = card_deck.stack_cards(len(g_remaining_current_problems), next_huge_impact_card_index)
 	await stack_animation.finished  # for the the stack to be in the good place
 	
 	_update_current_card_deck() # show problem card
@@ -301,10 +303,18 @@ func __refresh_remaining_problems():
 		var pb_id = p["problem_id"]
 		if seen_ids.has( pb_id ):
 			continue
-		unseens.append(pb_id)
+		unseens.append(p)
 	g_remaining_current_problems = unseens
 	return 
-	
+
+
+func __get_index_for_next_huge_impact_card():
+	var idx = 0
+	for problem in g_remaining_current_problems:
+		if problem['impact_multiplier'] == MULTIPLIER_HUGE_IMPACT:
+			return idx 
+		idx += 1
+	return -1
 
 # validate the current problem, and return if we did change phase
 func _load_next_problem() -> bool:
