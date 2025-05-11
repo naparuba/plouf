@@ -137,19 +137,89 @@ offset_bottom = 286.0
 mouse_filter = 1
 color = Color(0, 0, 0, 1)
 
-[node name="message_back" type="ColorRect" parent="GlobalMessages"]
-layout_mode = 0
+[node name="message_backs" type="Node2D" parent="GlobalMessages"]
+
+[node name="gameover" type="ColorRect" parent="GlobalMessages/message_backs"]
+visible = false
 offset_top = 288.0
 offset_right = 572.0
 offset_bottom = 697.0
 mouse_filter = 1
-color = Color(0.148215, 0.671492, 0.570857, 1)
+color = Color(0.0823529, 0.0823529, 0.0823529, 1)
 
-[node name="label_message" type="RichTextLabel" parent="GlobalMessages/message_back"]
+[node name="label" type="RichTextLabel" parent="GlobalMessages/message_backs/gameover"]
 layout_mode = 0
-offset_right = 571.0
-offset_bottom = 409.0
+offset_left = 24.0
+offset_top = 102.0
+offset_right = 546.0
+offset_bottom = 332.0
 mouse_filter = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.776049, 0.00067152, 0.813808, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Je suis un texte d'exemple"
+
+[node name="win" type="ColorRect" parent="GlobalMessages/message_backs"]
+visible = false
+offset_top = 288.0
+offset_right = 572.0
+offset_bottom = 697.0
+mouse_filter = 1
+color = Color(0.14902, 0.670588, 0.572549, 1)
+
+[node name="label" type="RichTextLabel" parent="GlobalMessages/message_backs/win"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 102.0
+offset_right = 546.0
+offset_bottom = 332.0
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.776049, 0.00067152, 0.813808, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Je suis un texte d'exemple"
+
+[node name="next_phase" type="ColorRect" parent="GlobalMessages/message_backs"]
+visible = false
+offset_top = 288.0
+offset_right = 572.0
+offset_bottom = 697.0
+mouse_filter = 1
+color = Color(0.456036, 0.794382, 0.98867, 1)
+
+[node name="label" type="RichTextLabel" parent="GlobalMessages/message_backs/next_phase"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 102.0
+offset_right = 546.0
+offset_bottom = 332.0
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.776049, 0.00067152, 0.813808, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Je suis un texte d'exemple"
+
+[node name="global" type="ColorRect" parent="GlobalMessages/message_backs"]
+visible = false
+offset_top = 288.0
+offset_right = 572.0
+offset_bottom = 697.0
+mouse_filter = 1
+color = Color(0.690196, 0.690196, 0.690196, 1)
+
+[node name="label" type="RichTextLabel" parent="GlobalMessages/message_backs/global"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 102.0
+offset_right = 546.0
+offset_bottom = 332.0
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.776049, 0.00067152, 0.813808, 1)
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "Je suis un texte d'exemple"
 

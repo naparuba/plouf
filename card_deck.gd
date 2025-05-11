@@ -462,6 +462,20 @@ func callback_rush_timeout():
 	choice_label.text = current_choice_a_txt
 
 
+func _hide_message_backs():
+	var backs = $GlobalMessages/message_backs
+	var sons = backs.get_children()
+	for son in sons:
+		son.visible = false
+
+func _show_back_message(which:String, message: String):
+	_hide_message_backs()  # first hide others :)
+	var backs = $GlobalMessages/message_backs
+	var back = backs.find_child(which)
+	var label = back.find_child('label')
+	label.text = message
+	back.visible = true  # show the one you want
+
 func display_global_message(message:String, color:String):
 	print('DECK:: display_global_message')
 	self.disable_interaction()  # don't want to move card during this message
@@ -474,8 +488,7 @@ func display_global_message(message:String, color:String):
 func display_gameover_message(message:String, tex: Texture2D):
 	print('DECK:: display_global_message')
 	self.disable_interaction()  # don't want to move card during this message
-	$GlobalMessages/message_back/label_message.text = message
-	$GlobalMessages/message_back.color = '#151515'
+	_show_back_message('gameover', message)
 	$GlobalMessages/sprite.texture = tex
 	$GlobalMessages/sprite.visible = true
 	$GlobalMessages.visible = true
@@ -483,16 +496,14 @@ func display_gameover_message(message:String, tex: Texture2D):
 func display_next_phase_message(message:String):
 	print('DECK:: display_global_message')
 	self.disable_interaction()  # don't want to move card during this message
-	$GlobalMessages/message_back/label_message.text = message
-	$GlobalMessages/message_back.color = '#8e7ffb'
+	_show_back_message('next_phase', message)
 	$GlobalMessages/sprite.visible = false
 	$GlobalMessages.visible = true
 
 func display_win_message(message:String, tex: Texture2D):
 	print('DECK:: display_global_message')
 	self.disable_interaction()  # don't want to move card during this message
-	$GlobalMessages/message_back/label_message.text = message
-	$GlobalMessages/message_back.color = '#26ab92'
+	_show_back_message('win', message)
 	$GlobalMessages/sprite.texture = tex
 	$GlobalMessages/sprite.visible = true
 	$GlobalMessages.visible = true

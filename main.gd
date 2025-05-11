@@ -6,6 +6,7 @@ extends CanvasLayer
 var DEBUG_SKIP_TUTO = true
 var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
+var DEBUG_CRITERIA_EFFECTS = false
 
 
 var card_index = 0
@@ -21,6 +22,8 @@ var deck = []
 
 # Problem cards
 var NB_CARDS_BY_PHASE = 5
+var MULTIPLIER_HUGE_IMPACT = 10  # each phase will have a huge impact card with 10x !
+var MULTIPLIER_IMPACT_HIGH = 3  # multiplier will be from 1->3
 
 # CRITERIA
 var CRITERIA_FLOW = 'flow'
@@ -101,6 +104,7 @@ func _ready():
 	_load_phases()
 	_load_problems()
 	_limit_problems_counts()  # don't have too much problems by phase
+	_generate_impact_multiplier()  # dynamic set the impact levels
 	
 	current_phase_index = 0
 	current_problem_index = 0
@@ -202,6 +206,25 @@ func _limit_problems_counts():
 		problems_by_phase[phase_id] = problems.slice(0, min(NB_CARDS_BY_PHASE, problems.size()))
 		print('Limite problems: '+phase_id+ ' => '+str(len(problems_by_phase[phase_id])))
 
+
+# For each phase:
+# - one problem will be a huge impact one: will take a 10 multiplier
+# - others will have a random multiplier from 1 to 3
+func _generate_impact_multiplier():
+	for phase_id in problems_by_phase.keys():
+		var problems = problems_by_phase[phase_id]
+		problems.shuffle() # so the huge impact will be random
+		var is_huge_impact_done = false
+		for problem in problems:
+			if not is_huge_impact_done:
+				problem['impact_multiplier'] = MULTIPLIER_HUGE_IMPACT
+				is_huge_impact_done= true
+				#print(phase_id+ ' huge impact')
+				continue
+			problem['impact_multiplier'] = randi_range(1, MULTIPLIER_IMPACT_HIGH)
+			#print(phase_id+ ' > ', problem['impact_multiplier'])
+
+
 func __get_random_phase_finish_message(phase_id: String):
 	var messages = phases_finish_messages[phase_id]
 	var random_idx =  randi() % messages.size()
@@ -236,8 +259,7 @@ func _jump_to_next_phase():
 	# Get a message for the end of our phase
 	var finish_phase_id = phases[current_phase_index-1]  # was incremented just before
 	var finish_message = __get_random_phase_finish_message(finish_phase_id)
-	var message = '[color=black]'+finish_message+'[/color]'
-	_display_next_phase_message(message)
+	_display_next_phase_message(finish_message)
 	
 	
 func _display_problem_after_phase_change():
@@ -308,6 +330,7 @@ func _load_next_problem() -> bool:
 	return false
 
 func _display_problem(problem):
+	print('CURRENT PROBLEM ',problem)
 	__set_problem_text(problem["problem_description"])
 	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
 	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
@@ -386,12 +409,14 @@ func _apply_choice(choice: String) -> bool:
 func _get_choice_stat(choice, stat):
 	var suffix = "_a" if choice == "A" else "_b"
 	var key = stat
-	var impact = int(current_problem[key + suffix])
+	var impact = int(current_problem[key + suffix]) * current_problem['impact_multiplier']  # was loaded as string from csv
 	return impact
-	
+
+
 func _reset_progress_sprite(sprite):
 	var tween = create_tween()
 	tween.parallel().tween_property(sprite.material, "shader_parameter/particle_amount", 0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	
 	
 func _change_progress_sprite(sprite, stat_pct_float_1):
 	var tween = create_tween()
@@ -400,7 +425,7 @@ func _change_progress_sprite(sprite, stat_pct_float_1):
 	# Callback go reset when finish
 	tween.tween_callback(Callable(self, "_reset_progress_sprite").bind(sprite))
 
-	
+
 func _apply_stats_consequences(problem, choice):
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
@@ -445,8 +470,9 @@ func __set_criteria_fire_as_blue(fire):
 # - low: timer of 10s for choosing
 # - high: all is VERY slow
 func __manage_criteria_rythm(stat_pct_float_1: float):
-	#stat_pct_float_1 = randf_range(0.01, 0.3)
-	stat_pct_float_1 = randf_range(0.01, 0.99)
+	if DEBUG_CRITERIA_EFFECTS:
+		#stat_pct_float_1 = randf_range(0.01, 0.3)
+		stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New RYTHM: ', stat_pct_float_1)
 	stat_bars[CRITERIA_RYTHM].value = stat_pct_float_1 * 100
 	var sprite = $Rythm/ProgressSprite
@@ -484,8 +510,9 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 # - low: going brut shader
 # - high: activating spyche shader
 func __manage_criteria_flow(stat_pct_float_1: float):
-	#stat_pct_float_1 = randf_range(0.01, 0.3)
-	stat_pct_float_1 = randf_range(0.01, 0.99)
+	if DEBUG_CRITERIA_EFFECTS:
+		#stat_pct_float_1 = randf_range(0.01, 0.3)
+		stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New FLOW: ', stat_pct_float_1)
 	stat_bars[CRITERIA_FLOW].value = stat_pct_float_1 * 100
 	var sprite = $Flow/ProgressSprite
@@ -529,8 +556,9 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 # - low: hiding UI for 1s every 5s
 # - high: logo are bouncing every where
 func __manage_criteria_visibility(stat_pct_float_1: float):
-	#stat_pct_float_1 = randf_range(0.05, 0.3)
-	stat_pct_float_1 = randf_range(0.01, 0.99)
+	if DEBUG_CRITERIA_EFFECTS:
+		#stat_pct_float_1 = randf_range(0.05, 0.3)
+		stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New VISIBILITY: ', stat_pct_float_1)
 	stat_bars[CRITERIA_VISIBILITY].value = stat_pct_float_1 * 100
 	var sprite = $Visibility/ProgressSprite
@@ -570,8 +598,9 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 # - low: goes grey, sad, no sound
 # - high: familly invasion :)
 func __manage_criteria_familly_life(stat_pct_float_1: float):
-	#stat_pct_float_1 = randf_range(0.01, 0.3)
-	stat_pct_float_1 = randf_range(0.01, 0.99)
+	if DEBUG_CRITERIA_EFFECTS:
+		#stat_pct_float_1 = randf_range(0.01, 0.3)
+		stat_pct_float_1 = randf_range(0.01, 0.99)
 	print('New FAMILLY_LIFE: ', stat_pct_float_1)
 	stat_bars[CRITERIA_FAMILLY_LIFE].value = stat_pct_float_1 * 100
 	var sprite = $FamillyLife/ProgressSprite
