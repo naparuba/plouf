@@ -128,7 +128,7 @@ func stack_cards(count:int, huge_impact_card_index:int):
 		mat.shader = shader
 		mat.set_shader_parameter("corner_radius_px", 20)
 		mat.set_shader_parameter("border_thickness", 2.0)
-		if i == huge_impact_card_index:  # this one have a huge impact, so show it to the player
+		if (count - i - 1) == huge_impact_card_index:  # this one have a huge impact, so show it to the player
 			mat.set_shader_parameter("border_color", border_color_huge_impact_color)
 		sprite.material = mat
 		

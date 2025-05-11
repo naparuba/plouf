@@ -22,7 +22,6 @@ func _process(delta: float) -> void:
 	if _is_slow_mode:
 		text = "(Plouf va trop vite, il voit tout au ralentit!)\n"
 	text = text + _full_text.substr(0, char_count)
-		
 
 	if ratio >= 1.0:
 		text = _full_text
