@@ -19,6 +19,9 @@ var deck = []
 @onready var label_debug_b = $DEBUGB
 
 
+# Problem cards
+var NB_CARDS_BY_PHASE = 5
+
 # CRITERIA
 var CRITERIA_FLOW = 'flow'
 var CRITERIA_FAMILLY_LIFE = 'familly_life'
@@ -92,25 +95,12 @@ var phases_finish_messages = {}
 var g_is_in_card_message : bool = false
 
 
-## GAMEOVER:
-# "creativite":
-# "Monsieur Plouf n’a plus d’idées… il chronique des menus d’options."
-# "Monsieur Plouf s’exprime désormais uniquement en aquarelle."
-#"sante_mentale":
-#"Il a fusionné avec sa chaise de bureau."
-#"Il est trop calme. Il fait peur."
-#"vie_famille":
-#"Sa fille le connaît comme 'l’homme du fond avec les écouteurs'."
-#"Ils lancent une chaîne familiale : *Plouffamille Vlog*."
-#"temps_jeu":
-#"Il chronique les souvenirs de ses anciens let's play."
-#"Il ne fait plus que jouer. OBS est parti."
-
 
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	_load_phases()
 	_load_problems()
+	_limit_problems_counts()  # don't have too much problems by phase
 	
 	current_phase_index = 0
 	current_problem_index = 0
@@ -159,13 +149,40 @@ func _load_phases():
 	phases_finish_messages = JSON.parse_string(file.get_as_text())	
 	print('Phase finish:', phases_finish_messages)
 
+
+# to fill all phases, we need to get less fill ones, so it's uniform distributed
+func _get_least_filled_phase() -> String:
+	var min_count = null
+	var least_filled = []
+
+	for phase in phases:
+		var count = 0
+		if problems_by_phase.has(phase):
+			count = problems_by_phase[phase].size()
+
+		if min_count == null or count < min_count:
+			min_count = count
+			least_filled = [phase]
+		elif count == min_count:
+			least_filled.append(phase)
+
+	if least_filled.size() > 0:
+		var less_fill_phase = least_filled[randi() % least_filled.size()]
+		print('LESS FILL PHASE: '+less_fill_phase)
+		return less_fill_phase
+	else:
+		print('NO PHASE???')
+		return ""
+
+
 func _load_problems():
-	var file = FileAccess.open("res://plouf_game_50_original_cards.csv", FileAccess.READ)
+	var file = FileAccess.open("res://plouf_game_cards.csv", FileAccess.READ)
 	var header = file.get_csv_line(";")
 	while not file.eof_reached():
 		var line = file.get_csv_line(";")
 		
 		if line.size() < header.size():
+			print('Wrong line size '+str(line.size())+' was expected '+str(header.size()))
 			continue
 		var problem = {}
 		for i in header.size():
@@ -174,8 +191,16 @@ func _load_problems():
 		if phase_id in problems_by_phase:
 			problems_by_phase[phase_id].append(problem)
 		else:
-			var random_phase = phases[randi() % phases.size()]
-			problems_by_phase[random_phase].append(problem)
+			var less_filled_phase = _get_least_filled_phase()  # is doing random if need
+			problems_by_phase[less_filled_phase].append(problem)
+
+
+func _limit_problems_counts():
+	for phase_id in problems_by_phase.keys():
+		var problems = problems_by_phase[phase_id]
+		problems.shuffle() # Mélange les problèmes
+		problems_by_phase[phase_id] = problems.slice(0, min(NB_CARDS_BY_PHASE, problems.size()))
+		print('Limite problems: '+phase_id+ ' => '+str(len(problems_by_phase[phase_id])))
 
 func __get_random_phase_finish_message(phase_id: String):
 	var messages = phases_finish_messages[phase_id]

@@ -1,0 +1,212 @@
+[
+  {
+    "id": "TECHNICAL_PROBLEM",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "-"},
+      {"impact_category": "visibility", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "FAMILLY_ASK_ATTENTION",
+    "A": [
+      {"impact_category": "familly_life", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "familly_life", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "FAMILLY_SUPPORT",
+    "A": [
+      {"impact_category": "familly_life", "impact_sign": "+"},
+      {"impact_category": "flow", "impact_sign": "+"}
+    ],
+    "B": [
+    ]
+  },
+  {
+    "id": "NEGLICT_PHISICAL_NEED",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "flow", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "-"},
+      {"impact_category": "flow", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "TOO_LONG_GAME",
+    "A": [
+      {"impact_category": "flow", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "flow", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "REDO_BAD_WORK",
+    "A": [
+      {"impact_category": "flow", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "flow", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "ATTACK_FROM_SOMEONE_ON_INTERNET",
+    "A": [
+      {"impact_category": "flow", "impact_sign": "-"},
+      {"impact_category": "visibility", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "flow", "impact_sign": "+"},
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "SUCESS_ON_INTERNET",
+    "A": [
+      {"impact_category": "flow", "impact_sign": "-"},
+      {"impact_category": "visibility", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "flow", "impact_sign": "+"},
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "DO_STREAM",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "CONVENTION",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "BAD_SPONSOR",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "-"},
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "BAD_SCHEDULE",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "flow", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "-"},
+      {"impact_category": "flow", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "LOOKING_FOR_QUALITY",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "flow", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "-"},
+      {"impact_category": "flow", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "ADMINISTRATIVE_TASK",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "VIEWERS_CHOOSE_GAME",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "flow", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "-"},
+      {"impact_category": "flow", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "ANSWER_TO_TIPEEE_AND_PATREON",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"},
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "+"},
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "TEST_VERY_BAD_GAMES",
+    "A": [
+      {"impact_category": "flow", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "flow", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "PLAY_2_PLAYERS_GAME_TOO_LONG_HOURS",
+    "A": [
+      {"impact_category": "familly_life", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "familly_life", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "STEAMING",
+    "A": [
+      {"impact_category": "visibility", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "visibility", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "JOB_OPTIMISATION",
+    "A": [
+      {"impact_category": "rythm", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "rythm", "impact_sign": "+"}
+    ]
+  }
+]
