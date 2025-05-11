@@ -31,6 +31,7 @@ shader_parameter/corner_radius_px = 20.0
 shader_parameter/texture_size = Vector2(300, 300)
 shader_parameter/grayness_strength = 0.0
 shader_parameter/border_width_px = 2.0
+shader_parameter/border_color = Color(0, 0, 0, 1)
 shader_parameter/noiseTexture = ExtResource("3_q37kp")
 shader_parameter/backTexture = ExtResource("3_itjmq")
 

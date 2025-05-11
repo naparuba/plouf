@@ -342,7 +342,7 @@ func _resize_sprite_to_fit(sprite: Sprite2D) -> void:
 
 
 # Main call from Main.gd
-func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String, is_ending_message: bool):
+func set_card_data(character_texture: Texture2D, background_texture:Texture2D, choice_a_txt: String, choice_b_txt: String, global_message: String, is_ending_message: bool, is_huge_impact: bool):
 	print('CARD_DECK:: set_card_data:: '+ choice_a_txt)
 	var sprite_current := current_card.get_node("Sprite2D")
 	
@@ -372,6 +372,14 @@ func set_card_data(character_texture: Texture2D, background_texture:Texture2D, c
 	sprite_2d.material.set_shader_parameter('radius', 0.0)
 	# Make the bruning starting point random
 	sprite_2d.material.set_shader_parameter('position', Vector2(randf(), randf()))
+	
+	# Manage huge impact => border size & color
+	if is_huge_impact:
+		sprite_2d.material.set_shader_parameter('border_width_px', 5.0)  # large
+		sprite_2d.material.set_shader_parameter('border_color', Color("#8c5bf1"))  # dark purple as in the background
+	else:
+		sprite_2d.material.set_shader_parameter('border_width_px', 2.0)  # thin
+		sprite_2d.material.set_shader_parameter('border_color', Color("black"))
 	
 	# Redimensionner les sprites
 	_resize_sprite_to_fit(sprite_current)
@@ -468,6 +476,7 @@ func _hide_message_backs():
 	for son in sons:
 		son.visible = false
 
+
 func _show_back_message(which:String, message: String):
 	_hide_message_backs()  # first hide others :)
 	var backs = $GlobalMessages/message_backs
@@ -475,6 +484,7 @@ func _show_back_message(which:String, message: String):
 	var label = back.find_child('label')
 	label.text = message
 	back.visible = true  # show the one you want
+
 
 func display_global_message(message:String, color:String):
 	print('DECK:: display_global_message')

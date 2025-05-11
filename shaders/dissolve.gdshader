@@ -12,7 +12,10 @@ uniform float corner_radius_px : hint_range(0.0, 20.0) = 10.0;
 uniform vec2 texture_size = vec2(300.0, 300.0);
 
 uniform float grayness_strength : hint_range(0.0, 1.0) = 0.0;
+
+// Border
 uniform float border_width_px : hint_range(0.0, 10.0) = 2.0;
+uniform vec4 border_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void fragment() {
 	vec2 pixel_pos = UV * texture_size;
@@ -60,7 +63,7 @@ void fragment() {
 	}
 
 	if (is_border || is_corner_border) {
-		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+		COLOR = border_color; //vec4(0.0, 0.0, 0.0, 1.0);
 		//return;
 	}
 

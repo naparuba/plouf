@@ -212,7 +212,7 @@ func _limit_problems_counts():
 # - others will have a random multiplier from 1 to 3
 func _generate_impact_multiplier():
 	for phase_id in problems_by_phase.keys():
-		var problems = problems_by_phase[phase_id]
+		var problems = problems_by_phase[phase_id].duplicate()  # copy so the order don't change
 		problems.shuffle() # so the huge impact will be random
 		var is_huge_impact_done = false
 		for problem in problems:
@@ -734,7 +734,9 @@ func _update_current_card_deck():
 	var choice_a_txt = current_problem["choice_a"]
 	var choice_b_txt = current_problem["choice_b"]
 	
-	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false)
+	var is_huge_impact = current_problem['impact_multiplier'] == MULTIPLIER_HUGE_IMPACT
+	
+	card_deck.set_card_data(character_texture,background_texture, choice_a_txt, choice_b_txt, "", false, is_huge_impact)
 
 func on_card_preview(direction: String) -> void:
 	if g_is_in_card_message:  # if we are just showing a message card, preview means nothing
