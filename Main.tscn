@@ -14,7 +14,7 @@
 [ext_resource type="Shader" path="res://shaders/b_fire.gdshader" id="7_2rojy"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
 [ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="8_5v6y7"]
-[ext_resource type="Texture2D" uid="uid://dopw8dqb8p3sp" path="res://images/flow_full_back.png" id="10_0kyyk"]
+[ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="10_0kyyk"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 [ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 [ext_resource type="Texture2D" uid="uid://d2lhpl3sw6pqc" path="res://images/on_ne_parle_pas_de_la_croix.png" id="14_k1278"]

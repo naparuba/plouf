@@ -105,7 +105,7 @@ def play_game(phases):
 
 
 if __name__ == "__main__":
-    problems = load_problems("plouf_game_50_original_cards.csv")
+    problems = load_problems("plouf_game_cards.csv")
     phase_ids = load_phases('phases.json')
     
     phase_ids = rotate_list_randomly(phase_ids)
