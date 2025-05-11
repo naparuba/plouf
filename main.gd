@@ -360,7 +360,8 @@ func _load_next_problem() -> bool:
 
 func _display_problem(problem):
 	print('CURRENT PROBLEM ',problem)
-	__set_problem_text(problem["problem_description"])
+	var problem_text = _change_text_with_played_game(problem["problem_description"])
+	__set_problem_text(problem_text)
 	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
 	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
 	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
