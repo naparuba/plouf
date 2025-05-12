@@ -11,13 +11,13 @@ uniform sampler2D backTexture;
 
 void fragment() {
 	vec2 uv = UV;
-	
+
 	vec4 back_rgb = texture(backTexture, UV);  // Pixel from the background
-	
+
 
 	vec4 tex_color = texture(TEXTURE, uv);
 	COLOR = tex_color;
-	
+
 	// If the original pixel is transparent, then copy the background one instead
 	if (COLOR.a == 0.0){
 		COLOR = back_rgb;

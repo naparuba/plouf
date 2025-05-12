@@ -105,7 +105,10 @@ var phases_finish_messages = {}
 #               user did read it, and we can go in the next problem
 var g_is_in_card_message : bool = false
 
-
+# Temporary panel display for impacts:
+var impacts_message_queue: Array = []
+var impacts_message_is_displaying_message := false
+@onready var impacts_message_label = $LabelImpactEffects
 
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
@@ -114,6 +117,7 @@ func _ready():
 	_load_problems()
 	_limit_problems_counts()  # don't have too much problems by phase
 	_generate_impact_multiplier()  # dynamic set the impact levels
+	_launch_impact_message_thread()
 	
 	current_phase_index = 0
 	current_problem_index = 0
@@ -574,11 +578,13 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 		print('RYTHM: get too low')
 		__set_criteria_fire_as_blue(fire)
 		card_deck.set_rush()  # only 10s for choice
+		self.stack_impact_message("[color=blue]Vitesse[/color]: Plouf n'a plus le temps, il rush tout!")
 		
 	if too_high:
 		print('RYTHM: get too high')
 		__set_criteria_fire_as_red(fire)
 		label_question.set_slow_mode()  # Plouf is too fast, he see the text as too slow ^^
+		self.stack_impact_message("[color=red]Vitesse[/color]: Plouf va plus vite que Flash et Ploufman réunis, il risque le claquage!")
 			
 
 # Flow:
@@ -619,6 +625,7 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 		tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 32.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_raw()  # text goes blocky
 		__set_criteria_fire_as_blue(fire)
+		self.stack_impact_message("[color=blue]Créativité[/color]: Plouf manque d'inspiration, tout lui semble brut")
 		
 	if too_high:
 		print('FLOW: get too high')
@@ -626,6 +633,7 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 		tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.5, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_wobby()  # text goes wobby, pshyche
 		__set_criteria_fire_as_red(fire)
+		self.stack_impact_message("[color=red]Créativité[/color]: Sa créativité débordante, Plouf commence à voir des choses qui n'existent pas")
 
 # Visibility:
 # - low: hiding UI for 1s every 5s
@@ -663,11 +671,15 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 		card_deck.set_text_blink()
 		$Background.material.set_shader_parameter('recurring_hide', true)
 		__set_criteria_fire_as_blue(fire)
+		self.stack_impact_message("[color=blue]Popularité[/color]: Internet semble oublier Plouf. Le public en vient à se demander si Ploufman existe réélement")
+
 	if too_high: # logo are bouncing every where
 		print('VISIBILITY: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(logos_node, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		__set_criteria_fire_as_red(fire)
+		self.stack_impact_message("[color=red]Popularité[/color]: Plouf attire trop les regards. Ca atise la convoitise de \"certains\" ")
+
 
 # Familly life:
 # - low: goes grey, sad, no sound
@@ -707,12 +719,14 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 		tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_grey()  # go grey for the card too
 		__set_criteria_fire_as_blue(fire)
+		self.stack_impact_message('[color=blue]Vie famille[/color]: sa famille manque à Plouf')
 		
 	if too_high: # familly invasion
 		print('FAMILLY_LIFE: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(familly_invasion, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		__set_criteria_fire_as_red(fire)
+		self.stack_impact_message('[color=red]Vie famille[/color]: Mme Plouf et sa fille squattent son bureau')
 
 func _update_possible_impacts(choice):
 	for stat in stats.keys():
@@ -897,4 +911,52 @@ func _spawn_criteria_particle(choice: String, to_stat:String, impact:int):
 		var tween = create_tween()
 		tween.tween_property(sprite, "position", dest, 1.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		tween.tween_callback(Callable(sprite, "queue_free"))  # don't forget to remove it after!
+	
+
+################ Impact message thread
+# It's a panel that can display impact for the criteria, we are
+# only displaying one at the same time, because it can be long.
+# so display for 5s
+func _launch_impact_message_thread():
+	# Lance le timer de vérification
+	var check_timer = Timer.new()
+	check_timer.wait_time = 0.2
+	check_timer.autostart = true
+	check_timer.one_shot = false
+	check_timer.timeout.connect(_process_next_impact_message)
+	add_child(check_timer)
+	
+	
+func stack_impact_message(msg: String):
+	impacts_message_queue.append(msg)
+
+
+func _process_next_impact_message():
+	if impacts_message_is_displaying_message or impacts_message_queue.is_empty():
+		return
+	
+	impacts_message_is_displaying_message = true
+	var message = impacts_message_queue.pop_front()
+	_display_impact_message(message)
+
+
+func _display_impact_message(text: String):
+	var tween = create_tween()
+	impacts_message_label.text = text
+	impacts_message_label.visible_ratio = 0.0
+	impacts_message_label.visible = true
+	
+	# Affiche progressivement sur 0.3s
+	tween.tween_property(impacts_message_label, "visible_ratio", 1.0, 0.3).set_trans(Tween.TRANS_LINEAR)
+	
+	# Attendre ensuite 5s puis effacer le texte
+	tween.tween_interval(5.0)
+	tween.tween_callback(Callable(self, "_on_impact_message_displayed"))
+
+
+func _on_impact_message_displayed():
+	var tween = create_tween()
+	tween.tween_property(impacts_message_label, "visible_ratio", 0.0, 0.3).set_trans(Tween.TRANS_LINEAR)
+	await tween.finished
+	impacts_message_is_displaying_message = false
 	

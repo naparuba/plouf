@@ -9,9 +9,9 @@
 [ext_resource type="Script" path="res://one_card_deck.gd" id="4_30ulr"]
 [ext_resource type="Shader" path="res://shaders/impacts.gdshader" id="5_gm2mu"]
 [ext_resource type="Texture2D" uid="uid://bleut7tispset" path="res://images/GENERIC.png" id="5_mdl3u"]
-[ext_resource type="Texture2D" uid="uid://d2q5nexaq2ara" path="res://images/chrono.png" id="6_8v3lw"]
 [ext_resource type="Script" path="res://rush.gd" id="6_cptfo"]
 [ext_resource type="Shader" path="res://shaders/blink.gdshader" id="7_vmqky"]
+[ext_resource type="Texture2D" uid="uid://bpf6texfv6ulb" path="res://images/speed.png" id="12_tploy"]
 [ext_resource type="Texture2D" uid="uid://evv2j8mio2vc" path="res://images/ENDING.png" id="13_6hc37"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yg80w"]
@@ -100,13 +100,14 @@ fit_content = true
 
 [node name="Rush" type="Node2D" parent="."]
 visible = false
-position = Vector2(2, 242)
+position = Vector2(2, 223)
 script = ExtResource("6_cptfo")
 
 [node name="chrono" type="Sprite2D" parent="Rush"]
 material = SubResource("ShaderMaterial_674gd")
-position = Vector2(-11, -2)
-texture = ExtResource("6_8v3lw")
+position = Vector2(10, -19)
+scale = Vector2(0.49, 0.43)
+texture = ExtResource("12_tploy")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Rush"]
 offset_left = 49.0
