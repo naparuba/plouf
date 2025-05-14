@@ -8,6 +8,8 @@ var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
 
+var DEBUG_DISABLE_INTRO = false
+
 
 var card_index = 0
 var deck = []
@@ -110,8 +112,22 @@ var impacts_message_queue: Array = []
 var impacts_message_is_displaying_message := false
 @onready var impacts_message_label = $LabelImpactEffects
 
+# Intro
+@onready var intro_player = $intro/player
+@onready var intro_container = $intro
+@onready var audio_player = $intro/audio_player
+
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
+	if DEBUG_DISABLE_INTRO:
+		intro_container.visible = false
+	else:
+		intro_container.visible = true
+	
+	if not DEBUG_DISABLE_INTRO:
+		await self._launch_intro()  # need to await, if not will launch the app that will read inputs
+		print('INTRO FINISH in main')
+	
 	_load_phases()
 	_load_play_games()
 	_load_problems()
@@ -137,6 +153,8 @@ func _ready():
 	# By default the problem text are printing fast
 	label_question.set_fast_mode()
 	
+	
+	
 	# We can show the help/tuto
 	$help_1.visible = true
 	$help_2.visible = false
@@ -149,6 +167,7 @@ func _ready():
 		$help_1.visible = false
 		card_deck.enable_interaction()
 
+	
 
 func _input(event):
 	# Quit on escape key
@@ -960,3 +979,15 @@ func _on_impact_message_displayed():
 	await tween.finished
 	impacts_message_is_displaying_message = false
 	
+
+######### Intro:
+func _launch_intro():
+	print(' LAUNCH INTRO')
+	intro_container.visible = true
+	audio_player.stream = load("res://sounds/intro.ogg")
+	audio_player.play()
+	intro_player.play("intro")
+	await intro_player.animation_finished
+	print('INTRO FINISH')
+	intro_container.visible = false
+	return audio_player.finished

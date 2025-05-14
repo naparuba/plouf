@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=46 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -27,6 +27,12 @@
 [ext_resource type="Texture2D" uid="uid://wqdxmqhblrxm" path="res://images/PLOUF_FILLE.png" id="18_8otj2"]
 [ext_resource type="Texture2D" uid="uid://bfpdvyhrj5y53" path="res://images/next.png" id="25_wf8uf"]
 [ext_resource type="Texture2D" uid="uid://4x8ogodl07a1" path="res://images/go.png" id="26_k6y5s"]
+[ext_resource type="Texture2D" uid="uid://dc08w3s8d6wwm" path="res://images/BACK_BLUE.png" id="28_uxu78"]
+[ext_resource type="Texture2D" uid="uid://pi0p45ty0r8k" path="res://images/PLOUF.png" id="29_md48j"]
+[ext_resource type="Texture2D" uid="uid://w3lij63yl13r" path="res://images/icon_only_text.png" id="30_ajvj3"]
+[ext_resource type="Texture2D" uid="uid://s26tlovxxly4" path="res://images/MUFFIN.png" id="30_xqfub"]
+[ext_resource type="Texture2D" uid="uid://dxg3xrlcc0a7q" path="res://images/cochon.png" id="31_ymir3"]
+[ext_resource type="Texture2D" uid="uid://cbhar56bjq3l7" path="res://images/BACK_MAISON.png" id="32_ro4uw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvbbl"]
 shader = ExtResource("2_b3nhu")
@@ -151,6 +157,307 @@ shader_parameter/warning_threshold = 0.2
 shader_parameter/warning_color = Color(1, 0.3, 0.3, 1)
 shader_parameter/pulse_speed = 1.0
 shader_parameter/mask_texture = ExtResource("4_frkv5")
+
+[sub_resource type="Animation" id="Animation_0ftuc"]
+resource_name = "intro"
+length = 13.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("plouf:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4.06667, 6.93333, 8, 11),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(71, -104), Vector2(71, 538), Vector2(73, 966), Vector2(534, 957), Vector2(523, 615)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("plouf:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 11),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("plouf:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.7, 1.06667, 1.5, 1.86667, 2.23333, 2.6, 3, 3.46667, 3.93333, 4.43333, 4.9, 5.36667, 5.8, 6.3, 6.9, 180),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.5708, 3.14159, 4.71239, 6.28319, 7.85398, 9.42478, 10.9956, 12.5664, 14.1372, 15.708, 17.2788, 18.8496, 20.4204, 21.9911, 23.5619, 25.1327, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("maison:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(-0.0333333, 4.06667, 6.96667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(287, 1351), Vector2(287, 1351), Vector2(285, 804)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("maison:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(-0.0333333, 4.06667, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("blue_background:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("logo_text_only:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 8.03333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("mmeplouf:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 8.53333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("fille:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 8.86667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("muffin:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 9.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("cochon:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 9.53333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("plouf:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 8, 11),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_gulrl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("plouf:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(71, -104)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("plouf:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("plouf:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("maison:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(287, 1351)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("maison:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("blue_background:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("logo_text_only:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("mmeplouf:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("fille:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("muffin:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("cochon:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("plouf:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7icjc"]
+_data = {
+"RESET": SubResource("Animation_gulrl"),
+"intro": SubResource("Animation_0ftuc")
+}
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_47kuj")
@@ -676,6 +983,61 @@ position = Vector2(70, 664)
 position = Vector2(489, 659)
 
 [node name="particles" type="Node2D" parent="."]
+
+[node name="intro" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="blue_background" type="Sprite2D" parent="intro"]
+position = Vector2(285, 539)
+scale = Vector2(1.89333, 3.59333)
+texture = ExtResource("28_uxu78")
+
+[node name="mmeplouf" type="Sprite2D" parent="intro"]
+visible = false
+position = Vector2(78, 359)
+scale = Vector2(0.7, 0.686667)
+texture = ExtResource("16_4dfum")
+
+[node name="logo_text_only" type="Sprite2D" parent="intro"]
+visible = false
+position = Vector2(280, 505)
+texture = ExtResource("30_ajvj3")
+
+[node name="fille" type="Sprite2D" parent="intro"]
+visible = false
+position = Vector2(487, 219)
+texture = ExtResource("18_8otj2")
+
+[node name="muffin" type="Sprite2D" parent="intro"]
+visible = false
+position = Vector2(44, 508)
+scale = Vector2(0.426667, 0.42)
+texture = ExtResource("30_xqfub")
+
+[node name="cochon" type="Sprite2D" parent="intro"]
+visible = false
+position = Vector2(60, 619)
+texture = ExtResource("31_ymir3")
+flip_h = true
+
+[node name="maison" type="Sprite2D" parent="intro"]
+position = Vector2(287, 1351)
+scale = Vector2(1.9, 1.81833)
+texture = ExtResource("32_ro4uw")
+
+[node name="plouf" type="Sprite2D" parent="intro"]
+position = Vector2(71, -104)
+scale = Vector2(0.541667, 0.568333)
+texture = ExtResource("29_md48j")
+flip_h = true
+
+[node name="player" type="AnimationPlayer" parent="intro"]
+libraries = {
+"": SubResource("AnimationLibrary_7icjc")
+}
+
+[node name="audio_player" type="AudioStreamPlayer" parent="intro"]
 
 [connection signal="pressed" from="help_1" to="." method="_on_help_1_pressed"]
 [connection signal="pressed" from="help_2" to="." method="_on_help_2_pressed"]
