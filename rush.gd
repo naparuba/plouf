@@ -40,6 +40,10 @@ func _on_timer_timeout():
 	if not active:
 		return
 
+	if call_count == 0:  # at start
+		# Play a success sond, great :)
+		SoundManager.play_sound('clock_running', 18.0)  # higer volume, this sound is low
+
 	call_count += 1
 	print("Appel n°%d" % call_count)
 	$RichTextLabel.text = "Plus que Appel n°%d" % call_count

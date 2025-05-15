@@ -99,7 +99,10 @@ func stack_cards(count:int, huge_impact_card_index:int):
 	for child in deck.get_children():
 		deck.remove_child(child)
 		child.queue_free()
-		
+	
+	# Start to play sound of stackings cards
+	SoundManager.play_sound('stack_cards')
+	
 	# Charge la texture et le shader
 	var tex = load("res://images/FADED.png")
 	var shader = load("res://shaders/card_in_deck.gdshader")
@@ -156,6 +159,7 @@ func _flip_top_deck_card():
 	
 	if card:
 		card.flip_card(current_character_texture, current_background_texture)
+		SoundManager.play_sound('card_flip')
 	
 # the top deck card is flip, we can display the interactive one, and drop the top desk card
 func flip_top_deck_card_done():  

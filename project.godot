@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://images/icon.png"
 config/icon="res://images/icon.png"
 
+[autoload]
+
+SoundManager="*res://sound_manager.gd"
+
 [display]
 
 window/size/viewport_width=570

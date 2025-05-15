@@ -8,7 +8,7 @@ var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
 
-var DEBUG_DISABLE_INTRO = false
+var DEBUG_DISABLE_INTRO = true
 
 
 var card_index = 0
@@ -304,9 +304,13 @@ func _jump_to_next_phase():
 	if current_phase_index >= phases.size() or DEBUG_WIN:
 		__set_problem_text("🎉 Fin de la semaine de Monsieur Plouf !")
 		self.g_game_over = true
+		# Play vctory music
+		SoundManager.play_sound('win')
 		_switch_to_win_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "ENDING")
 		return
 	
+	# Play a success sond, great :)
+	SoundManager.play_sound('success')
 	# Get a message for the end of our phase
 	var finish_phase_id = phases[current_phase_index-1]  # was incremented just before
 	var finish_message = __get_random_phase_finish_message(finish_phase_id)
@@ -460,6 +464,8 @@ func _apply_choice(choice: String) -> bool:
 					img_path = 'RYTHM_TOO_HIGH'
 		g_game_over = true
 		_err = '[color=white]' + _err + '[/color]'
+		# Play lost music, sorry :)
+		SoundManager.play_sound('lost')
 		_switch_to_gameover(_err, 'Arg, une autre semaine peut être...', img_path)
 		return true  # simulate like if we did change state, as we move to the end game
 	
@@ -551,6 +557,14 @@ func _on_label_choice_impact_timeout():
 	self.label_choice_impact_tween = create_tween()
 	self.label_choice_impact_tween.tween_property(label_choice_impact, 'visible_ratio', 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
+var last_warning_sound_call := 0
+func _play_warning_sound():  # protect this sound, max 1 each seconds
+	var now := Time.get_ticks_msec()
+	if now - last_warning_sound_call < 1000:  #1s
+		print("Appel ignoré : trop rapide.")
+		return
+	last_warning_sound_call = now
+	SoundManager.play_sound('warning', -12)  # -12db => /3
 
 func __criteria_goes_low(stat_pct_float_1: float):
 	return stat_pct_float_1 < CRITERIA_WARNING_THRESHOLD
@@ -591,6 +605,7 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+	_play_warning_sound()  # let the user know it's going wrong ^^
 	impact_is_activated_rythm = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
@@ -636,6 +651,8 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+		
+	_play_warning_sound()  # let the user know it's going wrong ^^
 	impact_is_activated_flow = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
@@ -683,6 +700,7 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+	_play_warning_sound()  # let the user know it's going wrong ^^
 	impact_is_activated_visibility = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
@@ -728,8 +746,10 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 			tween.parallel().tween_property(familly_invasion, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			card_deck.unset_grey()  # no more grey for the card too
 			fire.visible = false  # get back as normal, so hide the fire indicator
+			SoundManager.reactivate_sounds()  # no more familly problem, get back as normal
 		return
 		
+	_play_warning_sound()  # let the user know it's going wrong ^^
 	impact_is_activated_familly_life = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # goes grey, sad
@@ -738,6 +758,7 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 		tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_grey()  # go grey for the card too
 		__set_criteria_fire_as_blue(fire)
+		SoundManager.stop_all_sounds()  # no familly, no sounds
 		self.stack_impact_message('[color=blue]Vie famille[/color]: sa famille manque à Plouf')
 		
 	if too_high: # familly invasion
@@ -794,6 +815,7 @@ func _switch_to_win_card(message:String, img_path : String):
 	g_is_in_card_message = true
 	print('Display message card: ', message)
 	card_deck.display_win_message(message, img)
+	
 
 
 func _switch_to_gameover(message:String, swipe_message:String, img_path : String):
