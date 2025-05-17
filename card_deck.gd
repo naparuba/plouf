@@ -32,6 +32,12 @@ var are_interaction_enabled = false
 # Border for cards
 var border_color_huge_impact_color = Color("#8c5bf1")  # dark purple
 
+# Joystick part
+var joystick_drag_x := 0.0
+var joystick_direction := 0
+var joystick_drag_speed := 200.0
+var joystick_released := true
+
 func _ready() -> void:
 	# Overlay
 	choice_overlay.visible = false
@@ -87,7 +93,60 @@ func _input(event):
 		_update_choice_overlay(delta_x)
 		
 		_handle_drag_preview(delta_x)
+		
+	# Validate the card if X or A (and the card is swipe enought)
+	elif event is InputEventJoypadButton:
+		if event.pressed and (event.button_index == JOY_BUTTON_A or event.button_index == JOY_BUTTON_X):
+			print('BUTTON A IS PRESSED')
+			_handle_release()
+	
 
+# joystick management
+func _process(delta):  
+	if not are_interaction_enabled:
+		return
+
+	var axis_x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+
+	# Stick analogique ou touches directionnelles
+	if abs(axis_x) > 0.1:
+		print('STICK >0.1')
+		joystick_direction = sign(axis_x)
+		joystick_drag_x += joystick_direction * joystick_drag_speed * delta
+		joystick_drag_x = clamp(joystick_drag_x, -max_drag_distance, max_drag_distance)
+
+		current_card.position.x = joystick_drag_x * 2  # *2 comme avec la souris
+		current_card.rotation_degrees = (joystick_drag_x / max_drag_distance) * max_rotation_degrees
+
+		_update_choice_overlay(joystick_drag_x)
+		_handle_drag_preview(joystick_drag_x)
+
+		if Input.is_action_just_pressed("ui_accept"):
+			self._handle_joystick_release()
+
+		joystick_released = false
+	else:
+		# Si on relâche le stick (ou ne touche rien)
+		if not joystick_released and Input.is_action_just_pressed("ui_accept"):
+			_handle_joystick_release()
+		elif not dragging:  # si on n’est pas en train de drag à la souris
+			# revient progressivement au centre
+			joystick_drag_x = lerp(joystick_drag_x, 0.0, delta * 8)
+			current_card.position.x = joystick_drag_x * 2
+			current_card.rotation_degrees = (joystick_drag_x / max_drag_distance) * max_rotation_degrees
+			_update_choice_overlay(joystick_drag_x)
+
+		joystick_released = true
+
+
+func _handle_joystick_release():
+	if abs(joystick_drag_x) > reject_threshold:
+		var direction = "B" if joystick_drag_x > 0 else "A"
+		on_choice(direction)
+	else:
+		reset_card()
+	choice_overlay.visible = false
+	joystick_drag_x = 0.0
 
 func stack_cards(count:int, huge_impact_card_index:int):
 	print('CARD_DECK:: stack_cards '+ str(count)+ ' with huge impact index:'+ str(huge_impact_card_index))

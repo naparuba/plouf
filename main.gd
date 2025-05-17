@@ -3,12 +3,12 @@ extends CanvasLayer
 @onready var card_deck := $CardDeck
 
 # Some debug flag for... the dev, me
-var DEBUG_SKIP_TUTO = true
+var DEBUG_SKIP_TUTO = false
 var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
 
-var DEBUG_DISABLE_INTRO = true
+var DEBUG_DISABLE_INTRO = false
 
 
 var card_index = 0
@@ -174,6 +174,10 @@ func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		print("Touche Échap pressée !")
 		get_tree().quit()
+		
+	elif event is InputEventJoypadButton:
+		if event.pressed and (event.button_index == JOY_BUTTON_A or event.button_index == JOY_BUTTON_X):
+			print('MAIN:: BUTTON A IS PRESSED')
 
 
 func _load_phases():
@@ -240,6 +244,9 @@ func _load_problems():
 		var problem = {}
 		for i in header.size():
 			problem[header[i]] = line[i]
+		# Protect \n for loading choice_X so it do not overload the card
+		problem['choice_a'] = problem['choice_a'].replace("\\n", "\n")
+		problem['choice_b'] = problem['choice_b'].replace("\\n", "\n")
 		var phase_id = problem.get("phase_id_dep", "")
 		if phase_id in problems_by_phase:
 			problems_by_phase[phase_id].append(problem)
@@ -306,7 +313,7 @@ func _jump_to_next_phase():
 		self.g_game_over = true
 		# Play vctory music
 		SoundManager.play_sound('win')
-		_switch_to_win_card("🎉 Fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nVous pouvez relancer une partie pour voir de nouvelles cartes.", "ENDING")
+		_switch_to_win_card("🎉 Chronique finie, fin de la semaine de Monsieur Plouf !\nFéliciation pour avoir passé une semaine dans la peau de Monsieur Plouf!\nJ'espère que vous vous êtes bien amusés :)\nN'hésitez pas à proposer des idées de cartes, le jeu est Open Source.", "ENDING")
 		return
 	
 	# Play a success sond, great :)

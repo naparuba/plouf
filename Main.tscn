@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=47 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -28,11 +28,12 @@
 [ext_resource type="Texture2D" uid="uid://bfpdvyhrj5y53" path="res://images/next.png" id="25_wf8uf"]
 [ext_resource type="Texture2D" uid="uid://4x8ogodl07a1" path="res://images/go.png" id="26_k6y5s"]
 [ext_resource type="Texture2D" uid="uid://dc08w3s8d6wwm" path="res://images/BACK_BLUE.png" id="28_uxu78"]
-[ext_resource type="Texture2D" uid="uid://pi0p45ty0r8k" path="res://images/PLOUF.png" id="29_md48j"]
+[ext_resource type="Texture2D" uid="uid://e8mouuwrftn1" path="res://images/MMEPLOUF_GRAND.png" id="29_visv6"]
 [ext_resource type="Texture2D" uid="uid://w3lij63yl13r" path="res://images/icon_only_text.png" id="30_ajvj3"]
 [ext_resource type="Texture2D" uid="uid://s26tlovxxly4" path="res://images/MUFFIN.png" id="30_xqfub"]
 [ext_resource type="Texture2D" uid="uid://dxg3xrlcc0a7q" path="res://images/cochon.png" id="31_ymir3"]
 [ext_resource type="Texture2D" uid="uid://cbhar56bjq3l7" path="res://images/BACK_MAISON.png" id="32_ro4uw"]
+[ext_resource type="Texture2D" uid="uid://5515ekpafnl1" path="res://images/PLOUF_GRAND.png" id="34_vd7l5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rvbbl"]
 shader = ExtResource("2_b3nhu")
@@ -304,6 +305,18 @@ tracks/11/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("plouf:scale")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.954, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_0ftuc"]
 resource_name = "intro"
@@ -451,6 +464,18 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("plouf:scale")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.6, 0.629)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7icjc"]
@@ -985,6 +1010,7 @@ position = Vector2(489, 659)
 [node name="particles" type="Node2D" parent="."]
 
 [node name="intro" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 
@@ -997,7 +1023,7 @@ texture = ExtResource("28_uxu78")
 visible = false
 position = Vector2(78, 359)
 scale = Vector2(0.7, 0.686667)
-texture = ExtResource("16_4dfum")
+texture = ExtResource("29_visv6")
 
 [node name="logo_text_only" type="Sprite2D" parent="intro"]
 visible = false
@@ -1028,8 +1054,8 @@ texture = ExtResource("32_ro4uw")
 
 [node name="plouf" type="Sprite2D" parent="intro"]
 position = Vector2(71, -104)
-scale = Vector2(0.541667, 0.568333)
-texture = ExtResource("29_md48j")
+scale = Vector2(0.954, 1)
+texture = ExtResource("34_vd7l5")
 flip_h = true
 
 [node name="player" type="AnimationPlayer" parent="intro"]

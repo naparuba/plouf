@@ -14,7 +14,7 @@ config/name="Une semaine en tant que monsieur Plouf"
 run/main_scene="res://Main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/image="res://images/icon.png"
-config/icon="res://images/icon.png"
+config/icon="res://images/icon_compact.png"
 
 [autoload]
 
@@ -26,6 +26,7 @@ window/size/viewport_width=570
 window/size/viewport_height=1080
 window/size/mode=3
 window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [rendering]
 

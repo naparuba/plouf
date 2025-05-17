@@ -96,16 +96,16 @@ void fragment() {
 
     // Calculate warning effect (reddish tint when progress is too low or too high)
     float warning_factor = 0.0;
-    
+
     // For low values (below 20%)
     if (progress < warning_threshold) {
         warning_factor = 1.0 - smoothstep(0.0, warning_threshold, progress);
-    } 
+    }
     // For high values (above 80%)
     else if (progress > (1.0 - warning_threshold)) {
         warning_factor = 1.0 - smoothstep(1.0 - warning_threshold, 1.0, progress);
     }
-    
+
     // Pulsation effect (smooth oscillation over 1 second)
     float pulse = (sin(TIME * pulse_speed * 6.283) + 1.0) * 0.5; // 6.283 = 2*PI for 1s period
     warning_factor *= pulse; // Modulate warning by pulse
