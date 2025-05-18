@@ -18,11 +18,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup export templates
-        run: godot --headless --export-release --path . --quit
+      #- name: Setup export templates
+      #  run: godot --headless --export-release --path . --quit
 
       - name: Export Web
-        run: godot --headless --export-release "Web" builds/web/index.html
+        run: godot --headless --verbose --export-release "Web" builds/web/index.html
 
       - name: Export Android
         run: godot --headless --export-release "Android" builds/android/Plouf-v01.apk
