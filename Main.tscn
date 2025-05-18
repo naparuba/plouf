@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=48 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="10_0kyyk"]
 [ext_resource type="Texture2D" uid="uid://ckfuew66n5la0" path="res://images/popularity_full.png" id="10_gh3jm"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
+[ext_resource type="FontFile" uid="uid://bedwguihden1v" path="res://fonts/DejaVuSans.ttf" id="11_icq5c"]
 [ext_resource type="Texture2D" uid="uid://baufukimmj7ar" path="res://images/circle.png" id="12_7j1ur"]
 [ext_resource type="Texture2D" uid="uid://bpf6texfv6ulb" path="res://images/speed.png" id="13_ei6tv"]
 [ext_resource type="Texture2D" uid="uid://d2lhpl3sw6pqc" path="res://images/on_ne_parle_pas_de_la_croix.png" id="14_k1278"]
@@ -578,6 +579,7 @@ offset_left = 61.0
 offset_top = 5.0
 offset_right = 84.0
 offset_bottom = 28.0
+theme_override_fonts/font = ExtResource("11_icq5c")
 
 [node name="Flow" type="Node2D" parent="."]
 position = Vector2(276, 3)
@@ -620,6 +622,7 @@ offset_left = 61.0
 offset_top = -12.0
 offset_right = 76.0
 offset_bottom = 11.0
+theme_override_fonts/font = ExtResource("11_icq5c")
 
 [node name="Rythm" type="Node2D" parent="."]
 position = Vector2(152, 0)
@@ -660,6 +663,7 @@ offset_left = 38.0
 offset_top = -6.0
 offset_right = 53.0
 offset_bottom = 17.0
+theme_override_fonts/font = ExtResource("11_icq5c")
 
 [node name="FamillyLife" type="Node2D" parent="."]
 position = Vector2(12, -2)
@@ -700,6 +704,7 @@ offset_left = 48.0
 offset_top = -3.0
 offset_right = 71.0
 offset_bottom = 20.0
+theme_override_fonts/font = ExtResource("11_icq5c")
 
 [node name="Objectives" type="Node2D" parent="."]
 position = Vector2(21, 967)
@@ -709,6 +714,7 @@ offset_left = 162.0
 offset_top = -19.0
 offset_right = 352.0
 offset_bottom = 4.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -717,6 +723,7 @@ offset_left = 322.0
 offset_top = -7.0
 offset_right = 519.0
 offset_bottom = 16.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -725,6 +732,7 @@ offset_left = 344.0
 offset_top = 20.0
 offset_right = 540.0
 offset_bottom = 43.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -733,6 +741,7 @@ offset_left = 344.0
 offset_top = 43.0
 offset_right = 539.0
 offset_bottom = 68.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -741,6 +750,7 @@ offset_left = 320.0
 offset_top = 69.0
 offset_right = 535.0
 offset_bottom = 93.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -749,6 +759,7 @@ offset_left = 145.0
 offset_top = 83.0
 offset_right = 342.0
 offset_bottom = 107.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -756,6 +767,7 @@ text = "XXX"
 offset_top = 63.0
 offset_right = 213.0
 offset_bottom = 89.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -764,6 +776,7 @@ offset_left = -13.0
 offset_top = 43.0
 offset_right = 209.0
 offset_bottom = 66.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -772,12 +785,14 @@ offset_left = -13.0
 offset_top = 23.0
 offset_right = 213.0
 offset_bottom = 46.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
 [node name="10" type="RichTextLabel" parent="Objectives"]
 offset_right = 203.0
 offset_bottom = 23.0
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "XXX"
 
@@ -876,6 +891,7 @@ offset_top = 10.0
 offset_right = 508.0
 offset_bottom = 851.0
 mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "[color=black]Bonjour, et bienvenue dans la vie de [/color][color=purple]monsieur Plouf[/color]
 
@@ -889,15 +905,15 @@ text = "[color=black]Bonjour, et bienvenue dans la vie de [/color][color=purple]
 [color=red]↗[/color][color=black] passer du bon temps en famille
 [color=blue]↘[/color][color=black] mais avoir du temps pour son travail[/color]
 
-[color=#04AA6D]Timing pour sortir la chronique à temps[/color]
-[color=red]↗[/color][color=black] un jeudi sur deux
+[color=#04AA6D]Vitesse pour sortir la chronique à temps[/color]
+[color=red]↗[/color][color=black] assez vite pour sortir une chronique un jeudi sur deux
 [color=blue]↘[/color][color=black] aller trop vite va le rendre fou![/color]
 
-[color=#04AA6D]Inspiration[/color]
-[color=red]↗[/color][color=black] Si les textes de [color=purple]monsieur Plouf[/color] sont comme du miel pour nos oreilles, c'est grace à son inspiration
+[color=#04AA6D]Créativité[/color]
+[color=red]↗[/color][color=black] Si les textes de [color=purple]monsieur Plouf[/color] sont comme du miel pour nos oreilles, c'est grace à sa créativité
 [color=blue]↘[/color][color=black] trop peut le faire délirer[/color]
 
-[color=#04AA6D]Visibilité du public[/color]
+[color=#04AA6D]Popularité sur le net[/color]
 [color=red]↗[/color][color=black] Etre gentil avec l'algorithme de Youtube, mais sans vendre son âme
 [color=blue]↘[/color][color=black] sans public, plus de [color=purple]chroniques[/color], et ça serait trop triste comme monde[/color]
 
@@ -946,10 +962,11 @@ offset_top = 6.0
 offset_right = 508.0
 offset_bottom = 175.0
 mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "[color=black]Ici [color=purple]monsieur Plouf[/color][color=black] va être confronté à des [color=purple]problèmes[/color][color=black], et il aura alors à faire un [color=purple]choix[/color] entre [color=purple]2 possibilités[/color].
 
-[color=black]A noter que chaque [color=purple]choix[/color] aura des impacts sur les [color=#04AA6D]Critères de succès[/color][color=black], et survoler le choix vous présentera sa force ([color=yellow] 🞄  ●  ⬤[/color] ), mais attention, vous ne saurez pas s'il sont [color=red]↗[/color][color=black] ou [/color][color=blue]↘[/color]
+[color=black]A noter que chaque [color=purple]choix[/color] aura des impacts sur les [color=#04AA6D]Critères de succès[/color][color=black], et survoler le choix vous présentera sa force ([color=yellow] ▪ ●  ⬤[/color] ), mais attention, vous ne saurez pas s'il sont [color=red]↗[/color][color=black] ou [/color][color=blue]↘[/color]
 
 "
 
@@ -988,6 +1005,7 @@ offset_top = 6.0
 offset_right = 508.0
 offset_bottom = 175.0
 mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("11_icq5c")
 bbcode_enabled = true
 text = "[color=black]Voici tous les objectifs de [/color][color=purple]monsieur Plouf[/color][color=black] pour une [color=purple]chronique[/color][color=black] (oui il faut tout ça, et que ce soit prêt un jeudi sur 2!). [/color]
 

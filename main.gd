@@ -603,7 +603,7 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 	var too_high = __criteria_goes_high(stat_pct_float_1)
 	
 	if  (not (too_low or too_high)):
-		if impact_is_activated_rythm:  # no more activated
+		if self.impact_is_activated_rythm:  # no more activated
 			print('RYTHM: get back as normal')
 			# no impact on shaders
 			card_deck.unset_rush()
@@ -612,8 +612,11 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+	if self.impact_is_activated_rythm: # already active
+		return
+		
 	_play_warning_sound()  # let the user know it's going wrong ^^
-	impact_is_activated_rythm = true
+	self.impact_is_activated_rythm = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
 		print('RYTHM: get too low')
@@ -648,7 +651,7 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 	var background_shader = $Background.material
 	
 	if  (not(too_low or too_high)):
-		if impact_is_activated_flow:  # no more activated
+		if self.impact_is_activated_flow:  # no more activated
 			print('FLOW: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -658,9 +661,11 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+	if self.impact_is_activated_flow: # already active
+		return
 		
 	_play_warning_sound()  # let the user know it's going wrong ^^
-	impact_is_activated_flow = true
+	self.impact_is_activated_flow = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
 		print('FLOW: get too low')
@@ -698,7 +703,7 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 	var logos_node = $Logos
 	
 	if  (not(too_low or too_high)):
-		if impact_is_activated_visibility:  # no more activated
+		if self.impact_is_activated_visibility:  # no more activated
 			print('VISIBILITY: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(logos_node, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -707,8 +712,11 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
+	if self.impact_is_activated_visibility: # already active
+		return
+	
 	_play_warning_sound()  # let the user know it's going wrong ^^
-	impact_is_activated_visibility = true
+	self.impact_is_activated_visibility = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
 		print('VISIBILITY: get too low')
@@ -746,7 +754,7 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 	var familly_invasion = $FamillyInvasion
 	
 	if (not(too_low or too_high)):
-		if impact_is_activated_familly_life:  # no more activated
+		if self.impact_is_activated_familly_life:  # no more activated
 			print('FAMILLY_LIFE: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(background_shader, 'shader_parameter/grayness_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -756,8 +764,11 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 			SoundManager.reactivate_sounds()  # no more familly problem, get back as normal
 		return
 		
+	if self.impact_is_activated_familly_life: # already active
+		return
+	
 	_play_warning_sound()  # let the user know it's going wrong ^^
-	impact_is_activated_familly_life = true
+	self.impact_is_activated_familly_life = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # goes grey, sad
 		print('FAMILLY_LIFE: get too low')
@@ -789,7 +800,7 @@ func _update_possible_impacts(choice):
 			continue
 		var label = labels[stat]
 		if impact <= 1:
-			label.text = "🞄"
+			label.text = "▪"#".▪●◦🞘🞄🟒•︎●︎"#"🞄"
 		elif impact <= 2:
 			label.text = "●"
 		else:
