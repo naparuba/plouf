@@ -30,7 +30,9 @@ jobs:
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
       - name: Export Web
-        run: godot --headless --verbose --export-release "Web" builds/web/index.html
+        run: |
+          mkdir -p builds/web
+          godot --headless --verbose --export-release "Web" builds/web/index.html
 
       - name: Export Android
         run: godot --headless --export-release "Android" builds/android/Plouf-v01.apk
