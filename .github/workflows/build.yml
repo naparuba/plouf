@@ -34,10 +34,10 @@ jobs:
           mkdir -p builds/web
           godot --headless --verbose --export-release "Web" builds/web/index.html
 
-      #- name: Export Android
-      #  run: |
-      #    mkdir -p builds/android
-      #    godot --headless --export-release "Android" builds/android/Plouf-v01.apk
+      - name: Export Android
+        run: |
+          mkdir -p builds/android
+          godot --headless --export-release "Android" builds/android/Plouf-v01.apk
 
       - name: Export Windows
         run: |
