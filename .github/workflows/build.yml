@@ -35,13 +35,19 @@ jobs:
           godot --headless --verbose --export-release "Web" builds/web/index.html
 
       - name: Export Android
-        run: godot --headless --export-release "Android" builds/android/Plouf-v01.apk
+        run: |
+          mkdir -p builds/android
+          godot --headless --export-release "Android" builds/android/Plouf-v01.apk
 
       - name: Export Windows
-        run: godot --headless --export-release "Windows Desktop" builds/win/Plouf-v01.exe
+        run: |
+          mkdir -p builds/win
+          godot --headless --export-release "Windows Desktop" builds/win/Plouf-v01.exe
 
       - name: Export Linux
-        run: godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
+        run: |
+          mkdir -p builds/linux
+          godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
 
       - name: Upload all builds as artifacts
         uses: actions/upload-artifact@v4
