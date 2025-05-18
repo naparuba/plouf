@@ -1,0 +1,46 @@
+name: Build Godot Game
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  export:
+    name: Export All Platforms
+    runs-on: ubuntu-latest
+
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup export templates
+        run: godot --headless --export-release --path . --quit
+
+      - name: Export Web
+        run: godot --headless --export-release "Web" builds/web/index.html
+
+      - name: Export Android
+        run: godot --headless --export-release "Android" builds/android/Plouf-v01.apk
+
+      - name: Export Windows
+        run: godot --headless --export-release "Windows Desktop" builds/win/Plouf-v01.exe
+
+      - name: Export Linux
+        run: godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
+
+      - name: Upload all builds as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-builds
+          path: builds/
+
+      - name: Upload to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: builds/**
