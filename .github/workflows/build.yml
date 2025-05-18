@@ -6,6 +6,9 @@ on:
   release:
     types: [published]
 
+env:
+  GODOT_VERSION: 4.3
+
 jobs:
   export:
     name: Export All Platforms
@@ -20,6 +23,11 @@ jobs:
 
       #- name: Setup export templates
       #  run: godot --headless --export-release --path . --quit
+
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
       - name: Export Web
         run: godot --headless --verbose --export-release "Web" builds/web/index.html
