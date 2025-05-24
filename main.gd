@@ -3,12 +3,12 @@ extends CanvasLayer
 @onready var card_deck := $CardDeck
 
 # Some debug flag for... the dev, me
-var DEBUG_SKIP_TUTO = false
+var DEBUG_SKIP_TUTO = true
 var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
 
-var DEBUG_DISABLE_INTRO = false
+var DEBUG_DISABLE_INTRO = true
 
 
 var card_index = 0
@@ -116,6 +116,9 @@ var impacts_message_is_displaying_message := false
 @onready var intro_player = $intro/player
 @onready var intro_container = $intro
 @onready var audio_player = $intro/audio_player
+
+# Sounds
+var warning_sound_limiter := WarningSoundLimiter.new()
 
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
@@ -564,14 +567,14 @@ func _on_label_choice_impact_timeout():
 	self.label_choice_impact_tween = create_tween()
 	self.label_choice_impact_tween.tween_property(label_choice_impact, 'visible_ratio', 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-var last_warning_sound_call := 0
-func _play_warning_sound():  # protect this sound, max 1 each seconds
-	var now := Time.get_ticks_msec()
-	if now - last_warning_sound_call < 1000:  #1s
-		print("Appel ignoré : trop rapide.")
-		return
-	last_warning_sound_call = now
-	SoundManager.play_sound('warning', -12)  # -12db => /3
+#var last_warning_sound_call := 0
+#func _play_warning_sound():  # protect this sound, max 1 each seconds
+#	var now := Time.get_ticks_msec()
+#	if now - last_warning_sound_call < 1000:  #1s
+#		print("Appel ignoré : trop rapide.")
+#		return
+#	last_warning_sound_call = now
+#	SoundManager.play_sound('warning', -12)  # -12db => /3
 
 func __criteria_goes_low(stat_pct_float_1: float):
 	return stat_pct_float_1 < CRITERIA_WARNING_THRESHOLD
@@ -615,7 +618,7 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 	if self.impact_is_activated_rythm: # already active
 		return
 		
-	_play_warning_sound()  # let the user know it's going wrong ^^
+	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
 	self.impact_is_activated_rythm = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
@@ -664,7 +667,7 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 	if self.impact_is_activated_flow: # already active
 		return
 		
-	_play_warning_sound()  # let the user know it's going wrong ^^
+	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
 	self.impact_is_activated_flow = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
@@ -715,7 +718,7 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 	if self.impact_is_activated_visibility: # already active
 		return
 	
-	_play_warning_sound()  # let the user know it's going wrong ^^
+	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
 	self.impact_is_activated_visibility = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
@@ -767,7 +770,7 @@ func __manage_criteria_familly_life(stat_pct_float_1: float):
 	if self.impact_is_activated_familly_life: # already active
 		return
 	
-	_play_warning_sound()  # let the user know it's going wrong ^^
+	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
 	self.impact_is_activated_familly_life = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # goes grey, sad
