@@ -710,7 +710,6 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 			print('VISIBILITY: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(logos_node, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-			card_deck.unset_text_blink() # we can now always show the text
 			$Background.material.set_shader_parameter('recurring_hide', false)
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
@@ -723,7 +722,6 @@ func __manage_criteria_visibility(stat_pct_float_1: float):
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
 		print('VISIBILITY: get too low')
-		card_deck.set_text_blink()
 		$Background.material.set_shader_parameter('recurring_hide', true)
 		__set_criteria_fire_as_blue(fire)
 		self.stack_impact_message("[color=blue]Popularité[/color]: Internet semble oublier Plouf. Le public en vient à se demander si Ploufman existe réélement")
@@ -816,14 +814,6 @@ func _reset_possible_impacts():
 	label_possible_impact_familly_life.text = ""
 	label_possible_impact_visibility.text = ""
 
-
-#TODO: get back message cards maybe?
-func _switch_to_message_card(message:String):
-	var img = load("res://images/FADED.png")
-	g_is_in_card_message = true
-	print('Display message card: ', message)
-	card_deck.display_global_message(message, 'grey')
-	
 
 func _display_next_phase_message(message:String):
 	g_is_in_card_message = true

@@ -148,60 +148,63 @@ func _handle_joystick_release():
 	choice_overlay.visible = false
 	joystick_drag_x = 0.0
 
-func stack_cards(count:int, huge_impact_card_index:int):
-	print('CARD_DECK:: stack_cards '+ str(count)+ ' with huge impact index:'+ str(huge_impact_card_index))
-	# When drawing, in all cases we don't want interactions, only reenable it when finish and flip the
-	# top card
-	self.disable_interaction()
-	var deck = $Deck
-	# First clean Deck object to be sure it's void
-	for child in deck.get_children():
-		deck.remove_child(child)
+
+func _clear_deck():
+	for child in $Deck.get_children():
+		$Deck.remove_child(child)
 		child.queue_free()
-	
-	# Start to play sound of stackings cards
+
+
+func _get_final_stack_position(i: int, count: int) -> Vector2:
+	return Vector2(-(count - i - 1) * STACK_OFFSET, (count - i - 1) * STACK_OFFSET)
+
+
+func _create_card_sprite(i: int, count: int, huge_impact_card_index: int, start_pos: Vector2) -> Sprite2D:
+	var tex = preload("res://images/FADED.png")
+	var shader = preload("res://shaders/card_in_deck.gdshader")
+	var script := preload("res://one_card_deck.gd")
+
+	var sprite = Sprite2D.new()
+	sprite.texture = tex
+	sprite.set_script(script)
+	sprite.set_parent(self)
+	sprite.position = start_pos
+	sprite.scale = Vector2(0.2, 0.2)
+
+	var mat = ShaderMaterial.new()
+	mat.shader = shader
+	mat.set_shader_parameter("corner_radius_px", 20)
+	mat.set_shader_parameter("border_thickness", 2.0)
+
+	if (count - i - 1) == huge_impact_card_index:
+		mat.set_shader_parameter("border_color", border_color_huge_impact_color)
+
+	sprite.material = mat
+	return sprite
+
+
+func stack_cards(count: int, huge_impact_card_index: int) -> Tween:
+	print('CARD_DECK:: stack_cards %d with huge impact index: %d' % [count, huge_impact_card_index])
+	self.disable_interaction()
+
+	_clear_deck()
 	SoundManager.play_sound('stack_cards')
-	
-	# Charge la texture et le shader
-	var tex = load("res://images/FADED.png")
-	var shader = load("res://shaders/card_in_deck.gdshader")
-	var script := load("res://one_card_deck.gd")
 
 	var tween = create_tween()
-	var stacking_animation_duration = 0.5  # max time for the stacking
-	
 	var off_screen_position = Vector2(-500, 200)
-	
-	# Create sprite as a distant stack taht will move to a final dest
+
 	for i in count:
-		var sprite = Sprite2D.new()
-		sprite.texture = tex
-		sprite.set_script(script)
-		sprite.set_parent(self)  # so it can callback us when flip done
-		
-		# Position are smooth offset to see a "stack"
-		var final_position = Vector2(-(count-i-1) * STACK_OFFSET, (count-i-1) * STACK_OFFSET)  # décale chaque carte
-		var original_position = off_screen_position  # tODO: already offset them?
-		sprite.position = original_position
-		sprite.scale = Vector2(0.2, 0.2)
-		print('DESK:: STACK:: ', str(i),'/',count, ' is on ', final_position)
-		# Matériau avec shader
-		var mat := ShaderMaterial.new()
-		mat.shader = shader
-		mat.set_shader_parameter("corner_radius_px", 20)
-		mat.set_shader_parameter("border_thickness", 2.0)
-		if (count - i - 1) == huge_impact_card_index:  # this one have a huge impact, so show it to the player
-			mat.set_shader_parameter("border_color", border_color_huge_impact_color)
-		sprite.material = mat
-		
-		var move_duration_ratio = float(count) / (i+1)  # so not all cards are moving the same speed
-		print('MOVE DURATION', move_duration_ratio)
-		
-		deck.add_child(sprite)
-		tween.parallel().tween_property(sprite, 'position', final_position, stacking_animation_duration / move_duration_ratio)
-		tween.parallel().tween_property(sprite, 'scale', Vector2(1.0, 1.0), stacking_animation_duration  / move_duration_ratio)
-		
-	return tween # so the caller can wait for it
+		var sprite = _create_card_sprite(i, count, huge_impact_card_index, off_screen_position)
+		$Deck.add_child(sprite)
+
+		var final_position = _get_final_stack_position(i, count)
+		var move_duration_ratio = float(count) / (i + 1)
+
+		tween.parallel().tween_property(sprite, 'position', final_position, 0.5 / move_duration_ratio)
+		tween.parallel().tween_property(sprite, 'scale', Vector2(1.0, 1.0), 0.5 / move_duration_ratio)
+
+	return tween
+
 	
 func __get_top_deck_card():
 	var deck = $Deck
@@ -274,64 +277,66 @@ func _update_overlay_size():
 func _update_choice_overlay(delta_x: float) -> void:
 	var threshold_show = 20.0  # Début d'apparition
 
-	if abs(delta_x) > threshold_show:
-		choice_overlay.visible = true
-		choice_label.text = current_choice_b_txt if delta_x > 0 else current_choice_a_txt
-				
-		# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
-		var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
-		choice_overlay.modulate.a = alpha
-		
-		# Let the label be horizontal
-		choice_label.rotation_degrees = -current_card.rotation_degrees
-
-		# Déformer le bas du polygone pour rester horizontal
-		var sprite: Sprite2D = current_card.get_node("Sprite2D")
-		var size = Vector2(100, 100)
-		if sprite.texture:
-			size = sprite.texture.get_size() * sprite.scale
-		var width = size.x
-		var height = 50.0
-		
-		var rotation_rad = deg_to_rad(current_card.rotation_degrees)
-		var offset = tan(rotation_rad) * width
-		var points = []
-		if delta_x > 0:  # B => right
-			# Points mis à jour
-			points = [
-				Vector2(0, 10),                # Haut gauche, rounded
-				Vector2(10, 0),
-				
-				Vector2(width-10, 0),            # Haut droite rounded
-				Vector2(width, 10),          
-				
-				Vector2(width , height), # Bas droite décalé
-				Vector2(0, height + offset)         # Bas gauche décalé
-			]
-			
-			# Update label on the good place
-			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-			choice_label.position = Vector2(0, offset)  # En haut à droite
-			choice_label.size = Vector2(width-10, height-20)
-			
-		else: # A => left
-			points = [
-				Vector2(0, 10),                # Haut gauche rounded
-				Vector2(10, 0),
-				
-				Vector2(width-10, 0),            # Haut droite
-				Vector2(width, 10),
-				
-				Vector2(width , height - offset), # Bas droite décalé
-				Vector2(0, height)         # Bas gauche décalé
-			]
-			choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			choice_label.position = Vector2(10, 0)  # En haut à gauche
-			choice_label.size = Vector2(width-20, height - 20)  #TODO: BUG HERE, do not offset?
-		
-		polygon.polygon = points
-	else:
+	if abs(delta_x) <= threshold_show:
 		choice_overlay.visible = false
+		return
+
+	choice_overlay.visible = true
+	choice_label.text = current_choice_b_txt if delta_x > 0 else current_choice_a_txt
+	
+	# Alpha is max at the middle of the max drag so it can be read early but still with a progressive look
+	var alpha = clamp(2 * abs(delta_x) / max_drag_distance, 0.0, 1.0)
+	choice_overlay.modulate.a = alpha
+	
+	# Let the label be horizontal
+	choice_label.rotation_degrees = -current_card.rotation_degrees
+
+	# Déformer le bas du polygone pour rester horizontal
+	var sprite: Sprite2D = current_card.get_node("Sprite2D")
+	var size = Vector2(100, 100)
+	if sprite.texture:
+		size = sprite.texture.get_size() * sprite.scale
+	var width = size.x
+	var height = 50.0
+	
+	var rotation_rad = deg_to_rad(current_card.rotation_degrees)
+	var offset = tan(rotation_rad) * width
+	var points = []
+	if delta_x > 0:  # B => right
+		# Points mis à jour
+		points = [
+			Vector2(0, 10),                # Haut gauche, rounded
+			Vector2(10, 0),
+			
+			Vector2(width-10, 0),            # Haut droite rounded
+			Vector2(width, 10),          
+			
+			Vector2(width , height), # Bas droite décalé
+			Vector2(0, height + offset)         # Bas gauche décalé
+		]
+		
+		# Update label on the good place
+		choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		choice_label.position = Vector2(0, offset)  # En haut à droite
+		choice_label.size = Vector2(width-10, height-20)
+		
+	else: # A => left
+		points = [
+			Vector2(0, 10),                # Haut gauche rounded
+			Vector2(10, 0),
+			
+			Vector2(width-10, 0),            # Haut droite
+			Vector2(width, 10),
+			
+			Vector2(width , height - offset), # Bas droite décalé
+			Vector2(0, height)         # Bas gauche décalé
+		]
+		choice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		choice_label.position = Vector2(10, 0)  # En haut à gauche
+		choice_label.size = Vector2(width-20, height - 20)  #TODO: BUG HERE, do not offset?
+	
+	polygon.polygon = points
+
 
 func _handle_drag_preview(delta_x: float) -> void:
 	var new_direction = ""
@@ -519,19 +524,13 @@ func unset_text_raw():
 	var tween = create_tween()
 	tween.parallel().tween_property(choice_label.material, 'shader_parameter/pixel_size', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
-func set_text_blink():
-	print('DECK:: set_text_blink')
-	#choice_label.material.set_shader_parameter('recurring_hide', true)
-
-func unset_text_blink():
-	print('DECK:: unset_text_blink')
-	#choice_label.material.set_shader_parameter('recurring_hide', false)
 
 func set_rush():
 	$Rush.start()
 	
 func unset_rush():
 	$Rush.stop()
+
 
 func callback_rush_timeout():
 	current_choice_a_txt = 'RUSH! Plus le temps de réfléchir!'
@@ -555,37 +554,35 @@ func _show_back_message(which:String, message: String):
 	back.visible = true  # show the one you want
 
 
-func display_global_message(message:String, color:String):
-	print('DECK:: display_global_message')
-	self.disable_interaction()  # don't want to move card during this message
-	$GlobalMessages/message_back/label_message.text = message
-	$GlobalMessages/message_back.color = '#b0b0b0'
-	$GlobalMessages/sprite.visible = false
+func display_message(message: String, message_type: String = "info", 
+					 tex: Texture2D = null, color: Color = Color("#b0b0b0")):
+	print('DECK:: display_message [%s]' % message_type)
+	self.disable_interaction()
+
+	_show_back_message(message_type, message)
+	
+	# Gestion du sprite si une texture est fournie
+	if tex != null:
+		$GlobalMessages/sprite.texture = tex
+		$GlobalMessages/sprite.visible = true
+	else:
+		$GlobalMessages/sprite.visible = false
+	
 	$GlobalMessages.visible = true
+	
 
 
 func display_gameover_message(message:String, tex: Texture2D):
-	print('DECK:: display_global_message')
-	self.disable_interaction()  # don't want to move card during this message
-	_show_back_message('gameover', message)
-	$GlobalMessages/sprite.texture = tex
-	$GlobalMessages/sprite.visible = true
-	$GlobalMessages.visible = true
+	display_message(message, "gameover", tex)
+	
 
 func display_next_phase_message(message:String):
-	print('DECK:: display_global_message')
-	self.disable_interaction()  # don't want to move card during this message
-	_show_back_message('next_phase', message)
-	$GlobalMessages/sprite.visible = false
-	$GlobalMessages.visible = true
+	display_message(message, "next_phase")
+	
 
 func display_win_message(message:String, tex: Texture2D):
-	print('DECK:: display_global_message')
-	self.disable_interaction()  # don't want to move card during this message
-	_show_back_message('win', message)
-	$GlobalMessages/sprite.texture = tex
-	$GlobalMessages/sprite.visible = true
-	$GlobalMessages.visible = true
+	display_message(message, "win", tex)
+	
 
 func _on_global_messages_pressed() -> void:
 	print('DECK:: _on_global_messages_pressed')
