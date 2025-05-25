@@ -69,7 +69,7 @@ void fragment() {
 
 	// === Burn effect
 	vec4 back_rgb = texture(backTexture, UV);
-	if (COLOR.a == 0.0){
+	if (COLOR.a <= 0.1){
 		COLOR = back_rgb;
 	}
 
