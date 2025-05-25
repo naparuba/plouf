@@ -209,17 +209,17 @@ text = "Ici on voit le rendu de l'effet de la carte précédente."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Visibility" type="Node2D" parent="."]
+[node name="Popularity" type="Node2D" parent="."]
 position = Vector2(403, -6)
 
-[node name="fire" type="Sprite2D" parent="Visibility"]
+[node name="fire" type="Sprite2D" parent="Popularity"]
 visible = false
 material = SubResource("ShaderMaterial_gk4m6")
 position = Vector2(73, 40)
 scale = Vector2(0.56, 1.04)
 texture = ExtResource("2_hpoc5")
 
-[node name="Label" type="Label" parent="Visibility"]
+[node name="Label" type="Label" parent="Popularity"]
 visible = false
 offset_left = 44.0
 offset_top = 2.0
@@ -227,41 +227,41 @@ offset_right = 193.0
 offset_bottom = 25.0
 text = "Visibilité  "
 
-[node name="progress" type="ProgressBar" parent="Visibility"]
+[node name="progress" type="ProgressBar" parent="Popularity"]
 visible = false
 offset_left = 153.0
 offset_right = 157.0
 offset_bottom = 27.0
 
-[node name="ProgressSpriteBack" type="Sprite2D" parent="Visibility"]
+[node name="ProgressSpriteBack" type="Sprite2D" parent="Popularity"]
 position = Vector2(74, 54)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_1ma8d")
 
-[node name="ProgressSprite" type="Sprite2D" parent="Visibility"]
+[node name="ProgressSprite" type="Sprite2D" parent="Popularity"]
 material = SubResource("ShaderMaterial_d4wxv")
 position = Vector2(74, 54)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_gh3jm")
 
-[node name="PossibleImpact" type="Label" parent="Visibility"]
+[node name="PossibleImpact" type="Label" parent="Popularity"]
 offset_left = 61.0
 offset_top = 5.0
 offset_right = 84.0
 offset_bottom = 28.0
 theme_override_fonts/font = ExtResource("11_icq5c")
 
-[node name="Flow" type="Node2D" parent="."]
+[node name="Creativity" type="Node2D" parent="."]
 position = Vector2(276, 3)
 
-[node name="fire" type="Sprite2D" parent="Flow"]
+[node name="fire" type="Sprite2D" parent="Creativity"]
 visible = false
 material = SubResource("ShaderMaterial_exgja")
 position = Vector2(70, 28)
 scale = Vector2(0.56, 1.04)
 texture = ExtResource("2_hpoc5")
 
-[node name="Label" type="Label" parent="Flow"]
+[node name="Label" type="Label" parent="Creativity"]
 visible = false
 offset_left = 42.0
 offset_top = -11.0
@@ -269,66 +269,66 @@ offset_right = 183.0
 offset_bottom = 12.0
 text = "Flow"
 
-[node name="progress" type="ProgressBar" parent="Flow"]
+[node name="progress" type="ProgressBar" parent="Creativity"]
 visible = false
 offset_left = 116.0
 offset_top = -17.0
 offset_right = 120.0
 offset_bottom = 10.0
 
-[node name="ProgressSpriteBack" type="Sprite2D" parent="Flow"]
+[node name="ProgressSpriteBack" type="Sprite2D" parent="Creativity"]
 position = Vector2(69, 45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_0kyyk")
 
-[node name="ProgressSprite" type="Sprite2D" parent="Flow"]
+[node name="ProgressSprite" type="Sprite2D" parent="Creativity"]
 material = SubResource("ShaderMaterial_kee6s")
 position = Vector2(69, 45)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_iyi2x")
 
-[node name="PossibleImpact" type="Label" parent="Flow"]
+[node name="PossibleImpact" type="Label" parent="Creativity"]
 offset_left = 61.0
 offset_top = -12.0
 offset_right = 76.0
 offset_bottom = 11.0
 theme_override_fonts/font = ExtResource("11_icq5c")
 
-[node name="Rythm" type="Node2D" parent="."]
+[node name="Speed" type="Node2D" parent="."]
 position = Vector2(152, 0)
 
-[node name="fire" type="Sprite2D" parent="Rythm"]
+[node name="fire" type="Sprite2D" parent="Speed"]
 visible = false
 material = SubResource("ShaderMaterial_dtb54")
 position = Vector2(49, 30)
 scale = Vector2(0.56, 1.04)
 texture = ExtResource("2_hpoc5")
 
-[node name="Label" type="Label" parent="Rythm"]
+[node name="Label" type="Label" parent="Speed"]
 visible = false
 offset_left = 25.0
 offset_right = 121.0
 offset_bottom = 23.0
 text = "Rythme"
 
-[node name="progress" type="ProgressBar" parent="Rythm"]
+[node name="progress" type="ProgressBar" parent="Speed"]
 visible = false
 offset_left = 100.0
 offset_right = 104.0
 offset_bottom = 27.0
 
-[node name="ProgressSpriteBack" type="Sprite2D" parent="Rythm"]
+[node name="ProgressSpriteBack" type="Sprite2D" parent="Speed"]
 position = Vector2(46, 49)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_ei6tv")
 
-[node name="ProgressSprite" type="Sprite2D" parent="Rythm"]
+[node name="ProgressSprite" type="Sprite2D" parent="Speed"]
 material = SubResource("ShaderMaterial_vvtcr")
 position = Vector2(46, 49)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("14_uuj4s")
 
-[node name="PossibleImpact" type="Label" parent="Rythm"]
+[node name="PossibleImpact" type="Label" parent="Speed"]
 offset_left = 38.0
 offset_top = -6.0
 offset_right = 53.0

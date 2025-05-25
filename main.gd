@@ -28,25 +28,25 @@ var MULTIPLIER_HUGE_IMPACT = 10  # each phase will have a huge impact card with 
 var MULTIPLIER_IMPACT_HIGH = 3  # multiplier will be from 1->3
 
 # CRITERIA
-var CRITERIA_FLOW = 'creativity'
+var CRITERIA_CREATIVITY = 'creativity'
 var CRITERIA_FAMILLY_LIFE = 'familly_life'
-var CRITERIA_VISIBILITY = 'popularity'
-var CRITERIA_RYTHM = 'speed'
+var CRITERIA_POPULARITY = 'popularity'
+var CRITERIA_SPEED = 'speed'
 
 var MAX_STAT = 40
 var CRITERIA_WARNING_THRESHOLD = 0.2  # 20% => warning!
 
 @onready var stat_bars = {
-	CRITERIA_RYTHM: $Rythm/progress,
-	CRITERIA_FLOW: $Flow/progress,
+	CRITERIA_SPEED: $Speed/progress,
+	CRITERIA_CREATIVITY: $Creativity/progress,
 	CRITERIA_FAMILLY_LIFE: $FamillyLife/progress,
-	CRITERIA_VISIBILITY: $Visibility/progress,
+	CRITERIA_POPULARITY: $Popularity/progress,
 }
 var stats = {
-	CRITERIA_FLOW: 20,
-	CRITERIA_VISIBILITY: 20,
+	CRITERIA_CREATIVITY: 20,
+	CRITERIA_POPULARITY: 20,
 	CRITERIA_FAMILLY_LIFE: 20,
-	CRITERIA_RYTHM: 20,
+	CRITERIA_SPEED: 20,
 }
 
 @onready var card = $Card
@@ -54,14 +54,14 @@ var stats = {
 @onready var label_objective = $LabelObjective
 
 # Possible Impact
-@onready var label_possible_impact_visibility = $Visibility/PossibleImpact
-@onready var label_possible_impact_flow = $Flow/PossibleImpact
-@onready var label_possible_impact_rythm = $Rythm/PossibleImpact
+@onready var label_possible_impact_popularity = $Popularity/PossibleImpact
+@onready var label_possible_impact_creativity = $Creativity/PossibleImpact
+@onready var label_possible_impact_speed = $Speed/PossibleImpact
 @onready var label_possible_impact_familly_life = $FamillyLife/PossibleImpact
 
-var impact_is_activated_flow = false
-var impact_is_activated_visibility = false
-var impact_is_activated_rythm = false
+var impact_is_activated_creativity = false
+var impact_is_activated_popularity = false
+var impact_is_activated_speed = false
 var impact_is_activated_familly_life = false
 
 @onready var label_choice_impact = $LabelImpact
@@ -432,7 +432,7 @@ func _apply_choice(choice: String) -> bool:
 	# To debug the gameover
 	if DEBUG_GAMEOVER:
 		r['state'] = 'too_high'
-		r['stat'] = CRITERIA_FLOW
+		r['stat'] = CRITERIA_CREATIVITY
 		
 	if r['state'] != 'ok':
 		var _bad_stat = r['stat']
@@ -440,13 +440,13 @@ func _apply_choice(choice: String) -> bool:
 		var _err = "💥 Game Over! "+_bad_stat+ " is "+error
 		var img_path = ''
 		match _bad_stat:
-			CRITERIA_FLOW: 
+			CRITERIA_CREATIVITY: 
 				if error == 'too_low':
 					_err = "💥 [b]Page Blanche[/b]!\nIl regarde son écran depuis 7h, mais rien ne vient."
-					img_path = 'FLOW_TOO_LOW'
+					img_path = 'CREATIVITY_TOO_LOW'
 				else:
 					_err = "💥 [b]Plouf en feu[/b]!\nSes idées l'ont dévoré. Il chronique les nuages et intérupteurs.\nIl ne dors plus, il [i]crée[/i]."
-					img_path = 'FLOW_TOO_HIGH'
+					img_path = 'CREATIVITY_TOO_HIGH'
 			CRITERIA_FAMILLY_LIFE:
 				if error == 'too_low':
 					_err = "💥 [b]Papa, c'est qui lui?[/b]!\nSa fille ne le reconnait plus."
@@ -454,20 +454,20 @@ func _apply_choice(choice: String) -> bool:
 				else:
 					_err = "💥 [b]PloufFamille VLog[/b]!\nIl a renommé sa chaine Youtube. Il ne parle désormais que de tuto pour faire des slimes."
 					img_path = 'FAMILLY_LIFE_TOO_HIGH'
-			CRITERIA_VISIBILITY:
+			CRITERIA_POPULARITY:
 				if error == 'too_low':
 					_err = "💥 [b]Le grand silence[/b]!\nMême l'algorithme de Youtube l'a oublié."
-					img_path = 'VISIBILITY_TOO_LOW'
+					img_path = 'POPULARITY_TOO_LOW'
 				else:
 					_err = "💥 [b]Influenceur[/b]!\nMacDo, Ubisoft et même [i]Konami[/i]: tout le monde veut sponsoriser Plouf!."
-					img_path = 'VISIBILITY_TOO_HIGH'
-			CRITERIA_RYTHM:
+					img_path = 'POPULARITY_TOO_HIGH'
+			CRITERIA_SPEED:
 				if error == 'too_low':
 					_err = "💥 [b]Plouf fusionne avec sa chaise[/b]!\nIl fait parti du fauteuil\nTwitch a mis le tag 'objet inanimé' sur son live."
-					img_path = 'RYTHM_TOO_LOW'
+					img_path = 'SPEED_TOO_LOW'
 				else:
 					_err = "💥 [b]Productivité terminale[/b]!\nUne vidéo toutes les heures. Il ne voit plus les saisons passer. Il [i]est[/i] le contenu."
-					img_path = 'RYTHM_TOO_HIGH'
+					img_path = 'SPEED_TOO_HIGH'
 		g_game_over = true
 		_err = '[color=white]' + _err + '[/color]'
 		# Play lost music, sorry :)
@@ -519,14 +519,14 @@ func _apply_stats_consequences(problem, choice):
 		_spawn_criteria_particle(choice, stat, impact)
 		
 		match stat:
-			CRITERIA_RYTHM:
-				__manage_criteria_rythm(stat_pct_float_1)
-			CRITERIA_FLOW:  
-				__manage_criteria_flow(stat_pct_float_1)
+			CRITERIA_SPEED:
+				__manage_criteria_speed(stat_pct_float_1)
+			CRITERIA_CREATIVITY:  
+				__manage_criteria_creativity(stat_pct_float_1)
 			CRITERIA_FAMILLY_LIFE:
 				__manage_criteria_familly_life(stat_pct_float_1)
-			CRITERIA_VISIBILITY:
-				__manage_criteria_visibility(stat_pct_float_1)
+			CRITERIA_POPULARITY:
+				__manage_criteria_popularity(stat_pct_float_1)
 		
 	print("📊 Stats :", stats)
 	
@@ -573,26 +573,26 @@ func __set_criteria_fire_as_red(fire):
 func __set_criteria_fire_as_blue(fire):
 	fire.material.set_shader_parameter('too_high', false)
 
-# Rythm :
+# Speed :
 # - low: timer of 10s for choosing
 # - high: all is VERY slow
-func __manage_criteria_rythm(stat_pct_float_1: float):
+func __manage_criteria_speed(stat_pct_float_1: float):
 	if DEBUG_CRITERIA_EFFECTS:
 		#stat_pct_float_1 = randf_range(0.01, 0.3)
 		stat_pct_float_1 = randf_range(0.01, 0.99)
-	print('New RYTHM: ', stat_pct_float_1)
-	stat_bars[CRITERIA_RYTHM].value = stat_pct_float_1 * 100
-	var sprite = $Rythm/ProgressSprite
+	print('New SPEED: ', stat_pct_float_1)
+	stat_bars[CRITERIA_SPEED].value = stat_pct_float_1 * 100
+	var sprite = $Speed/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
 	# Fire shader
-	var fire = $Rythm/fire
+	var fire = $Speed/fire
 	
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
 	
 	if  (not (too_low or too_high)):
-		if self.impact_is_activated_rythm:  # no more activated
-			print('RYTHM: get back as normal')
+		if self.impact_is_activated_speed:  # no more activated
+			print('SPEED: get back as normal')
 			# no impact on shaders
 			card_deck.unset_rush()
 			
@@ -600,38 +600,38 @@ func __manage_criteria_rythm(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
-	if self.impact_is_activated_rythm: # already active
+	if self.impact_is_activated_speed: # already active
 		return
 		
 	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
-	self.impact_is_activated_rythm = true
+	self.impact_is_activated_speed = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
-		print('RYTHM: get too low')
+		print('SPEED: get too low')
 		__set_criteria_fire_as_blue(fire)
 		card_deck.set_rush()  # only 10s for choice
 		self.stack_impact_message("[color=blue]Vitesse[/color]: Plouf n'a plus le temps, il rush tout!")
 		
 	if too_high:
-		print('RYTHM: get too high')
+		print('SPEED: get too high')
 		__set_criteria_fire_as_red(fire)
 		label_question.set_slow_mode()  # Plouf is too fast, he see the text as too slow ^^
 		self.stack_impact_message("[color=red]Vitesse[/color]: Plouf va plus vite que Flash et Ploufman réunis, il risque le claquage!")
 			
 
-# Flow:
+# Creativity:
 # - low: going brut shader
 # - high: activating spyche shader
-func __manage_criteria_flow(stat_pct_float_1: float):
+func __manage_criteria_creativity(stat_pct_float_1: float):
 	if DEBUG_CRITERIA_EFFECTS:
 		#stat_pct_float_1 = randf_range(0.01, 0.3)
 		stat_pct_float_1 = randf_range(0.01, 0.99)
-	print('New FLOW: ', stat_pct_float_1)
-	stat_bars[CRITERIA_FLOW].value = stat_pct_float_1 * 100
-	var sprite = $Flow/ProgressSprite
+	print('New CREATIVITY: ', stat_pct_float_1)
+	stat_bars[CRITERIA_CREATIVITY].value = stat_pct_float_1 * 100
+	var sprite = $Creativity/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
 	# Fire shader
-	var fire = $Flow/fire
+	var fire = $Creativity/fire
 	
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
@@ -639,8 +639,8 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 	var background_shader = $Background.material
 	
 	if  (not(too_low or too_high)):
-		if self.impact_is_activated_flow:  # no more activated
-			print('FLOW: get back as normal')
+		if self.impact_is_activated_creativity:  # no more activated
+			print('CREATIVITY: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 1.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -649,14 +649,14 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
-	if self.impact_is_activated_flow: # already active
+	if self.impact_is_activated_creativity: # already active
 		return
 		
 	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
-	self.impact_is_activated_flow = true
+	self.impact_is_activated_creativity = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # go brut
-		print('FLOW: get too low')
+		print('CREATIVITY: get too low')
 		var tween = create_tween()
 		tween.parallel().tween_property(background_shader, 'shader_parameter/pixel_size', 32.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_raw()  # text goes blocky
@@ -664,55 +664,55 @@ func __manage_criteria_flow(stat_pct_float_1: float):
 		self.stack_impact_message("[color=blue]Créativité[/color]: Plouf manque d'inspiration, tout lui semble brut")
 		
 	if too_high:
-		print('FLOW: get too high')
+		print('CREATIVITY: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(background_shader, 'shader_parameter/deform_strength', 0.5, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		card_deck.set_text_wobby()  # text goes wobby, pshyche
 		__set_criteria_fire_as_red(fire)
 		self.stack_impact_message("[color=red]Créativité[/color]: Sa créativité débordante, Plouf commence à voir des choses qui n'existent pas")
 
-# Visibility:
+# Popularity:
 # - low: hiding UI for 1s every 5s
 # - high: logo are bouncing every where
-func __manage_criteria_visibility(stat_pct_float_1: float):
+func __manage_criteria_popularity(stat_pct_float_1: float):
 	if DEBUG_CRITERIA_EFFECTS:
 		#stat_pct_float_1 = randf_range(0.05, 0.3)
 		stat_pct_float_1 = randf_range(0.01, 0.99)
-	print('New VISIBILITY: ', stat_pct_float_1)
-	stat_bars[CRITERIA_VISIBILITY].value = stat_pct_float_1 * 100
-	var sprite = $Visibility/ProgressSprite
+	print('New POPULARITY: ', stat_pct_float_1)
+	stat_bars[CRITERIA_POPULARITY].value = stat_pct_float_1 * 100
+	var sprite = $Popularity/ProgressSprite
 	_change_progress_sprite(sprite, stat_pct_float_1)
 
 	var too_low = __criteria_goes_low(stat_pct_float_1)
 	var too_high = __criteria_goes_high(stat_pct_float_1)
 	# Fire shader
-	var fire = $Visibility/fire
+	var fire = $Popularity/fire
 	
 	var logos_node = $Logos
 	
 	if  (not(too_low or too_high)):
-		if self.impact_is_activated_visibility:  # no more activated
-			print('VISIBILITY: get back as normal')
+		if self.impact_is_activated_popularity:  # no more activated
+			print('POPULARITY: get back as normal')
 			var tween = create_tween()
 			tween.parallel().tween_property(logos_node, 'modulate:a', 0.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 			$Background.material.set_shader_parameter('recurring_hide', false)
 			fire.visible= false  # get back as normal, so hide the fire indicator
 		return
 		
-	if self.impact_is_activated_visibility: # already active
+	if self.impact_is_activated_popularity: # already active
 		return
 	
 	warning_sound_limiter.play_warning_sound()  # let the user know it's going wrong ^^
-	self.impact_is_activated_visibility = true
+	self.impact_is_activated_popularity = true
 	fire.visible = true # let the user be eye attract by this problem
 	if too_low:  # hiding UI for 1s every 5s
-		print('VISIBILITY: get too low')
+		print('POPULARITY: get too low')
 		$Background.material.set_shader_parameter('recurring_hide', true)
 		__set_criteria_fire_as_blue(fire)
 		self.stack_impact_message("[color=blue]Popularité[/color]: Internet semble oublier Plouf. Le public en vient à se demander si Ploufman existe réélement")
 
 	if too_high: # logo are bouncing every where
-		print('VISIBILITY: get too high')
+		print('POPULARITY: get too high')
 		var tween = create_tween()
 		tween.parallel().tween_property(logos_node, 'modulate:a', 1.0, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 		__set_criteria_fire_as_red(fire)
@@ -776,10 +776,10 @@ func _update_possible_impacts(choice):
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
 		var labels = {
-			CRITERIA_RYTHM: label_possible_impact_rythm,
-			CRITERIA_FLOW: label_possible_impact_flow,
+			CRITERIA_SPEED: label_possible_impact_speed,
+			CRITERIA_CREATIVITY: label_possible_impact_creativity,
 			CRITERIA_FAMILLY_LIFE: label_possible_impact_familly_life,
-			CRITERIA_VISIBILITY: label_possible_impact_visibility,
+			CRITERIA_POPULARITY: label_possible_impact_popularity,
 		}
 		impact =abs(impact)
 		if impact == 0:
@@ -794,10 +794,10 @@ func _update_possible_impacts(choice):
 			
 
 func _reset_possible_impacts():
-	label_possible_impact_rythm.text = ""
-	label_possible_impact_flow.text = ""
+	label_possible_impact_speed.text = ""
+	label_possible_impact_creativity.text = ""
 	label_possible_impact_familly_life.text = ""
-	label_possible_impact_visibility.text = ""
+	label_possible_impact_popularity.text = ""
 
 
 func _display_next_phase_message(message:String):
@@ -937,9 +937,9 @@ func _spawn_criteria_particle(choice: String, to_stat:String, impact:int):
 		
 		var dests = {
 			CRITERIA_FAMILLY_LIFE : $FamillyLife/ProgressSpriteBack.global_position,  # NOTE: global position and not jsut position
-			CRITERIA_FLOW : $Flow/ProgressSpriteBack.global_position,
-			CRITERIA_RYTHM: $Rythm/ProgressSpriteBack.global_position,
-			CRITERIA_VISIBILITY: $Visibility/ProgressSpriteBack.global_position,
+			CRITERIA_CREATIVITY : $Creativity/ProgressSpriteBack.global_position,
+			CRITERIA_SPEED: $Speed/ProgressSpriteBack.global_position,
+			CRITERIA_POPULARITY: $Popularity/ProgressSpriteBack.global_position,
 		}
 		
 		var dest = dests.get(to_stat) + random_offset
