@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhahdpgqlm536"]
+
+[ext_resource type="FontFile" uid="uid://bedwguihden1v" path="res://fonts/DejaVuSans.ttf" id="1_xe824"]
+[ext_resource type="Texture2D" uid="uid://bfpdvyhrj5y53" path="res://images/next.png" id="2_3ucgr"]
+
+[node name="help_2" type="Button"]
+visible = false
+offset_top = -2.0
+offset_right = 568.0
+offset_bottom = 1076.0
+flat = true
+
+[node name="ColorRectTop" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 570.0
+offset_bottom = 192.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 787.0
+offset_right = 570.0
+offset_bottom = 1083.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 17.0
+offset_right = 542.0
+offset_bottom = 192.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 508.0
+offset_bottom = 175.0
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_xe824")
+bbcode_enabled = true
+text = "[color=black]Ici [color=purple]monsieur Plouf[/color][color=black] va être confronté à des [color=purple]problèmes[/color][color=black], et il aura alors à faire un [color=purple]choix[/color] entre [color=purple]2 possibilités[/color].
+
+[color=black]A noter que chaque [color=purple]choix[/color] aura des impacts sur les [color=#04AA6D]Critères de succès[/color][color=black], et survoler le choix vous présentera sa force ([color=yellow] ▪ ●  ⬤[/color] ), mais attention, vous ne saurez pas s'il sont [color=red]↗[/color][color=black] ou [/color][color=blue]↘[/color]
+
+"
+
+[node name="next" type="Sprite2D" parent="."]
+position = Vector2(475, 1031)
+texture = ExtResource("2_3ucgr")

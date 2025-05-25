@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=3 uid="uid://xe2tqt0ra2kk"]
+
+[ext_resource type="FontFile" uid="uid://bedwguihden1v" path="res://fonts/DejaVuSans.ttf" id="1_2b3lg"]
+[ext_resource type="Texture2D" uid="uid://bfpdvyhrj5y53" path="res://images/next.png" id="2_r0rnq"]
+
+[sub_resource type="GDScript" id="GDScript_7ikfj"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="help_1" type="Button"]
+visible = false
+offset_top = -4.0
+offset_right = 568.0
+offset_bottom = 1078.0
+flat = true
+script = SubResource("GDScript_7ikfj")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 137.0
+offset_right = 570.0
+offset_bottom = 1085.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 46.0
+offset_right = 542.0
+offset_bottom = 906.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 508.0
+offset_bottom = 851.0
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_2b3lg")
+bbcode_enabled = true
+text = "[color=black]Bonjour, et bienvenue dans la vie de [/color][color=purple]monsieur Plouf[/color]
+
+[color=black]Votre objectif est de mener à bien la création complète d'une [/color][color=purple]chronique[/color][color=black] avec toutes ses étapes (choisir un jeu, jouer, écrire la chronique, etc).[/color]
+
+[color=black]Pour cela vous aller devoir faire des [/color][color=purple]choix[/color][color=black] et avancer jusqu'à votre objectif au bout d'une [/color][color=purple]semaine[/color][color=black] fortement chargée.[/color]
+
+[color=black]Il va falloir faire attention au [/color][color=#04AA6D]4 critères[/color][color=black] de la vie de [/color][color=purple]monsieur Plouf[/color][color=black] et chercher à les maintenir en [color=#04AA6D]équilibre[/color]: [color=red]ni trop haut[/color], [color=blue]ni trop bas[/color]!
+
+[color=#04AA6D]Vie de famille[/color]
+[color=red]↗[/color][color=black] passer du bon temps en famille
+[color=blue]↘[/color][color=black] mais avoir du temps pour son travail[/color]
+
+[color=#04AA6D]Vitesse pour sortir la chronique à temps[/color]
+[color=red]↗[/color][color=black] assez vite pour sortir une chronique un jeudi sur deux
+[color=blue]↘[/color][color=black] aller trop vite va le rendre fou![/color]
+
+[color=#04AA6D]Créativité[/color]
+[color=red]↗[/color][color=black] Si les textes de [color=purple]monsieur Plouf[/color] sont comme du miel pour nos oreilles, c'est grace à sa créativité
+[color=blue]↘[/color][color=black] trop peut le faire délirer[/color]
+
+[color=#04AA6D]Popularité sur le net[/color]
+[color=red]↗[/color][color=black] Etre gentil avec l'algorithme de Youtube, mais sans vendre son âme
+[color=blue]↘[/color][color=black] sans public, plus de [color=purple]chroniques[/color], et ça serait trop triste comme monde[/color]
+
+"
+
+[node name="next" type="Sprite2D" parent="."]
+position = Vector2(441, 981)
+texture = ExtResource("2_r0rnq")

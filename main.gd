@@ -3,7 +3,7 @@ extends CanvasLayer
 @onready var card_deck := $CardDeck
 
 # Some debug flag for... the dev, me
-var DEBUG_SKIP_TUTO = true
+var DEBUG_SKIP_TUTO = false
 var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
@@ -112,24 +112,20 @@ var impacts_message_queue: Array = []
 var impacts_message_is_displaying_message := false
 @onready var impacts_message_label = $LabelImpactEffects
 
-# Intro
-@onready var intro_player = $intro/player
-@onready var intro_container = $intro
-@onready var audio_player = $intro/audio_player
+@onready var intro = $intro
 
 # Sounds
 var warning_sound_limiter := WarningSoundLimiter.new()
 
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
-	if DEBUG_DISABLE_INTRO:
-		intro_container.visible = false
-	else:
-		intro_container.visible = true
+	intro.visible = false
 	
 	if not DEBUG_DISABLE_INTRO:
-		await self._launch_intro()  # need to await, if not will launch the app that will read inputs
+		intro.visible = true
+		await intro.launch_intro()  # need to await, if not will launch the app that will read inputs
 		print('INTRO FINISH in main')
+	
 	
 	_load_phases()
 	_load_play_games()
@@ -525,13 +521,10 @@ func _apply_stats_consequences(problem, choice):
 		match stat:
 			CRITERIA_RYTHM:
 				__manage_criteria_rythm(stat_pct_float_1)
-				
 			CRITERIA_FLOW:  
 				__manage_criteria_flow(stat_pct_float_1)
-				
 			CRITERIA_FAMILLY_LIFE:
 				__manage_criteria_familly_life(stat_pct_float_1)
-
 			CRITERIA_VISIBILITY:
 				__manage_criteria_visibility(stat_pct_float_1)
 		
@@ -567,14 +560,6 @@ func _on_label_choice_impact_timeout():
 	self.label_choice_impact_tween = create_tween()
 	self.label_choice_impact_tween.tween_property(label_choice_impact, 'visible_ratio', 0.0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-#var last_warning_sound_call := 0
-#func _play_warning_sound():  # protect this sound, max 1 each seconds
-#	var now := Time.get_ticks_msec()
-#	if now - last_warning_sound_call < 1000:  #1s
-#		print("Appel ignoré : trop rapide.")
-#		return
-#	last_warning_sound_call = now
-#	SoundManager.play_sound('warning', -12)  # -12db => /3
 
 func __criteria_goes_low(stat_pct_float_1: float):
 	return stat_pct_float_1 < CRITERIA_WARNING_THRESHOLD
@@ -801,7 +786,7 @@ func _update_possible_impacts(choice):
 			continue
 		var label = labels[stat]
 		if impact <= 1:
-			label.text = "▪"#".▪●◦🞘🞄🟒•︎●︎"#"🞄"
+			label.text = "▪"
 		elif impact <= 2:
 			label.text = "●"
 		else:
@@ -826,7 +811,6 @@ func _switch_to_win_card(message:String, img_path : String):
 	g_is_in_card_message = true
 	print('Display message card: ', message)
 	card_deck.display_win_message(message, img)
-	
 
 
 func _switch_to_gameover(message:String, swipe_message:String, img_path : String):
@@ -1012,15 +996,3 @@ func _on_impact_message_displayed():
 	await tween.finished
 	impacts_message_is_displaying_message = false
 	
-
-######### Intro:
-func _launch_intro():
-	print(' LAUNCH INTRO')
-	intro_container.visible = true
-	audio_player.stream = load("res://sounds/intro.ogg")
-	audio_player.play()
-	intro_player.play("intro")
-	await intro_player.animation_finished
-	print('INTRO FINISH')
-	intro_container.visible = false
-	return audio_player.finished

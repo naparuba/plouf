@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6lo6iitx7wc1"]
+
+[ext_resource type="FontFile" uid="uid://bedwguihden1v" path="res://fonts/DejaVuSans.ttf" id="1_ka51a"]
+[ext_resource type="Texture2D" uid="uid://4x8ogodl07a1" path="res://images/go.png" id="2_3loob"]
+
+[node name="help_3" type="Button"]
+visible = false
+offset_top = -4.0
+offset_right = 568.0
+offset_bottom = 1074.0
+flat = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 2.0
+offset_right = 570.0
+offset_bottom = 895.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.713726)
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 589.0
+offset_right = 542.0
+offset_bottom = 776.0
+mouse_filter = 1
+color = Color(0.580392, 0.835294, 1, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 508.0
+offset_bottom = 175.0
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_ka51a")
+bbcode_enabled = true
+text = "[color=black]Voici tous les objectifs de [/color][color=purple]monsieur Plouf[/color][color=black] pour une [color=purple]chronique[/color][color=black] (oui il faut tout ça, et que ce soit prêt un jeudi sur 2!). [/color]
+
+[color=black]Aidez le donc grâce à vos [color=purple]choix, et avancer jusqu'à atteindre tous les objectifs en maintenant les [/color][color=#04AA6D]Critères de succès[/color][color=black] à flot.[/color]
+
+[color=black]C'est parti![/color]
+
+"
+
+[node name="go" type="Sprite2D" parent="."]
+position = Vector2(472, 843)
+texture = ExtResource("2_3loob")
