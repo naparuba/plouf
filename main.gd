@@ -28,10 +28,10 @@ var MULTIPLIER_HUGE_IMPACT = 10  # each phase will have a huge impact card with 
 var MULTIPLIER_IMPACT_HIGH = 3  # multiplier will be from 1->3
 
 # CRITERIA
-var CRITERIA_FLOW = 'flow'
+var CRITERIA_FLOW = 'creativity'
 var CRITERIA_FAMILLY_LIFE = 'familly_life'
-var CRITERIA_VISIBILITY = 'visibility'
-var CRITERIA_RYTHM = 'rythm'
+var CRITERIA_VISIBILITY = 'popularity'
+var CRITERIA_RYTHM = 'speed'
 
 var MAX_STAT = 40
 var CRITERIA_WARNING_THRESHOLD = 0.2  # 20% => warning!

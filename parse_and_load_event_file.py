@@ -86,26 +86,26 @@ all_categories = [d['id'] for d in categories_data]
 
 
 def _get_impact_from_entry(entry, choice):
-    # example:'A': [{'impact_category': 'rythm', 'impact_sign': '-'}, {'impact_category': 'visibility', 'impact_sign': '+'}],
-    # order: visibility_a;flow_a;familly_life_a;rythm_a;
-    a_visibility = '0'
-    a_flow = '0'
+    # example:'A': [{'impact_category': 'speed', 'impact_sign': '-'}, {'impact_category': 'popularity', 'impact_sign': '+'}],
+    # order: popularity_a;creativity_a;familly_life_a;speed_a;
+    a_popularity = '0'
+    a_creativity = '0'
     a_familly_life = '0'
-    a_rythm = '0'
+    a_speed = '0'
     for d in entry[choice]:
         which = d['impact_category']
-        if which == 'visibility':
-            a_visibility = d['impact_sign'] + '1'
-        elif which == 'flow':
-            a_flow = d['impact_sign'] + '1'
+        if which == 'popularity':
+            a_popularity = d['impact_sign'] + '1'
+        elif which == 'creativity':
+            a_creativity = d['impact_sign'] + '1'
         elif which == 'familly_life':
             a_familly_life = d['impact_sign'] + '1'
-        elif which == 'rythm':
-            a_rythm = d['impact_sign'] + '1'
+        elif which == 'speed':
+            a_speed = d['impact_sign'] + '1'
         else:
             print(f'Erreur : {which} is not a valid category')
             sys.exit(2)
-    a_str = f'{a_visibility};{a_flow};{a_familly_life};{a_rythm}'
+    a_str = f'{a_popularity};{a_creativity};{a_familly_life};{a_speed}'
     return a_str
 
 
@@ -152,7 +152,7 @@ if set(categories) != set(all_categories):
     print(f'Error: some categories are not valid {set(all_categories) - set(categories)}   {set(categories) - set(all_categories)}')
     sys.exit(2)
 
-data = 'problem_id;phase_id_dep;title;problem_description;choice_a;outcome_a;visibility_a;flow_a;familly_life_a;rythm_a;choice_b;outcome_b;visibility_b;flow_b;familly_life_b;rythm_b;character_img_id;background_img_id\n'
+data = 'problem_id;phase_id_dep;title;problem_description;choice_a;outcome_a;popularity_a;creativity_a;familly_life_a;speed_a;choice_b;outcome_b;popularity_b;creativity_b;familly_life_b;speed_b;character_img_id;background_img_id\n'
 
 new_lines = []
 for phase, events_list in events.items():
