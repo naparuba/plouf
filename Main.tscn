@@ -1,18 +1,17 @@
-[gd_scene load_steps=40 format=3 uid="uid://cpytkw5784g3i"]
+[gd_scene load_steps=39 format=3 uid="uid://cpytkw5784g3i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_47kuj"]
 [ext_resource type="Texture2D" uid="uid://baoy10ckxaog4" path="res://images/background_all.png" id="2_6smxf"]
 [ext_resource type="Shader" path="res://shaders/impacts.gdshader" id="2_b3nhu"]
-[ext_resource type="Texture2D" uid="uid://cheim83nmgnx2" path="res://images/visibility.png" id="2_hpoc5"]
 [ext_resource type="Texture2D" uid="uid://e6o1cpp23a6x" path="res://images/vie_famille.png" id="3_6vj60"]
 [ext_resource type="Script" path="res://progressive_text.gd" id="4_dxl5p"]
 [ext_resource type="Texture2D" uid="uid://tqkt6aiddivf" path="res://images/vie_famille_full.png" id="4_frkv5"]
-[ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/flow_full.png" id="6_iyi2x"]
+[ext_resource type="Texture2D" uid="uid://50n3gqg3gidh" path="res://images/creativity_full.png" id="6_iyi2x"]
 [ext_resource type="Shader" path="res://shaders/b_fire.gdshader" id="7_2rojy"]
 [ext_resource type="Shader" path="res://shaders/progress.gdshader" id="7_w23tw"]
 [ext_resource type="Texture2D" uid="uid://ce4880yacwxjd" path="res://images/popularity.png" id="8_1ma8d"]
 [ext_resource type="Texture2D" uid="uid://qgvlw7vgkbw" path="res://images/perlin.png" id="8_5v6y7"]
-[ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/flow.png" id="10_0kyyk"]
+[ext_resource type="Texture2D" uid="uid://b1lvfe4qysbor" path="res://images/creativity.png" id="10_0kyyk"]
 [ext_resource type="Texture2D" uid="uid://ckfuew66n5la0" path="res://images/popularity_full.png" id="10_gh3jm"]
 [ext_resource type="PackedScene" uid="uid://dqd306sitp07o" path="res://CardDeck.tscn" id="11_dmsid"]
 [ext_resource type="FontFile" uid="uid://bedwguihden1v" path="res://fonts/DejaVuSans.ttf" id="11_icq5c"]
@@ -217,7 +216,7 @@ visible = false
 material = SubResource("ShaderMaterial_gk4m6")
 position = Vector2(73, 40)
 scale = Vector2(0.56, 1.04)
-texture = ExtResource("2_hpoc5")
+texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Popularity"]
 visible = false
@@ -259,7 +258,7 @@ visible = false
 material = SubResource("ShaderMaterial_exgja")
 position = Vector2(70, 28)
 scale = Vector2(0.56, 1.04)
-texture = ExtResource("2_hpoc5")
+texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Creativity"]
 visible = false
@@ -302,7 +301,7 @@ visible = false
 material = SubResource("ShaderMaterial_dtb54")
 position = Vector2(49, 30)
 scale = Vector2(0.56, 1.04)
-texture = ExtResource("2_hpoc5")
+texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Speed"]
 visible = false
@@ -343,7 +342,7 @@ visible = false
 material = SubResource("ShaderMaterial_h120p")
 position = Vector2(56, 27)
 scale = Vector2(0.56, 1.04)
-texture = ExtResource("2_hpoc5")
+texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="FamillyLife"]
 visible = false

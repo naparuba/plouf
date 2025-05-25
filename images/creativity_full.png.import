@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1lvfe4qysbor"
-path="res://.godot/imported/flow.png-222c0431e8b072af3f013e7d49b69c32.ctex"
+uid="uid://50n3gqg3gidh"
+path="res://.godot/imported/creativity_full.png-a985eb582b72108bb3efb85a35311fe1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/flow.png"
-dest_files=["res://.godot/imported/flow.png-222c0431e8b072af3f013e7d49b69c32.ctex"]
+source_file="res://images/creativity_full.png"
+dest_files=["res://.godot/imported/creativity_full.png-a985eb582b72108bb3efb85a35311fe1.ctex"]
 
 [params]
 
