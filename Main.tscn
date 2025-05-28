@@ -41,9 +41,9 @@ shader_parameter/recurring_hide = false
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gk4m6"]
 shader = ExtResource("7_2rojy")
 shader_parameter/too_high = true
-shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_alpha = 0.6
 shader_parameter/fire_speed = Vector2(0, 0.5)
-shader_parameter/fire_aperture = 0.6
+shader_parameter/fire_aperture = 0.5
 shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d4wxv"]
@@ -70,9 +70,9 @@ shader_parameter/mask_texture = ExtResource("10_gh3jm")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_exgja"]
 shader = ExtResource("7_2rojy")
 shader_parameter/too_high = true
-shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_alpha = 0.6
 shader_parameter/fire_speed = Vector2(0, 0.5)
-shader_parameter/fire_aperture = 0.6
+shader_parameter/fire_aperture = 0.5
 shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kee6s"]
@@ -99,9 +99,9 @@ shader_parameter/mask_texture = ExtResource("6_iyi2x")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dtb54"]
 shader = ExtResource("7_2rojy")
 shader_parameter/too_high = true
-shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_alpha = 0.6
 shader_parameter/fire_speed = Vector2(0, 0.5)
-shader_parameter/fire_aperture = 0.6
+shader_parameter/fire_aperture = 0.5
 shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vvtcr"]
@@ -128,9 +128,9 @@ shader_parameter/mask_texture = ExtResource("14_uuj4s")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h120p"]
 shader = ExtResource("7_2rojy")
 shader_parameter/too_high = true
-shader_parameter/fire_alpha = 0.4
+shader_parameter/fire_alpha = 0.6
 shader_parameter/fire_speed = Vector2(0, 0.5)
-shader_parameter/fire_aperture = 0.6
+shader_parameter/fire_aperture = 0.5
 shader_parameter/noise_tex = ExtResource("8_5v6y7")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sncj2"]
@@ -214,8 +214,8 @@ position = Vector2(403, -6)
 [node name="fire" type="Sprite2D" parent="Popularity"]
 visible = false
 material = SubResource("ShaderMaterial_gk4m6")
-position = Vector2(73, 40)
-scale = Vector2(0.56, 1.04)
+position = Vector2(75, 42)
+scale = Vector2(0.9, 1.3)
 texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Popularity"]
@@ -256,8 +256,8 @@ position = Vector2(276, 3)
 [node name="fire" type="Sprite2D" parent="Creativity"]
 visible = false
 material = SubResource("ShaderMaterial_exgja")
-position = Vector2(70, 28)
-scale = Vector2(0.56, 1.04)
+position = Vector2(71, 30)
+scale = Vector2(0.88, 1.26)
 texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Creativity"]
@@ -299,8 +299,8 @@ position = Vector2(152, 0)
 [node name="fire" type="Sprite2D" parent="Speed"]
 visible = false
 material = SubResource("ShaderMaterial_dtb54")
-position = Vector2(49, 30)
-scale = Vector2(0.56, 1.04)
+position = Vector2(51.5, 31.5)
+scale = Vector2(0.87, 1.25)
 texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="Speed"]
@@ -340,8 +340,8 @@ position = Vector2(12, -2)
 [node name="fire" type="Sprite2D" parent="FamillyLife"]
 visible = false
 material = SubResource("ShaderMaterial_h120p")
-position = Vector2(56, 27)
-scale = Vector2(0.56, 1.04)
+position = Vector2(57, 31.5)
+scale = Vector2(0.78, 1.25)
 texture = ExtResource("10_0kyyk")
 
 [node name="Label" type="Label" parent="FamillyLife"]
