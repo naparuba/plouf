@@ -9,7 +9,7 @@ var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
 
-var DEBUG_DISABLE_INTRO = true
+var DEBUG_DISABLE_INTRO = false
 
 
 var card_index = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://daxky154aiobb"]
+[gd_scene load_steps=15 format=3 uid="uid://daxky154aiobb"]
 
 [ext_resource type="Script" path="res://intro.gd" id="1_hhr0h"]
 [ext_resource type="Texture2D" uid="uid://dc08w3s8d6wwm" path="res://images/BACK_BLUE.png" id="1_xuc1l"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://dxg3xrlcc0a7q" path="res://images/cochon.png" id="6_q0myo"]
 [ext_resource type="Texture2D" uid="uid://cbhar56bjq3l7" path="res://images/BACK_MAISON.png" id="7_var5n"]
 [ext_resource type="Texture2D" uid="uid://5515ekpafnl1" path="res://images/PLOUF_GRAND.png" id="8_0ml2y"]
+[ext_resource type="Texture2D" uid="uid://dkxd055r678r3" path="res://images/skip.png" id="10_lv2fg"]
+[ext_resource type="Texture2D" uid="uid://x1bv5oqkbq7i" path="res://images/skip_full.png" id="11_hajua"]
 
 [sub_resource type="Animation" id="Animation_gulrl"]
 length = 0.001
@@ -328,6 +330,20 @@ tracks/12/keys = {
 "update": 0,
 "values": [Vector2(0.6, 0.629)]
 }
+tracks/13/type = "method"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath(".")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(13),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_intro_finished"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7icjc"]
 _data = {
@@ -391,3 +407,14 @@ libraries = {
 }
 
 [node name="audio_player" type="AudioStreamPlayer" parent="."]
+
+[node name="skip" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 446.0
+offset_top = 1035.0
+offset_right = 848.0
+offset_bottom = 1168.0
+scale = Vector2(0.3, 0.3)
+fill_mode = 4
+texture_under = ExtResource("10_lv2fg")
+texture_progress = ExtResource("11_hajua")
