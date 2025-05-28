@@ -4,6 +4,7 @@ extends CanvasLayer
 
 # Some debug flag for... the dev, me
 var DEBUG_SKIP_TUTO = false
+var DEBUG_FORCE_TUTO = false
 var DEBUG_GAMEOVER = false
 var DEBUG_WIN = false
 var DEBUG_CRITERIA_EFFECTS = false
@@ -117,9 +118,20 @@ var impacts_message_is_displaying_message := false
 # Sounds
 var warning_sound_limiter := WarningSoundLimiter.new()
 
+# Save data
+const SAVE_FILE_PATH = "user://save_data.json"
+# What we want to save between runs
+var save_data := {
+	"has_reached_phase_5": false,
+}
+
+
 func _ready():
 	print("Chargement du jeu de Monsieur Plouf...")
 	intro.visible = false
+	
+	_load_game_data()  # we need the game data to know if we are skiping tuto
+	print('HAVE REACH PHASE 5? ', self.save_data['has_reached_phase_5'])
 	
 	if not DEBUG_DISABLE_INTRO:
 		intro.visible = true
@@ -162,11 +174,11 @@ func _ready():
 	# don't show any result
 	label_choice_impact.visible = false
 	
-	if DEBUG_SKIP_TUTO:
+	var is_experimented_user = self.save_data["has_reached_phase_5"]
+	if not DEBUG_FORCE_TUTO and (DEBUG_SKIP_TUTO or is_experimented_user):
 		$help_1.visible = false
 		card_deck.enable_interaction()
 
-	
 
 func _input(event):
 	# Quit on escape key
@@ -178,6 +190,31 @@ func _input(event):
 		if event.pressed and (event.button_index == JOY_BUTTON_A or event.button_index == JOY_BUTTON_X):
 			print('MAIN:: BUTTON A IS PRESSED')
 
+
+func _save_game_data():
+	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+	if file:
+		var json = JSON.stringify(save_data)
+		file.store_string(json)
+		file.close()
+		print('SAVE GAME:: the game data are saved')
+	else:
+		print("Erreur d'accès fichier pour la sauvegarde.")
+
+
+func _load_game_data():
+	if not FileAccess.file_exists(SAVE_FILE_PATH):
+		return  # At first startup or web cache clean
+	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+	if file:
+		var json_str = file.get_as_text()
+		var json_result = JSON.parse_string(json_str)
+		if typeof(json_result) == TYPE_DICTIONARY:
+			# IMPORTANT: key are the one in save_data, so beware if changing name in the future!
+			for key in save_data.keys():
+				if json_result.has(key):
+					save_data[key] = json_result[key]
+		file.close()
 
 func _load_phases():
 	var file = FileAccess.open("res://phases.json", FileAccess.READ)
@@ -306,6 +343,12 @@ func _initial_phase():  # only at _ready
 func _jump_to_next_phase():
 	print('JUMP TO NEXT PHASE')
 	_show_objective_progression()
+	
+	# If we did reach the phase 5 (middle of the game), then we are supposing the
+	# user know how to play, so we will be able to skip tutos
+	if current_phase_index == 5:
+		self.save_data["has_reached_phase_5"] = true
+		self._save_game_data()
 	
 	if current_phase_index >= phases.size() or DEBUG_WIN:
 		__set_problem_text("🎉 Fin de la semaine de Monsieur Plouf !")
