@@ -42,7 +42,7 @@ jobs:
         run: |
           mkdir -p ~/.config/godot
           echo '[android]' > ~/.config/godot/editor_settings-4.tres
-          echo 'jdk_path = "/usr/lib/jvm/java-11-openjdk-amd64"' >> ~/.config/godot/editor_settings-4.tres
+          echo 'jdk_path = "/usr/lib/jvm/java-17-openjdk-amd64/"' >> ~/.config/godot/editor_settings-4.tres
 
 
       - name: Export Android
