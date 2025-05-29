@@ -40,6 +40,7 @@ jobs:
         run: |
           mkdir -p builds/linux
           godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
+          
 
       # Android
       #- name: Configure Java SDK path for Android export
@@ -50,7 +51,8 @@ jobs:
       #  run: |
       #    mkdir -p builds/android
       #    godot --headless --export-release "Android" builds/android/Plouf-v01.apk
-      
+      - name: List build files
+        run: ls -R builds/
 
       - name: Upload all builds as artifacts
         uses: actions/upload-artifact@v4
@@ -62,4 +64,4 @@ jobs:
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: builds/**
+          files: builds/**/*.*
