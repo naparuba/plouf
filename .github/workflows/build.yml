@@ -34,6 +34,10 @@ jobs:
           mkdir -p builds/web
           godot --headless --verbose --export-release "Web" builds/web/index.html
 
+      - name: Install Android Build Template
+        run: |
+          godot --headless --no-window --install-android-build-template
+
       - name: Configure Java SDK path for Android export
         run: |
           mkdir -p ~/.config/godot
