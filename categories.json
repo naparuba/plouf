@@ -208,5 +208,67 @@
     "B": [
       {"impact_category": "speed", "impact_sign": "+"}
     ]
+  },
+  {
+    "id": "PEOPLE_LIKE_QUALITY",
+    "A": [
+      {"impact_category": "speed", "impact_sign": "+"},
+      {"impact_category": "popularity", "impact_sign": "-"}
+    ],
+    "B": [
+      {"impact_category": "speed", "impact_sign": "-"},
+      {"impact_category": "popularity", "impact_sign": "+"}
+    ]
+  },
+  {
+    "id": "CREATIVITY_IDEA",
+    "A": [
+      {"impact_category": "creativity", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "creativity", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "OBSESSION",
+    "A": [
+      {"impact_category": "speed", "impact_sign": "-"},
+      {"impact_category": "creativity", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "speed", "impact_sign": "+"},
+      {"impact_category": "creativity", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "FAMILLY_NOT_POPULARITY",
+    "A": [
+      {"impact_category": "familly_life", "impact_sign": "-"},
+      {"impact_category": "popularity", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "familly_life", "impact_sign": "+"},
+      {"impact_category": "popularity", "impact_sign": "-"}
+    ]
+  },
+  {
+    "id": "EASY_POPULARITY",
+    "A": [
+      {"impact_category": "popularity", "impact_sign": "+"}
+    ],
+    "B": [
+
+    ]
+  },
+  {
+    "id": "ASSUME_BAD_CHOICE",
+    "A": [
+      {"impact_category": "speed", "impact_sign": "+"},
+      {"impact_category": "popularity", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "speed", "impact_sign": "-"},
+      {"impact_category": "popularity", "impact_sign": "-"}
+    ]
   }
 ]

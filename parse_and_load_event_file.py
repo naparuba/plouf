@@ -169,3 +169,5 @@ with codecs.open('plouf_game_cards.csv', mode='w', encoding='utf8') as f:
     f.write(buf)
 
 print('\n\n ALL IS OK')
+print('Stats:')
+print('Nb lines:', len(new_lines))
