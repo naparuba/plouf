@@ -42,14 +42,14 @@ jobs:
           godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
 
       # Android
-      - name: Configure Java SDK path for Android export
-        run: |
-          echo 'export/android/android_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64/"' >> ~/.config/godot/editor_settings-4.4.tres
+      #- name: Configure Java SDK path for Android export
+      #  run: |
+      #    echo 'export/android/android_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64/"' >> ~/.config/godot/editor_settings-4.4.tres
 
-      - name: Export Android
-        run: |
-          mkdir -p builds/android
-          godot --headless --export-release "Android" builds/android/Plouf-v01.apk
+      #- name: Export Android
+      #  run: |
+      #    mkdir -p builds/android
+      #    godot --headless --export-release "Android" builds/android/Plouf-v01.apk
 
       
 
