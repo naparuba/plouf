@@ -21,9 +21,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      #- name: Setup export templates
-      #  run: godot --headless --export-release --path . --quit
-
       - name: Setup
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
@@ -34,22 +31,6 @@ jobs:
           mkdir -p builds/web
           godot --headless --verbose --export-release "Web" builds/web/index.html
 
-      - name: Install Android Build Template
-        run: |
-          godot --headless --no-window --install-android-build-template
-
-      - name: Configure Java SDK path for Android export
-        run: |
-          mkdir -p ~/.config/godot
-          echo '[android]' > ~/.config/godot/editor_settings-4.tres
-          echo 'jdk_path = "/usr/lib/jvm/java-17-openjdk-amd64/"' >> ~/.config/godot/editor_settings-4.tres
-
-
-      - name: Export Android
-        run: |
-          mkdir -p builds/android
-          godot --headless --export-release "Android" builds/android/Plouf-v01.apk
-
       - name: Export Windows
         run: |
           mkdir -p builds/win
@@ -59,6 +40,18 @@ jobs:
         run: |
           mkdir -p builds/linux
           godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
+
+      # Android
+      - name: Configure Java SDK path for Android export
+        run: |
+          echo 'export/android/android_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64/"' >> ~/.config/godot/editor_settings-4.4.tres
+
+      - name: Export Android
+        run: |
+          mkdir -p builds/android
+          godot --headless --export-release "Android" builds/android/Plouf-v01.apk
+
+      
 
       - name: Upload all builds as artifacts
         uses: actions/upload-artifact@v4
