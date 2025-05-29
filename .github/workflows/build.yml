@@ -12,6 +12,7 @@ permissions:
 
 env:
   GODOT_VERSION: 4.4.1
+  PLOUF_VERSION: 0.5
 
 jobs:
   export:
@@ -34,24 +35,24 @@ jobs:
         run: |
           mkdir -p builds/web
           godot --headless --verbose --export-release "Web" builds/web/index.html
-          tar cfz builds/web-v.01.tar.gz builds/web/
+          tar cfz builds/web-v${PLOUF_VERSION}.tar.gz builds/web/
           rm -fr builds/web/
 
       - name: Export Windows
         run: |
           mkdir -p builds/win
-          godot --headless --export-release "Windows Desktop" builds/win/Plouf-v01.exe
-          tar cfz builds/windows-v.01.tar.gz builds/win/
+          godot --headless --export-release "Windows Desktop" builds/win/Plouf-v${PLOUF_VERSION}.exe
+          tar cfz builds/windows-v${PLOUF_VERSION}.tar.gz builds/win/
           rm -fr builds/win/
 
       - name: Export Linux
         run: |
           mkdir -p builds/linux
-          godot --headless --export-release "Linux" builds/linux/plouf_v0.1.x86_64
-          tar cfz builds/linux-v.01.tar.gz builds/linux/
+          godot --headless --export-release "Linux" builds/linux/plouf_v${PLOUF_VERSION}.x86_64
+          tar cfz builds/linux-v${PLOUF_VERSION}.tar.gz builds/linux/
           rm -fr builds/linux/
           
-      
+
       # Android
       #- name: Configure Java SDK path for Android export
       #  run: |
