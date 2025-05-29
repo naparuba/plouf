@@ -6,6 +6,10 @@ on:
   release:
     types: [published]
 
+# To allow releases
+permissions:
+  contents: write
+
 env:
   GODOT_VERSION: 4.4.1
 
@@ -51,7 +55,7 @@ jobs:
       #  run: |
       #    mkdir -p builds/android
       #    godot --headless --export-release "Android" builds/android/Plouf-v01.apk
-      
+
       - name: List build files
         run: ls -R builds/
 
