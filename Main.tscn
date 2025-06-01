@@ -514,7 +514,6 @@ texture = ExtResource("18_8otj2")
 script = ExtResource("17_2js6e")
 
 [node name="Logos" type="Node2D" parent="."]
-visible = false
 modulate = Color(1, 1, 1, 0)
 
 [node name="ea" type="Sprite2D" parent="Logos"]
