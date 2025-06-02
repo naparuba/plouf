@@ -32,8 +32,8 @@ def parse_events(file_path):
                 continue
             
             # print(f'NB ELEMENTS: {len(row)}')
-            # Vérifier que chaque ligne contient le nombre correct de colonnes (8)
-            if len(row) != 9:
+            # Vérifier que chaque ligne contient le nombre correct de colonnes (11)
+            if len(row) != 11:
                 print(f"Erreur dans la ligne : {row} => trop d'éléments")
                 sys.exit(2)
                 continue
@@ -44,10 +44,12 @@ def parse_events(file_path):
             problem = row[2]
             choice_a = row[3]
             choice_a_long = row[4]
-            choice_b = row[5]
-            choice_b_long = row[6]
-            image_front = row[7]
-            image_back = row[8]
+            sound_a = row[5]
+            choice_b = row[6]
+            choice_b_long = row[7]
+            sound_b = row[8]
+            image_front = row[9]
+            image_back = row[10]
             
             # Si une phase n'est pas définie, c'est une erreur, ou au moins un cas qu'on veut ignorer
             if not event_id or not problem or not choice_a or not choice_a_long or not choice_b or not choice_b_long or not image_front or not image_back:
@@ -67,8 +69,10 @@ def parse_events(file_path):
                 "problem":       problem,
                 "choice_a":      choice_a,
                 "choice_a_long": choice_a_long,
+                "sound_a":       sound_a,
                 "choice_b":      choice_b,
                 "choice_b_long": choice_b_long,
+                "sound_b":       sound_b,
                 "image_front":   image_front,
                 "image_back":    image_back,
                 "category":      event_category
@@ -114,7 +118,7 @@ def get_impacts_from_category(category_name):
     for entry in categories_data:
         if entry['id'] == category_name:
             break
-    #print(f'Category: {entry}')
+    # print(f'Category: {entry}')
     a_str = _get_impact_from_entry(entry, 'A')
     b_str = _get_impact_from_entry(entry, 'B')
     
@@ -152,7 +156,7 @@ if set(categories) != set(all_categories):
     print(f'Error: some categories are not valid {set(all_categories) - set(categories)}   {set(categories) - set(all_categories)}')
     sys.exit(2)
 
-data = 'problem_id;phase_id_dep;title;problem_description;choice_a;outcome_a;popularity_a;creativity_a;familly_life_a;speed_a;choice_b;outcome_b;popularity_b;creativity_b;familly_life_b;speed_b;character_img_id;background_img_id\n'
+data = 'problem_id;phase_id_dep;title;problem_description;choice_a;outcome_a;popularity_a;creativity_a;familly_life_a;speed_a;sound_a;choice_b;outcome_b;popularity_b;creativity_b;familly_life_b;speed_b;sound_b;character_img_id;background_img_id\n'
 
 new_lines = []
 for phase, events_list in events.items():
@@ -160,7 +164,7 @@ for phase, events_list in events.items():
         category = event["category"]
         impact_a, impact_b = get_impacts_from_category(category)
         
-        line = f'{event["id"]};{event["phase"]};;{event["problem"]};{event["choice_a"]};{event["choice_a_long"]};{impact_a};{event["choice_b"]};{event["choice_b_long"]};{impact_b};{event["image_front"]};{event["image_back"]}'
+        line = f'{event["id"]};{event["phase"]};;{event["problem"]};{event["choice_a"]};{event["choice_a_long"]};{impact_a};{event["sound_a"]};{event["choice_b"]};{event["choice_b_long"]};{impact_b};{event["sound_b"]};{event["image_front"]};{event["image_back"]}'
         print(f'{line}')
         new_lines.append(line)
 
