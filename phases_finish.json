@@ -1,72 +1,72 @@
 {
   "CHOOSE_CHRONIQUE_GAME": [
-    "Plouf a passé 4 heures sur Steam pour finalement choisir $GAME.",
-    "Plouf a refait trois fois sa liste... puis est parti marcher sans choisir. Il a finalement pris $GAME le lendemain.",
-    "Plouf a tenté un pile ou face, mais la pièce est tombée dans une bouche d’égout. Il a donc pris $GAME a défaut, sans trop y croire.",
-    "Plouf a lancé un sondage Twitter : c’est $GAME qui a gagné.",
-    "Plouf a voulu faire un jeu méconnu... et a démarré $GAME."
+    "Plouf a passé 4 heures sur le magasin Steam pour finalement choisir [color=purple]$GAME[/color].\n\n → Maintenant il faut y jouer",
+    "Plouf a refait trois fois sa liste... puis il en a eu marre et a tiré au hasard. C'est tombé sur [color=purple]$GAME[/color]. Bon il fera avec.\n\n → Maintenant il faut y jouer",
+    "Plouf a tenté un pile ou face, mais la pièce est tombée dans un recoin de sa chaise. Il a donc pris [color=purple]$GAME[/color] a défaut, sans trop y croire.\n\n → Maintenant il faut y jouer",
+    "Plouf a fait l'erreur de demander son avis à Twitter sur le choix du jeu. Grosse erreur! C’est [color=purple]$GAME[/color] qui a gagné.\n\n → Maintenant il faut y jouer",
+    "Plouf a voulu faire un jeu méconnu... s'étant endormi dessus, il a démarré [color=purple]$GAME[/color].\n\n → Maintenant il faut y jouer"
   ],
   "PLAY_CHRONIQUE_GAME": [
-    "Plouf a testé le tutoriel de $GAME pendant 12 heures. Plouf pense que c’est fini.",
-    "Le gameplay de $GAME était trop buggué. Plouf va orienter sa chronique sur le menu principal.",
-    "Plouf a oublié d'enregistrer son gameplay de $GAME. Encore.",
-    "$GAME a eu un crash et perdu sa sauvegarde... deux fois.",
-    "Plouf a rage quit $GAME, puis a décidé que ce serait une chronique sur la gestion de la frustration."
+    "Ayant bloqué au tutoriel de [color=purple]$GAME[/color] pendant 12 heures, Plouf considère qu'il a fait le tour du jeu.\n\n → Maintenant il est temps d'écrire la chronique",
+    "Le gameplay de [color=purple]$GAME[/color] était trop buggué. Plouf va orienter sa chronique sur la seule partie qui fonctionne: le menu principal.\n\n → Maintenant il est temps d'écrire la chronique",
+    "Pseudoless lui avait pourtant recommandé le gameplay tellement léché de [color=purple]$GAME[/color]. Plouf se demande bien pourquoi.\n\n → Maintenant il est temps d'écrire la chronique",
+    "[color=purple]$GAME[/color] a eu un crash et perdu sa sauvegarde... deux fois. Pouf connait le début du jeu par coeur désormais.\n\n → Maintenant il est temps d'écrire la chronique",
+    "Ayant rage quit [color=purple]$GAME[/color], Plouf a décidé que ce serait une chronique sur la gestion de la frustration.\n\n → Maintenant il est temps d'écrire la chronique"
   ],
   "WRITE_CHRONIQUE": [
-    "Plouf a passé 2 jours sur le titre de la chronique sur $GAME.",
-    "Plouf a écrit 12 pages... puis tout effacé pour recommencer en rimes avec $GAME.",
-    "Plouf a tout rédigé en Comic Sans pour 'le style'.",
-    "Plouf a oublié le nom de $GAME à mi-script. Il l'a renommé en Super Mario par la suite.",
-    "Plouf a remplacé tous les mots par 'jeux', 'vidéo' et 'narratif'."
+    "2 jours passé à trouver sur le titre de la chronique sur [color=purple]$GAME[/color], plus que 30min pour écrire le reste. Tendu.\n\n → Maintenant il faut enregistrer les voix",
+    "12 pages de textes, puis Plouf s'est aperçu qu'il chroniquait le mauvais jeu. Oups.\n\n → Maintenant il faut enregistrer les voix",
+    "Plouf a rédigé la chronique sur [color=purple]$GAME[/color] en Comic Sans MS pour 'le style'.\n\n → Maintenant il faut enregistrer les voix",
+    "Plouf a oublié le nom de [color=purple]$GAME[/color] à mi-script. Il l'a renommé en Paper Mario par la suite.\n\n → Maintenant il faut enregistrer les voix",
+    "Plouf a réutiliser la moitié d'une ancienne chronique. Sur un malentendu ça passe.\n\n → Maintenant il faut enregistrer les voix"
   ],
   "REGISTER_VOICE": [
-    "Plouf a éternué à chaque phrase. Tout est à refaire.",
-    "Son micro était à l’envers. Belle réverbération.",
-    "Plouf a fait des voix de personnages... et tout sonne comme Gros nounours!",
-    "Plouf a tout enregistré en ASMR par erreur.",
-    "Plouf a tenté d'imiter les personnages de $GAME."
+    "Plouf a éternué à chaque fois qu'il devait prononcer [color=purple]$GAME[/color]. Tout est à refaire.\n\n → Il va falloir dessiner la chronique maintenant",
+    "Son micro était à l’envers. Belle réverbération.\n\n → Il va falloir dessiner la chronique maintenant",
+    "Plouf a fait des voix de personnages... et tout sonne comme Gros nounours!\n\n → Il va falloir dessiner la chronique maintenant",
+    "Plouf a tout enregistré en ASMR par erreur.\n\n → Il va falloir dessiner la chronique maintenant",
+    "Tenter d'imiter les personnages de [color=purple]$GAME[/color] malgré un rhume n'était peut être pas une si grande idée finalement.\n\n → Il va falloir dessiner la chronique maintenant"
   ],
   "DRAW_CHRONIQUE": [
-    "Sa souris s'est noyée dans une tasse de café.",
-    "Plouf a passé 3 jours à dessiner une chaise. Superbe chaise. Dommage qu'il n'y en ait pas dans $GAME.",
-    "Plouf a tenté un style *Pixel Art Renaissance Minimaliste* de $GAME. Échec.",
-    "Plouf a animé les personnages de $GAME en style chibi. Juste pour voir.",
-    "Plouf a redessiné l’intro 4 fois parce qu’il trouvait le regard 'pas assez sarcastique'."
+    "Sa souris étant décédée à mi-parcours, il a fini au clavier. Tout semble... carré. Bah ça ira.\n\n → Dessins OK, c'est parti pour les animations",
+    "Il a passé 3 jours à dessiner une chaise. Superbe chaise. Dommage qu'il n'y en ait pas dans [color=purple]$GAME[/color].\n\n → Dessins OK, c'est parti pour les animations",
+    "Plouf a tenté un style *Pixel Art Renaissance Minimaliste* sur [color=purple]$GAME[/color]. Échec.\n\n → Dessins OK, c'est parti pour les animations",
+    "Style Chibi pour les personnages de [color=purple]$GAME[/color]? Ca rend étonnamment bien.\n\n → Dessins OK, c'est parti pour les animations",
+    "Plouf a redessiné le perso principal de [color=purple]$GAME[/color] 4 fois parce qu’il trouvait son regard 'pas assez sarcastique'.\n\n → Dessins OK, c'est parti pour les animations"
   ],
   "ANIMATE_CHRONIQUE": [
-    "Plouf a tout animé à 60 fps. C’était 'artistique' et toujours deux fois plus que $GAME.",
-    "Plouf a oublié d’animer la bouche. Tout le monde croit que c’est voulu.",
-    "Plouf a réussi à refaire tous les décors de $GAME en une seule chronique.",
-    "Plouf a fait des effets 'zoom dramatique' sur chaque mot. Trop.",
-    "Plouf a réutilisé l’animation d’une vieille chronique pour celle sur $GAME. Sur un malentendu ça passe."
+    "Grosse nouveauté: animation en 60 fps. C’est 'artistique' (et toujours deux fois plus que [color=purple]$GAME[/color]).\n\n → Il faut lancer le montage maintenant",
+    "Il a oublié d’animer les bras. Tout le monde croit que c’est voulu.\n\n → Il faut lancer le montage maintenant",
+    "Plouf a réussi à refaire tous les décors de [color=purple]$GAME[/color] en une seule chronique. Belle performance.\n\n → Il faut lancer le montage maintenant",
+    "Plouf a fait des effets 'zoom dramatique' sur chaque mot. Les viewers risquent d'être malades.\n\n → Il faut lancer le montage maintenant",
+    "Plouf a réutilisé l’animation d’une vieille chronique pour celle sur [color=purple]$GAME[/color]. Sur un malentendu ça passe.\n\n → Il faut lancer le montage maintenant"
   ],
   "MOUNT_CHRONIQUE_VIDEO": [
-    "Plouf a exporté 25 versions de $GAME avec des fautes dans le titre.",
-    "Plouf a mis 5 intros différentes pour la chronique sur $GAME. Plouf ne savait pas choisir.",
-    "Le fond musical de $GAME couvre toute sa voix. ASMR involontaire.",
-    "Plouf a utilisé une transition en forme de pancake. Aucun rapport avec $GAME, mais ça rends bien.",
-    "Plouf a oublié de couper ses toussotements. Bonus naturel."
+    "Plouf a exporté 25 versions de [color=purple]$GAME[/color] avec des fautes dans le titre.\n\n → Vidéo prête! C'est parti pour l'upload",
+    "N'arrivant pas à choisir, il a mis 5 intros différentes pour la chronique sur [color=purple]$GAME[/color].\n\n → Vidéo prête! C'est parti pour l'upload",
+    "Le fond musical de [color=purple]$GAME[/color] couvre toute sa voix. ASMR involontaire.\n\n → Vidéo prête! C'est parti pour l'upload",
+    "Plouf a utilisé une transition en forme de donuts. Aucun rapport avec [color=purple]$GAME[/color] certes, mais ça rends bien.\n\n → Vidéo prête! C'est parti pour l'upload",
+    "Plouf a oublié de couper ses toussotements. Bonus naturel.\n\n → Vidéo prête! C'est parti pour l'upload"
   ],
   "UPLOAD_CHRONIQUE_VIDEO": [
-    "Plouf a oublié le mot de passe de sa chaîne YouTube. Encore.",
-    "Plouf a mis en ligne la chronique sur $GAME en 144p. Par nostalgie.",
-    "La miniature de $GAME est un zoom flou de sa narine gauche.",
-    "Plouf a titré : 'Chronique sur un jeu - Très bien'. Bon dommage il a oublié le nom de $GAME dedans.",
-    "Plouf a laissé 'version finale V11_bis_dernier_def_def_ok2' en titre. Pas dit que ce soit plus clair que $GAME."
+    "Il a oublié le mot de passe de sa chaîne YouTube. Encore.\n\n → Il va falloir répondre aux commentaires maintenant",
+    "Moment nostalgie: il a mis en ligne la chronique sur [color=purple]$GAME[/color] en 144p.\n\n → Il va falloir répondre aux commentaires maintenant",
+    "La miniature de [color=purple]$GAME[/color] est un zoom flou de son visage. Valix n'est pas convaincu par ce choix 'audacieux'.\n\n → Il va falloir répondre aux commentaires maintenant",
+    "Titre de la chronique : 'Le GOTY de cette semaine est là.'. Bon dommage il a oublié le nom de [color=purple]$GAME[/color] dedans, ça aurait pu être utile pour l'algorithme Youtube.\n\n → Il va falloir répondre aux commentaires maintenant",
+    "En speed, il a laissé 'version finale V11_bis_dernier_def_def_ok2' en titre. Pas dit que ce soit plus clair que [color=purple]$GAME[/color] mais qui sait?.\n\n → Il va falloir répondre aux commentaires maintenant"
   ],
   "ANSWER_CHRONIQUE_COMMENTS": [
-    "Plouf a répondu à tout le monde avec des GIFs de canards.",
-    "Plouf a déclenché un débat de 600 messages sur les JRPG en répondant 'meh'.",
-    "Plouf a liké tous les commentaires négatifs. Par fatigue.",
-    "Plouf ne pensais pas que $GAME pouvait soulever autant de polémiques. Et pourtant.",
-    "Plouf a bloqué un type parce qu’il disait ne pas aimer Mario et la porte Millénaire. La bonté de Pouf a aussi ses limites."
+    "Épuisé par les gents, il a répondu à tout le monde avec des GIFs de canards.\n\n → Dernière ligne droite avec le Stream post-chronique!",
+    "[color=purple]$GAME[/color] a déclenché un débat de 600 messages sur les JRPG en répondant 'meh'.\n\n → Dernière ligne droite avec le Stream post-chronique!",
+    "Plouf a liké tous les commentaires négatifs. Par fatigue.\n\n → Dernière ligne droite avec le Stream post-chronique!",
+    "Plouf ne pensais pas que [color=purple]$GAME[/color] pouvait soulever autant de polémiques. Et pourtant.\n\n → Dernière ligne droite avec le Stream post-chronique!",
+    "Plouf a bloqué un type parce qu’il disait ne pas aimer Mario et la porte Millénaire. La bonté de Pouf a aussi ses limites.\n\n → Dernière ligne droite avec le Stream post-chronique!"
   ],
   "STREAM_POST_CHRONIQUE": [
-    "Plouf a lancé le stream sur $GAME sans micro pendant 45 minutes.",
-    "Plouf a parlé à son chat... le félin, pas le chat Twitch.",
-    "Plouf a streamé son bureau. Littéralement son bureau. Bois chêne de 90cm par 60cm, très joli.",
-    "Plouf a fini par lancer $GAME et semble découvrir le jeu.",
-    "Plouf a oublié d’éteindre le stream sur $GAME et s’est endormi. 4h de ronflements."
+    "Il s'est battu contre OBS pendant 45 min au début du stream sur [color=purple]$GAME[/color]. (note: OBS a gagné).\n\n → C'est fini!",
+    "Plouf a parlé à son chat... le félin, pas le chat Twitch.\n\n → C'est fini!",
+    "Plouf a streamé son bureau. Littéralement. Bois chêne de 90cm par 60cm, très joli.\n\n → C'est fini!",
+    "Plouf a fini par lancer [color=purple]$GAME[/color] et semble découvrir le jeu. Mais il a chroniqué quoi alors?\n\n → C'est fini!",
+    "Fin du stream. Mais il a oublié d’éteindre le stream sur [color=purple]$GAME[/color] et s’est endormi. 4h de ronflements.\n\n → C'est fini!"
   ]
 }
