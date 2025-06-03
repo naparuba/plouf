@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 # Joue un son (optionnel: volume, auto-free)
-func play_sound(path: String, volume: float = 0.0, auto_free: bool = true, random_pitch:bool = true) -> AudioStreamPlayer:
+func play_sound(path: String, volume: float = 0.0, auto_free: bool = true, random_pitch:bool = false) -> AudioStreamPlayer:
 	if not self.is_active:  # sorry, the sound is just cut
 		return
 	var stream := load("res://sounds/"+path+".ogg")
