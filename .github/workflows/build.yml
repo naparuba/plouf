@@ -54,9 +54,8 @@ jobs:
           mkdir -p builds/linux
           godot --headless --export-release "Linux" builds/linux/plouf_v${PLOUF_VERSION}.x86_64
           cd builds
-          tar cfz builds/linux-v${PLOUF_VERSION}.tar.gz linux/
-          cd ..
-          rm -fr builds/linux/
+          tar cfz linux-v${PLOUF_VERSION}.tar.gz linux/
+          rm -fr linux/
           
 
       # Android
