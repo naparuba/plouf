@@ -467,8 +467,9 @@ func _validate_stats():
 # return if the phase did change
 func _apply_choice(choice: String) -> bool:
 	print("→ Choix :", choice)
-	_apply_stats_consequences(current_problem, choice)
+	_apply_stats_consequences(choice)
 	_reset_possible_impacts()  # hide the old impact if shown, as the choice did change
+	_play_voice(choice)
 	
 	var r = _validate_stats()
 	
@@ -548,7 +549,13 @@ func _change_progress_sprite(sprite, stat_pct_float_1):
 	tween.tween_callback(Callable(self, "_reset_progress_sprite").bind(sprite))
 
 
-func _apply_stats_consequences(problem, choice):
+# Based on the choice, will playbe the sound if there is one for this
+func _play_voice(choice: String):
+	var voice_path = current_problem['sound_'+choice.to_lower()]
+	SoundManager.play_voice(voice_path)
+
+
+func _apply_stats_consequences(choice):
 	# first apply impacts stats
 	for stat in stats.keys():
 		var impact = _get_choice_stat(choice, stat)
@@ -886,7 +893,7 @@ func on_swipe_choice(direction: String):
 	
 	
 	print("→ Swipe :", direction)
-	var did_change_phase = _apply_choice(direction)  # ta logique existante
+	var did_change_phase = _apply_choice(direction)
 	
 	# if we are in the same phase, we can directly show the new problem
 	if not did_change_phase:
