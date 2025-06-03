@@ -35,21 +35,27 @@ jobs:
         run: |
           mkdir -p builds/web
           godot --headless --verbose --export-release "Web" builds/web/index.html
-          tar cfz builds/web-v${PLOUF_VERSION}.tar.gz builds/web/
+          cd builds/web
+          zip -r ../web-v${PLOUF_VERSION}.zip .
+          cd ../..
           rm -fr builds/web/
 
       - name: Export Windows
         run: |
           mkdir -p builds/win
           godot --headless --export-release "Windows Desktop" builds/win/Plouf-v${PLOUF_VERSION}.exe
-          tar cfz builds/windows-v${PLOUF_VERSION}.tar.gz builds/win/
+          cd builds
+          tar cfz windows-v${PLOUF_VERSION}.tar.gz win/
+          cd ..
           rm -fr builds/win/
 
       - name: Export Linux
         run: |
           mkdir -p builds/linux
           godot --headless --export-release "Linux" builds/linux/plouf_v${PLOUF_VERSION}.x86_64
-          tar cfz builds/linux-v${PLOUF_VERSION}.tar.gz builds/linux/
+          cd builds
+          tar cfz builds/linux-v${PLOUF_VERSION}.tar.gz linux/
+          cd ..
           rm -fr builds/linux/
           
 
