@@ -85,3 +85,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: builds/**/*.*
+
+       # Upload to itch.io
+      - name: Deploy to Itch.io
+        uses: robpc/itchio-upload-action@v1
+        with:
+          path: build/windows-v${PLOUF_VERSION}.tar.gz
+          project: naparuba/une-semaine-en-tant-que-monsieur-plouf
+          channel: windows
+          version: ${PLOUF_VERSION}
+          api-key: ${{ secrets.ITCHIO_API_KEY }}
