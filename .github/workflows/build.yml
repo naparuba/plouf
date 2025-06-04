@@ -45,7 +45,7 @@ jobs:
           mkdir -p builds/win
           godot --headless --export-release "Windows Desktop" builds/win/Plouf-v${PLOUF_VERSION}.exe
           cd builds
-          tar cfz windows-v${PLOUF_VERSION}.tar.gz win/
+          zip -r ../une-semaine-en-tant-que-monsieur-plouf-windows-v${PLOUF_VERSION}.zip win
           cd ..
           rm -fr builds/win/
 
@@ -81,14 +81,24 @@ jobs:
         run: ls -R builds/
 
       # Upload to itch.io
-      - name: Deploy to Itch.io
+      - name: Deploy to Itch.io (Windows)
         uses: robpc/itchio-upload-action@v1
         with:
-          path: builds/windows-v${{ env.PLOUF_VERSION }}.tar.gz
+          path: builds/une-semaine-en-tant-que-monsieur-plouf-windows-v${{ env.PLOUF_VERSION }}.zip
           project: naparuba/une-semaine-en-tant-que-monsieur-plouf
           channel: windows
           version: v${{ env.PLOUF_VERSION }}
           api-key: ${{ secrets.ITCHIO_API_KEY }}
+
+      - name: Deploy to Itch.io (Web)
+        uses: robpc/itchio-upload-action@v1
+        with:
+          path: builds/web-v${{ env.PLOUF_VERSION }}.zip
+          project: naparuba/une-semaine-en-tant-que-monsieur-plouf
+          channel: web
+          version: v${{ env.PLOUF_VERSION }}
+          api-key: ${{ secrets.ITCHIO_API_KEY }}
+
 
       - name: Upload to GitHub Release
         if: github.event_name == 'release'
