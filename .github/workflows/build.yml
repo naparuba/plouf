@@ -90,7 +90,7 @@ jobs:
       - name: Deploy to Itch.io
         uses: robpc/itchio-upload-action@v1
         with:
-          path: build/windows-v${PLOUF_VERSION}.tar.gz
+          path: builds/windows-v${PLOUF_VERSION}.tar.gz
           project: naparuba/une-semaine-en-tant-que-monsieur-plouf
           channel: windows
           version: ${PLOUF_VERSION}
