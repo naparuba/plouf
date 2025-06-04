@@ -45,9 +45,8 @@ jobs:
           mkdir -p builds/win
           godot --headless --export-release "Windows Desktop" builds/win/Plouf-v${PLOUF_VERSION}.exe
           cd builds
-          zip -r ../une-semaine-en-tant-que-monsieur-plouf-windows-v${PLOUF_VERSION}.zip win
-          cd ..
-          rm -fr builds/win/
+          zip -r une-semaine-en-tant-que-monsieur-plouf-windows-v${PLOUF_VERSION}.zip win
+          rm -fr win/
 
       - name: Export Linux
         run: |
