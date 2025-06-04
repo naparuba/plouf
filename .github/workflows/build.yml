@@ -81,6 +81,7 @@ jobs:
 
       # Upload to itch.io
       - name: Deploy to Itch.io (Windows)
+        if: github.event_name == 'release'
         uses: robpc/itchio-upload-action@v1
         with:
           path: builds/une-semaine-en-tant-que-monsieur-plouf-windows-v${{ env.PLOUF_VERSION }}.zip
@@ -90,6 +91,7 @@ jobs:
           api-key: ${{ secrets.ITCHIO_API_KEY }}
 
       - name: Deploy to Itch.io (Web)
+        if: github.event_name == 'release'
         uses: robpc/itchio-upload-action@v1
         with:
           path: builds/web-v${{ env.PLOUF_VERSION }}.zip
@@ -100,6 +102,7 @@ jobs:
 
 
       - name: Deploy to Itch.io (Linux)
+        if: github.event_name == 'release'
         uses: robpc/itchio-upload-action@v1
         with:
           path: builds/une-semaine-en-tant-que-monsieur-plouf-linux-v${{ env.PLOUF_VERSION }}.tar.gz
