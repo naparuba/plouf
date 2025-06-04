@@ -12,7 +12,7 @@ permissions:
 
 env:
   GODOT_VERSION: 4.4.1
-  PLOUF_VERSION: 0.5
+  PLOUF_VERSION: 2
 
 jobs:
   export:
