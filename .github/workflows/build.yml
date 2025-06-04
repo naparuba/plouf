@@ -80,13 +80,7 @@ jobs:
       - name: Make buildsList build files
         run: ls -R builds/
 
-      - name: Upload to GitHub Release
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: builds/**/*.*
-
-       # Upload to itch.io
+      # Upload to itch.io
       - name: Deploy to Itch.io
         uses: robpc/itchio-upload-action@v1
         with:
@@ -95,3 +89,9 @@ jobs:
           channel: windows
           version: ${PLOUF_VERSION}
           api-key: ${{ secrets.ITCHIO_API_KEY }}
+
+      - name: Upload to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: builds/**/*.*
