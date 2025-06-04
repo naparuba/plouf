@@ -33,9 +33,9 @@ func play_sound(path: String, volume: float = 0.0, auto_free: bool = true, rando
 
 func play_voice(path: String):
 	var sound_file = "res://sounds/voices/"+path+".ogg"
-	if not FileAccess.file_exists(sound_file):
+	if not ResourceLoader.exists(sound_file):  # !! ResourceLoader and not FileAccess because we are using pck
 		print('ERROR: the sound ', sound_file, ' is missing !!')
-		return
+		return #path = 'JE-DETEST-CA'
 	self.play_sound('voices/'+path, 0.0, true, true)  # random_pitch=true
 
 
