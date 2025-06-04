@@ -53,7 +53,7 @@ jobs:
           mkdir -p builds/linux
           godot --headless --export-release "Linux" builds/linux/plouf_v${PLOUF_VERSION}.x86_64
           cd builds
-          tar cfz linux-v${PLOUF_VERSION}.tar.gz linux/
+          tar cfz une-semaine-en-tant-que-monsieur-plouf-linux-v${PLOUF_VERSION}.tar.gz linux/
           rm -fr linux/
           
 
@@ -95,6 +95,16 @@ jobs:
           path: builds/web-v${{ env.PLOUF_VERSION }}.zip
           project: naparuba/une-semaine-en-tant-que-monsieur-plouf
           channel: web
+          version: v${{ env.PLOUF_VERSION }}
+          api-key: ${{ secrets.ITCHIO_API_KEY }}
+
+
+      - name: Deploy to Itch.io (Linux)
+        uses: robpc/itchio-upload-action@v1
+        with:
+          path: builds/une-semaine-en-tant-que-monsieur-plouf-linux-v${PLOUF_VERSION}.tar.gz
+          project: naparuba/une-semaine-en-tant-que-monsieur-plouf
+          channel: linux
           version: v${{ env.PLOUF_VERSION }}
           api-key: ${{ secrets.ITCHIO_API_KEY }}
 
