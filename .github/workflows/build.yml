@@ -102,7 +102,7 @@ jobs:
       - name: Deploy to Itch.io (Linux)
         uses: robpc/itchio-upload-action@v1
         with:
-          path: builds/une-semaine-en-tant-que-monsieur-plouf-linux-v${PLOUF_VERSION}.tar.gz
+          path: builds/une-semaine-en-tant-que-monsieur-plouf-linux-v${{ env.PLOUF_VERSION }}.tar.gz
           project: naparuba/une-semaine-en-tant-que-monsieur-plouf
           channel: linux
           version: v${{ env.PLOUF_VERSION }}
