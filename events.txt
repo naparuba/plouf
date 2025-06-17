@@ -52,6 +52,7 @@ GAME_TOO_LONG;PLAY_CHRONIQUE_GAME;Horreur: $GAME est deux fois plus long qu'affi
 PSEUDOLESS_DECIDE;;Pseudoless t’annonce le jeu du podcast : il se venge enfin des podcast de Noël: Persona 5.;Commencer à y jouer tout de suite;Tu prends de l’avance, mais dit adieu à ta soirée (spoiler: et aux suivantes).;;Tu supplie Pseudo de changer;Tu t'excuse ventre à terre pour tous les mois de décembre que tu lui as ... proposés. Dans sa grande bonté il t'excuse et change sur Resident Evil 4 pour se faire pardonner du stress (mais tu te dis que ça se trouve refaire le 6 en décembre ne serait pas une mauvaise idée en fait);TOUT-CELA-VA-MENER;PSEUDO;BACK_PODCAST
 PSEUDOLESS_DEADLINE;PLAY_CHRONIQUE_GAME;On est le lundi du post du Podcast, tu n'as pas monté sa vidéo, et 13h arrive bientôt, mais tu n’as pas fini de jouer à $GAME.;Switcher sur le montage vidéo du\n podcast;Tu retrouves tes rushs du jeu et hop, la vidéo est proche.;;Continuer de jouer;Les patreons auront la vidéo en retard, ça leur fera une excuse pour l'écouter une seconde fois.;;PSEUDO;BACK_PODCAST
 TOO_MANY_GAMES;CHOOSE_CHRONIQUE_GAME;On est en novembre donc... oui c'est l'embouteillage de fin d'année qui est là;Tout tester;Tu survoles 5 jeux, mais 5*10h ça fait quand même 50h, ça va être chaud d'être près pour le jeudi d'après alors qu'on est... mercredi.;SACRE-EMBOUTEILLAGE;Faire confiance à son instinct;Tu choisi $GAME et focus dessus, ça ne sera peut être pas le meilleur jeu, mais au moins le timing sera ok.;SACRE-EMBOUTEILLAGE;PLOUF_HESITE;BACK_EMBOUTEILLAGE
+PSEUDO_TALK_TOO_MUCH;;Plouf vient de recevoir la Switch 2 juste avant le podcast avec Pseudo et à hâte de la déballer, mais ce dernier n'arrête pas de trouver des points à traiter sur le jeu;La Switch 2 attendra;Faut avouer que les points soulevés par Pseudo vont pertinents, la Switch2 et Mario Kart attendront;;Couper court;Plouf simule une panne de caméra et file déballer sa Switch 2 en douce;;PSEUDO;BACK_PODCAST
 
 
 
@@ -164,6 +165,7 @@ DIVORCE_DANCE;PLAY_CHRONIQUE_GAME;Marathon "Just Dance" avec Madame pour la chro
 FIFA_TRAUMA;CHOOSE_CHRONIQUE_GAME;Si Fifa est l'un des jeux les plus vendu, c'est qu'il y a une raison non? Tu y joues avec Madame en jouant l'équipe Suisse.;Vous jouez plus de 50h;Vous avez rajoué toute la dernière coupe du monde. C'était très rigolo, mais tu te dis que 10h auraient largement suffit pour la chronique en fait;;Jouer juste une soirée;Madame avait sorti les drapeaux Suisse dans toute la maison, mais les range tristement.;;PLOUF_FATIGUE;BACK_CANAPE
 ROCKET_ADDICT;CHOOSE_CHRONIQUE_GAME;Tu testes "Valheim" en duo pour une future chronique.;Jouer "juste une dernière";Tu perds 8h dans ce vortex, mais c'était ultra fun.;;Désinstaller après 1h;Tu démontais "par erreur" tout le temps le lit de ton ami.;;PLOUF_HESITE;BACK_BUREAU
 PSEUDO_STRIKE;;Tu propose Bugsy 3D pour le podcast de décembre. Pseudoless menace de créer un syndicat et faire grève.;Ok pour l'émulateur;Tu lui dis que sur l'émulateur ça sera très bien, et surtout: il y a les sve states et le rewind;;Console d'origine sinon rien;Tu préfères que le jeu soit fait dans son jus, sur console d'origine. Point de save state donc...;;PLOUF_PUBG;BACK_PODCAST
+PSEUDO_ROAD_CRAFT;;Pseudo te propose une partie coop sur Road Craft pour construire des routes!;Plonger dans le bitûme;Faire semblant de travailler pendant des heures? Vendu!;;Résister de toutes tes forces;Tu as déjà fait semblant de travailler toute la semaine, ça va faire un peu trop là;;PSEUDO;BACK_CANAPE
 
 
 #==STEAMING
@@ -227,3 +229,10 @@ PSEUDO_FIFA;;Tu es plus que surpris: Pseudoless te propose de parler du nouveau 
 #==ASSUME_BAD_CHOICE
 # A=speed+,popularity+    B=speed-,popularity-
 PSEUDO_LIKE_FF14;;Pseudoless t'annonce sa vengeance, heu le prochain podcast: FF 14, c'est parti pour 150h de grind!;Couper la poire en deux;Tu proposes FF7 à la place, c'est seulement 40h et plus populaire en plus;MALIN;Aller un cran plus loin;Tu proposes FF 15, c'est tout aussi long, mais ça plait moins, Pseudo ne l'ayant pas fait va aussi souffir;VOUS-ETES-PAS-CAPABLE;PSEUDO;BACK_PODCAST
+
+
+#==FOR_VISIBILITY
+# A=visibility+   B=rien
+ASMR_UNBOXING;;Nouveau concept de short Youtube: unboxing ASMR de Switch 2;Go roi des shorts!;Plouf prend son meilleur micro et fait le meilleur short de l'année de Youtube. Un génie!;;Heu pas si sûr;Non Internet n'est pas encore prêt pour un concept aussi révolutionnaire;;PLOUF;BACK_CANAPE
+MK_MUSIC;REGISTER_VOICE;Plouf souhaite faire des enregistrements de vieilles musiques de Mario Kart à la bouche pour montrer qu'il les connait par cœur (même si personne n'en doutait ^^);C'est parti!;Tu fais ça du premier coup sans même avoir à les réentendre avant, ton millier d'heures sur MK a porté ses fruits;SONG-MK;heu... j'hésite;Tu n'es pas sûr qu'internet soit prêt pour une telle interprétation de haut vol, dommage pour toi Internet!;;PLOUF_HESITE;BACK_CANAPE
+

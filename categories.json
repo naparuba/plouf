@@ -270,5 +270,14 @@
       {"impact_category": "speed", "impact_sign": "-"},
       {"impact_category": "popularity", "impact_sign": "-"}
     ]
+  },
+  {
+    "id": "FOR_VISIBILITY",
+    "A": [
+      {"impact_category": "popularity", "impact_sign": "+"}
+    ],
+    "B": [
+      {"impact_category": "popularity", "impact_sign": "-"}
+    ]
   }
 ]
