@@ -5,11 +5,11 @@ Tests unitaires pour parse_and_load_event_file.py
 Teste le parsing du fichier events.txt et la génération du CSV
 """
 
-import unittest
-import sys
-import os
-import tempfile
 import json
+import os
+import sys
+import tempfile
+import unittest
 
 # Ajouter le dossier parent au path pour importer le module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -24,16 +24,19 @@ from parse_and_load_event_file import (
 class TestParseEvents(unittest.TestCase):
     """Tests pour la fonction parse_events"""
     
+    
     def setUp(self):
         """Créer un fichier de test temporaire"""
         self.test_dir = tempfile.mkdtemp()
         self.test_file = os.path.join(self.test_dir, 'test_events.txt')
+    
     
     def tearDown(self):
         """Nettoyer les fichiers temporaires"""
         if os.path.exists(self.test_file):
             os.remove(self.test_file)
         os.rmdir(self.test_dir)
+    
     
     def test_parse_empty_file(self):
         """Test parsing d'un fichier vide"""
@@ -42,6 +45,7 @@ class TestParseEvents(unittest.TestCase):
         
         result = parse_events(self.test_file)
         self.assertEqual(result, {})
+    
     
     def test_parse_comments_only(self):
         """Test parsing d'un fichier avec seulement des commentaires"""
@@ -53,106 +57,69 @@ class TestParseEvents(unittest.TestCase):
         result = parse_events(self.test_file)
         self.assertEqual(result, {})
     
+    
     def test_parse_single_event(self):
-        """Test parsing d'un événement unique"""
-        # Créer les images fictives
-        os.makedirs(os.path.join(os.path.dirname(self.test_file), '..', 'images'), exist_ok=True)
-        img_dir = os.path.join(os.path.dirname(self.test_file), '..', 'images')
-        
-        # Créer fichiers images vides
-        open(os.path.join(img_dir, 'FRONT.png'), 'w').close()
-        open(os.path.join(img_dir, 'BACK.png'), 'w').close()
-        
+        """Test parsing d'un événement unique - utilise des vraies images de prod"""
+        # Utiliser des vraies images qui existent déjà
         with open(self.test_file, 'w', encoding='utf-8') as f:
             f.write('#== TEST_CATEGORY\n')
-            f.write('EVENT001;phase1;Problem?;Choice A;Long A;sound_a;Choice B;Long B;sound_b;FRONT;BACK\n')
+            f.write('EVENT001;phase1;Problem?;Choice A;Long A;sound_a;Choice B;Long B;sound_b;PLOUF;BACK_BUREAU\n')
         
-        # Sauvegarder le répertoire courant
-        old_cwd = os.getcwd()
-        try:
-            os.chdir(os.path.dirname(self.test_file) + '/..')
-            result = parse_events(self.test_file)
-            
-            self.assertIn('phase1', result)
-            self.assertEqual(len(result['phase1']), 1)
-            
-            event = result['phase1'][0]
-            self.assertEqual(event['id'], 'EVENT001')
-            self.assertEqual(event['phase'], 'phase1')
-            self.assertEqual(event['problem'], 'Problem?')
-            self.assertEqual(event['choice_a'], 'Choice A')
-            self.assertEqual(event['choice_a_long'], 'Long A')
-            self.assertEqual(event['sound_a'], 'sound_a')
-            self.assertEqual(event['choice_b'], 'Choice B')
-            self.assertEqual(event['choice_b_long'], 'Long B')
-            self.assertEqual(event['sound_b'], 'sound_b')
-            self.assertEqual(event['image_front'], 'FRONT')
-            self.assertEqual(event['image_back'], 'BACK')
-            self.assertEqual(event['category'], 'TEST_CATEGORY')
-        finally:
-            os.chdir(old_cwd)
-            # Nettoyer
-            os.remove(os.path.join(img_dir, 'FRONT.png'))
-            os.remove(os.path.join(img_dir, 'BACK.png'))
-            os.rmdir(img_dir)
+        result = parse_events(self.test_file)
+        
+        self.assertIn('phase1', result)
+        self.assertEqual(len(result['phase1']), 1)
+        
+        event = result['phase1'][0]
+        self.assertEqual(event['id'], 'EVENT001')
+        self.assertEqual(event['phase'], 'phase1')
+        self.assertEqual(event['problem'], 'Problem?')
+        self.assertEqual(event['choice_a'], 'Choice A')
+        self.assertEqual(event['choice_a_long'], 'Long A')
+        self.assertEqual(event['sound_a'], 'sound_a')
+        self.assertEqual(event['choice_b'], 'Choice B')
+        self.assertEqual(event['choice_b_long'], 'Long B')
+        self.assertEqual(event['sound_b'], 'sound_b')
+        self.assertEqual(event['image_front'], 'PLOUF')
+        self.assertEqual(event['image_back'], 'BACK_BUREAU')
+        self.assertEqual(event['category'], 'TEST_CATEGORY')
+    
     
     def test_parse_multiple_phases(self):
-        """Test parsing avec plusieurs phases"""
-        os.makedirs(os.path.join(os.path.dirname(self.test_file), '..', 'images'), exist_ok=True)
-        img_dir = os.path.join(os.path.dirname(self.test_file), '..', 'images')
-        open(os.path.join(img_dir, 'IMG1.png'), 'w').close()
-        open(os.path.join(img_dir, 'IMG2.png'), 'w').close()
-        
+        """Test parsing avec plusieurs phases - utilise des vraies images de prod"""
+        # Utiliser des vraies images qui existent déjà
         with open(self.test_file, 'w', encoding='utf-8') as f:
             f.write('#== CAT1\n')
-            f.write('E1;phase1;Problem1;A1;LA1;sa1;B1;LB1;sb1;IMG1;IMG2\n')
-            f.write('E2;phase1;Problem2;A2;LA2;sa2;B2;LB2;sb2;IMG1;IMG2\n')
-            f.write('E3;phase2;Problem3;A3;LA3;sa3;B3;LB3;sb3;IMG1;IMG2\n')
+            f.write('E1;phase1;Problem1;A1;LA1;sa1;B1;LB1;sb1;PLOUF_HESITE;BACK_BIBLIO\n')
+            f.write('E2;phase1;Problem2;A2;LA2;sa2;B2;LB2;sb2;PLOUF_COLERE;BACK_PLAGE\n')
+            f.write('E3;phase2;Problem3;A3;LA3;sa3;B3;LB3;sb3;PLOUF_FILLE;BACK_CHAMBRE\n')
         
-        old_cwd = os.getcwd()
-        try:
-            os.chdir(os.path.dirname(self.test_file) + '/..')
-            result = parse_events(self.test_file)
-            
-            self.assertIn('phase1', result)
-            self.assertIn('phase2', result)
-            self.assertEqual(len(result['phase1']), 2)
-            self.assertEqual(len(result['phase2']), 1)
-        finally:
-            os.chdir(old_cwd)
-            os.remove(os.path.join(img_dir, 'IMG1.png'))
-            os.remove(os.path.join(img_dir, 'IMG2.png'))
-            os.rmdir(img_dir)
+        result = parse_events(self.test_file)
+        
+        self.assertIn('phase1', result)
+        self.assertIn('phase2', result)
+        self.assertEqual(len(result['phase1']), 2)
+        self.assertEqual(len(result['phase2']), 1)
+    
     
     def test_category_change(self):
-        """Test changement de catégorie"""
-        os.makedirs(os.path.join(os.path.dirname(self.test_file), '..', 'images'), exist_ok=True)
-        img_dir = os.path.join(os.path.dirname(self.test_file), '..', 'images')
-        open(os.path.join(img_dir, 'A.png'), 'w').close()
-        open(os.path.join(img_dir, 'B.png'), 'w').close()
-        
+        """Test changement de catégorie - utilise des vraies images de prod"""
+        # Utiliser des vraies images qui existent déjà
         with open(self.test_file, 'w', encoding='utf-8') as f:
             f.write('#== CATEGORY_1\n')
-            f.write('E1;p1;Prob1;A;LA;sa;B;LB;sb;A;B\n')
+            f.write('E1;p1;Prob1;A;LA;sa;B;LB;sb;PLOUF_DARK;BACK_MAISON\n')
             f.write('#== CATEGORY_2\n')
-            f.write('E2;p1;Prob2;A;LA;sa;B;LB;sb;A;B\n')
+            f.write('E2;p1;Prob2;A;LA;sa;B;LB;sb;PSEUDO;BACK_PODCAST\n')
         
-        old_cwd = os.getcwd()
-        try:
-            os.chdir(os.path.dirname(self.test_file) + '/..')
-            result = parse_events(self.test_file)
-            
-            self.assertEqual(result['p1'][0]['category'], 'CATEGORY_1')
-            self.assertEqual(result['p1'][1]['category'], 'CATEGORY_2')
-        finally:
-            os.chdir(old_cwd)
-            os.remove(os.path.join(img_dir, 'A.png'))
-            os.remove(os.path.join(img_dir, 'B.png'))
-            os.rmdir(img_dir)
+        result = parse_events(self.test_file)
+        
+        self.assertEqual(result['p1'][0]['category'], 'CATEGORY_1')
+        self.assertEqual(result['p1'][1]['category'], 'CATEGORY_2')
 
 
 class TestImpactCalculation(unittest.TestCase):
     """Tests pour le calcul des impacts"""
+    
     
     def test_get_impact_from_entry_single_impact(self):
         """Test calcul impact avec une seule catégorie"""
@@ -166,6 +133,7 @@ class TestImpactCalculation(unittest.TestCase):
         
         result_b = _get_impact_from_entry(entry, 'B')
         self.assertEqual(result_b, '0;0;0;-1')
+    
     
     def test_get_impact_from_entry_multiple_impacts(self):
         """Test calcul impact avec plusieurs catégories"""
@@ -186,6 +154,7 @@ class TestImpactCalculation(unittest.TestCase):
         result_b = _get_impact_from_entry(entry, 'B')
         self.assertEqual(result_b, '0;0;+1;+1')
     
+    
     def test_get_impact_from_entry_all_categories(self):
         """Test calcul impact avec toutes les catégories"""
         entry = {
@@ -204,15 +173,18 @@ class TestImpactCalculation(unittest.TestCase):
 class TestRealFileStructure(unittest.TestCase):
     """Tests avec la structure réelle du projet"""
     
+    
     def test_events_file_exists(self):
         """Vérifie que le fichier events.txt existe"""
         events_path = os.path.join(os.path.dirname(__file__), '..', 'events.txt')
         self.assertTrue(os.path.exists(events_path), "Le fichier events.txt doit exister")
     
+    
     def test_categories_file_exists(self):
         """Vérifie que le fichier categories.json existe"""
         cat_path = os.path.join(os.path.dirname(__file__), '..', 'categories.json')
         self.assertTrue(os.path.exists(cat_path), "Le fichier categories.json doit exister")
+    
     
     def test_categories_json_valid(self):
         """Vérifie que categories.json est un JSON valide"""
@@ -227,6 +199,7 @@ class TestRealFileStructure(unittest.TestCase):
                 self.assertIsInstance(data, list, "categories.json doit contenir une liste")
             except json.JSONDecodeError as e:
                 self.fail(f"categories.json n'est pas un JSON valide: {e}")
+    
     
     def test_parse_real_events_file(self):
         """Test parsing du vrai fichier events.txt"""
@@ -272,6 +245,7 @@ class TestRealFileStructure(unittest.TestCase):
 class TestEventValidation(unittest.TestCase):
     """Tests de validation des événements"""
     
+    
     def test_event_has_all_fields(self):
         """Vérifie qu'un événement parsé a tous les champs"""
         required_fields = [
@@ -282,22 +256,23 @@ class TestEventValidation(unittest.TestCase):
         
         # Créer un événement de test
         event = {
-            'id': 'TEST001',
-            'phase': 'test_phase',
-            'problem': 'Test problem?',
-            'choice_a': 'Option A',
+            'id':            'TEST001',
+            'phase':         'test_phase',
+            'problem':       'Test problem?',
+            'choice_a':      'Option A',
             'choice_a_long': 'Long description A',
-            'sound_a': 'sound_a',
-            'choice_b': 'Option B',
+            'sound_a':       'sound_a',
+            'choice_b':      'Option B',
             'choice_b_long': 'Long description B',
-            'sound_b': 'sound_b',
-            'image_front': 'front_img',
-            'image_back': 'back_img',
-            'category': 'TEST_CAT'
+            'sound_b':       'sound_b',
+            'image_front':   'front_img',
+            'image_back':    'back_img',
+            'category':      'TEST_CAT'
         }
         
         for field in required_fields:
             self.assertIn(field, event, f"Le champ '{field}' doit être présent")
+    
     
     def test_impact_format(self):
         """Vérifie le format de sortie des impacts"""
@@ -343,4 +318,3 @@ def run_tests():
 if __name__ == '__main__':
     exit_code = run_tests()
     sys.exit(exit_code)
-
