@@ -22,7 +22,14 @@ Ce jeu repose sur un système de choix binaire, comme dans *Reigns* : à chaque 
 
 Ce n’est **pas** un projet commercial, ni un jeu "fini". C’est un projet **fun**, **communautaire** et **gratuit**, pensé comme un clin d'œil affectueux à l’univers de Monsieur Plouf.
 
-🛠️ Vous pouvez facilement proposer de nouvelles **cartes** d’événements ! Le système est conçu pour être extensible.
+🛠️ Vous pouvez facilement proposer de nouvelles **cartes** d'événements ! Le système est conçu pour être extensible.
+
+## 🧪 Tests
+
+Le projet dispose maintenant de tests unitaires pour assurer la qualité du code :
+
+- ✅ **Python** (parser, fichiers JSON)
+- ✅ **GDScript** (fonctions helpers, chargement de données)
 
 ## 🔗 Liens utiles
 

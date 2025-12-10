@@ -1,0 +1,22 @@
+{
+  "dirs": ["res://tests/"],
+  "should_exit": true,
+  "should_exit_on_success": false,
+  "should_maximize": false,
+  "compact_mode": false,
+  "hide_orphans": false,
+  "ignore_pause": true,
+  "inner_class": "",
+  "junit_xml_file": "",
+  "junit_xml_timestamp": false,
+  "log_level": 1,
+  "opacity": 100,
+  "prefix": "test_",
+  "selected": "",
+  "suffix": ".gd",
+  "tests": [],
+  "double_strategy": "partial",
+  "include_subdirs": true,
+  "unit_test_name": ""
+}
+

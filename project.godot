@@ -32,6 +32,10 @@ window/handheld/orientation=1
 
 movie_writer/movie_file="C:/sources/plouf/preview/preview.avi"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="mobile"
