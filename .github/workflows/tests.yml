@@ -75,7 +75,9 @@ jobs:
               exit 1
             fi
             
-            # Vérifier si des tests ont échoué (non risky/pending)
+            # Vérifier si des tests ont échoué (hors risky/pending)
+            # Note: Risky = test sans assertion, Pending = test marqué comme non implémenté
+            # Ces tests ne comptent PAS comme des échecs, ce sont des avertissements
             RISKY=$(grep "Risky/Pending" gut_output.log | grep -oP '\d+' || echo "0")
             FAILED=$((TOTAL - PASSED - RISKY))
             
