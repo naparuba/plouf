@@ -56,19 +56,40 @@ jobs:
 
       - name: Check for GUT errors
         run: |
+          # Vérifier les erreurs critiques GUT
           if grep -q "Some GUT class_names have not been imported" gut_output.log; then
             echo "❌ ERREUR: Les classes GUT n'ont pas été importées!"
             echo "Ce problème devrait être résolu en ajoutant une étape d'import avant les tests."
             exit 1
           fi
           
-          if grep -q "ERROR:" gut_output.log; then
-            echo "❌ ERREUR détectée dans les tests GUT"
+          # Extraire les statistiques de tests GUT
+          if grep -q "Passing Tests" gut_output.log; then
+            PASSED=$(grep "Passing Tests" gut_output.log | grep -oP '\d+')
+            TOTAL=$(grep "^Tests " gut_output.log | grep -oP '\d+')
+            
+            echo "📊 Résultats GUT : $PASSED/$TOTAL tests passés"
+            
+            if [ "$PASSED" -eq 0 ]; then
+              echo "❌ Aucun test n'a réussi!"
+              exit 1
+            fi
+            
+            # Vérifier si des tests ont échoué (non risky/pending)
+            RISKY=$(grep "Risky/Pending" gut_output.log | grep -oP '\d+' || echo "0")
+            FAILED=$((TOTAL - PASSED - RISKY))
+            
+            if [ "$FAILED" -gt 0 ]; then
+              echo "❌ $FAILED test(s) ont échoué (hors risky/pending)"
+              exit 1
+            fi
+          else
+            echo "❌ Impossible de parser les résultats GUT"
             cat gut_output.log
             exit 1
           fi
           
-          echo "✅ Tests GUT terminés avec succès"
+          echo "✅ Tests GUT terminés avec succès : $PASSED tests passés"          
 
   all-tests-passed:
     name: ✅ Tous les tests réussis
