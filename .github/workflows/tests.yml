@@ -52,7 +52,6 @@ jobs:
 
       - name: Run GUT tests
         run: |
-          set -o pipefail
           godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/ -gexit 2>&1 | tee gut_output.log
 
       - name: Check for GUT errors
