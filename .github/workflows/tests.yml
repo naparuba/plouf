@@ -44,13 +44,32 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable || true
 
+      # TEMPORAIREMENT COMMENTÉ pour reproduire l'erreur
+      # - name: Import Godot project
+      #   run: |
+      #     godot --headless --import --quit
+      #   timeout-minutes: 2
+
       - name: Run GUT tests
         run: |
-          godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/ -gexit
+          set -o pipefail
+          godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/ -gexit 2>&1 | tee gut_output.log
 
-      - name: Check test results
+      - name: Check for GUT errors
         run: |
-          echo "Tests Godot terminés"
+          if grep -q "Some GUT class_names have not been imported" gut_output.log; then
+            echo "❌ ERREUR: Les classes GUT n'ont pas été importées!"
+            echo "Ce problème devrait être résolu en ajoutant une étape d'import avant les tests."
+            exit 1
+          fi
+          
+          if grep -q "ERROR:" gut_output.log; then
+            echo "❌ ERREUR détectée dans les tests GUT"
+            cat gut_output.log
+            exit 1
+          fi
+          
+          echo "✅ Tests GUT terminés avec succès"
 
   all-tests-passed:
     name: ✅ Tous les tests réussis
