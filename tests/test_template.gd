@@ -214,4 +214,3 @@ func _assert_stats_valid(stats: Dictionary):
 # 6. Organisez vos tests en sections avec des commentaires
 #    # ===== TESTS DE COMBAT =====
 #    # ===== TESTS D'INVENTAIRE =====
-

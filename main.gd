@@ -11,6 +11,14 @@ var DEBUG_CRITERIA_EFFECTS = false
 
 var DEBUG_DISABLE_INTRO = false
 
+# Test hooks: set before _ready() to bypass file I/O
+# DEBUG_SAVE_OVERRIDE: if non-empty, replaces reading user://save_data.json
+# DEBUG_TEST_DECK: if non-empty, replaces CSV loading; format: { phase_id: [problem_dict, ...] }
+#   each problem dict must include impact_multiplier (won't be randomized)
+var DEBUG_SAVE_OVERRIDE: Dictionary = {}
+var DEBUG_TEST_DECK: Dictionary = {}
+var DEBUG_START_PHASE_INDEX: int = -1
+
 
 var card_index = 0
 var deck = []
@@ -50,10 +58,6 @@ var stats = {
 	CRITERIA_SPEED: 20,
 }
 
-@onready var card = $Card
-
-@onready var label_objective = $LabelObjective
-
 # Possible Impact
 @onready var label_possible_impact_popularity = $Popularity/PossibleImpact
 @onready var label_possible_impact_creativity = $Creativity/PossibleImpact
@@ -70,7 +74,6 @@ var label_choice_impact_tween: Tween = null
 var label_choice_impact_timer: Timer = null
 var LABEL_CHOICE_IMPACT_DISPLAY_DURATION = 10
 
-@onready var card_viewer = $CardViewer
 
 
 var phases = [] # liste des phases, ex: ["CHOOSE_CHRONIQUE_GAME", ...]
@@ -203,6 +206,11 @@ func _save_game_data():
 
 
 func _load_game_data():
+	if not DEBUG_SAVE_OVERRIDE.is_empty():
+		for key in save_data.keys():
+			if DEBUG_SAVE_OVERRIDE.has(key):
+				save_data[key] = DEBUG_SAVE_OVERRIDE[key]
+		return
 	if not FileAccess.file_exists(SAVE_FILE_PATH):
 		return  # At first startup or web cache clean
 	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
@@ -269,11 +277,15 @@ func _get_least_filled_phase() -> String:
 
 
 func _load_problems():
+	if not DEBUG_TEST_DECK.is_empty():
+		for phase_id in DEBUG_TEST_DECK.keys():
+			problems_by_phase[phase_id] = DEBUG_TEST_DECK[phase_id].duplicate(true)
+		return
 	var file = FileAccess.open("res://plouf_game_cards.csv", FileAccess.READ)
 	var header = file.get_csv_line(";")
 	while not file.eof_reached():
 		var line = file.get_csv_line(";")
-		
+
 		if line.size() < header.size():
 			print('Wrong line size '+str(line.size())+' was expected '+str(header.size()))
 			continue
@@ -294,7 +306,8 @@ func _load_problems():
 func _limit_problems_counts():
 	for phase_id in problems_by_phase.keys():
 		var problems = problems_by_phase[phase_id]
-		problems.shuffle() # Mélange les problèmes
+		if DEBUG_TEST_DECK.is_empty():
+			problems.shuffle() # Mélange les problèmes
 		problems_by_phase[phase_id] = problems.slice(0, min(NB_CARDS_BY_PHASE, problems.size()))
 		print('Limite problems: '+phase_id+ ' => '+str(len(problems_by_phase[phase_id])))
 
@@ -303,6 +316,8 @@ func _limit_problems_counts():
 # - one problem will be a huge impact one: will take a 10 multiplier
 # - others will have a random multiplier from 1 to 3
 func _generate_impact_multiplier():
+	if not DEBUG_TEST_DECK.is_empty():
+		return  # impact_multiplier already set in each test card
 	for phase_id in problems_by_phase.keys():
 		var problems = problems_by_phase[phase_id].duplicate()  # copy so the order don't change
 		problems.shuffle() # so the huge impact will be random
@@ -327,6 +342,8 @@ func __get_random_phase_finish_message(phase_id: String):
 
 # --- Gameplay
 func _initial_phase():  # only at _ready
+	if DEBUG_START_PHASE_INDEX >= 0:
+		current_phase_index = DEBUG_START_PHASE_INDEX
 	var phase_id = phases[current_phase_index]
 	current_problem_list = problems_by_phase[phase_id]
 	current_problem_index = 0
@@ -446,7 +463,7 @@ func _display_problem(problem):
 	print('CURRENT PROBLEM ',problem)
 	var problem_text = _change_text_with_played_game(problem["problem_description"])
 	__set_problem_text(problem_text)
-	label_debug_question.text = "🔸 %s - %s\n\n%s" % [problem["problem_id"], problem["title"]]
+	label_debug_question.text = "🔸 %s - %s" % [problem["problem_id"], problem["title"]]
 	label_debug_a.text = "A: %s\n=> %s" % [problem["choice_a"], problem["outcome_a"]]
 	label_debug_b.text = "B: %s\n=> %s" % [problem["choice_b"], problem["outcome_b"]]
 
@@ -552,6 +569,8 @@ func _change_progress_sprite(sprite, stat_pct_float_1):
 # Based on the choice, will playbe the sound if there is one for this
 func _play_voice(choice: String):
 	var voice_path = current_problem['sound_'+choice.to_lower()]
+	if voice_path.is_empty():
+		return
 	SoundManager.play_voice(voice_path)
 
 

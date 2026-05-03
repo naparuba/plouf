@@ -480,13 +480,15 @@ func _move_up_bottom_cards():
 	print('DECK:: _move_up_bottom_cards')
 	var deck = $Deck
 	var top_card = self.__get_top_deck_card()
-	var tween = create_tween()
+	var tween = null
 	var nb = 0
 	for c in deck.get_children():
 		nb += 1
 		if c == top_card:  # the top card is flipping, so avoid to touch it
 			print('TOP CARD BEFORE MOVING: ', c.position)
 			continue
+		if tween == null:
+			tween = create_tween()
 		var new_pos = Vector2(c.position.x+STACK_OFFSET, c.position.y-STACK_OFFSET)
 		print('DESK:: stack:: before moving ', str(nb),c.position, ' => ', new_pos)
 		tween.parallel().tween_property(c, 'position', new_pos, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)

@@ -135,4 +135,3 @@ func test_played_games_list():
 	var main_instance = autofree(MainScript.new())
 	assert_true(main_instance.played_games is Array, "played_games devrait être un Array")
 	assert_eq(main_instance.played_game, 'Paper Mario', "Le jeu par défaut devrait être Paper Mario")
-
