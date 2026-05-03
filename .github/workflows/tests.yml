@@ -7,7 +7,7 @@ on:
     branches: [ main, master, develop ]
 
 env:
-  GODOT_VERSION: 4.5.1
+  GODOT_VERSION: 4.6.2
 
 jobs:
   test-python:
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: barichello/godot-ci:4.5.1
+      image: barichello/godot-ci:4.6.2
 
     steps:
       - name: Checkout repository
